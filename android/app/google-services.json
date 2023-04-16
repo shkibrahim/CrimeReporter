@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "211582283892",
+    "project_id": "ibrahim-647fb",
+    "storage_bucket": "ibrahim-647fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:211582283892:android:ec042bab1e7b03856de121",
+        "android_client_info": {
+          "package_name": "com.ibrahim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "211582283892-5la5fdkmlu6b94vse40m9qrdv4kvf9j1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZCQPf7JcE048wEzwBFgpPwRbpHdmK4Rk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "211582283892-5la5fdkmlu6b94vse40m9qrdv4kvf9j1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
