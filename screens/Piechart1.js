@@ -31,6 +31,7 @@ const Piechart1 = () => {
     const crime2='Robbery'
     const crime3='Rape'
     const crime4='Kidnapping'
+    const crime5='Kidnapping'
 
     await FIR.get().then(data => {
         setlistss(data.docs.map(doc => ({...doc.data(), id: doc.id})));
