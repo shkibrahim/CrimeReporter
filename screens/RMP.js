@@ -1,8 +1,9 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form'
-
+import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
+import { Linking } from 'react-native';
 import DropDownPicker from "react-native-dropdown-picker";
 import {BASE_URL, API_KEY} from '@env';
 import {
@@ -37,7 +38,10 @@ import Screen2 from './Screen2';
 const RMP = ({navigation}) => {
   const [name, setname] = useState();
   const [date, setDate] = useState();
+  const [longitude, setLongitude] = useState(null);
+  const [latitude, setLatitude] = useState(null);
   const [cnic, setcnic] = useState();
+
   const [description, setdescription] = useState();
   const [contact, setcontact] = useState();
   const [Relation, setRelation] = useState();
@@ -51,7 +55,9 @@ let FIRDATA={
   policeValue:policeValue,
   description:description,
 }
-var Location= () => {
+
+
+function Location() {
     Geolocation.requestAuthorization();
   Geolocation.getCurrentPosition(
     position => {
@@ -60,16 +66,31 @@ var Location= () => {
       const url = `https://www.google.com/maps/search/?api=1&query=${position.coords.latitude},${position.coords.longitude}&query_place_id=${label}`;
       alert('LOCATION HAS BEEN SET')
       Linking.openURL(url);
-      
+    //   Latitude = `${position.coords.latitude}`
+    //   Longitude = `${position.coords.longitude}`
     },
     error => {
       console.error(error);
     },
-    { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    { enableHighAccuracy: true, timeout: 3900, maximumAge: 1 }
   );
   }
- 
+useEffect(() => {
+    Geolocation.getCurrentPosition(
+      position => {
+        setLongitude(position.coords.longitude);
+        setLatitude(position.coords.latitude);
+      },
+      error => console.log(error),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  }, []);
 
+// const Latitude = `${Location.latitude}`
+// const Longitude = `${Location.longitude}`
+ 
+//   Latitude = `${position.coords.latitude}`
+//   Longitude = `${position.coords.longitude}`
 const currentDate = new Date(); // create a new Date object with current date and time
 const year = currentDate.getFullYear(); // get the current year (YYYY)
 const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // get the current month (MM) and add leading zero if necessary
@@ -98,8 +119,11 @@ const datemodvisiblefalse = () => {
         districtValue:districtValue,
         cityValue:cityValue,
         policeValue:policeValue,
+       latitude : latitude,
+       longitude: longitude
        })
     }
+    // alert(latitude)
   }
 
  
@@ -497,6 +521,36 @@ marginTop:22,
           </View>
         )}
       />
+         <Text
+              style={{
+                color: '#10942e',
+                // marginTop:15,
+                fontWeight: 'bold',
+                marginLeft: 15,
+                fontSize: 14,
+              }}>
+             LOCATION
+            </Text>
+            <TouchableOpacity    onPress={Location} >           
+              <View style={{
+                borderRadius: 10,
+                color: darkGreen,
+                marginLeft: 12,
+                paddingHorizontal: 10,
+                width: 350,
+                height:50,
+                borderColor: "#B7B7B7",
+                marginBottom:30,
+                backgroundColor: '#eceded',
+                marginVertical: 10,
+              }}
+            >  
+                <Text style={{color:'grey', marginTop:12,}}>
+               ' {longitude}' + '{latitude}'
+                </Text>
+              
+              </View>
+            </TouchableOpacity>
        <Text
               style={{
                 color: '#10942e',

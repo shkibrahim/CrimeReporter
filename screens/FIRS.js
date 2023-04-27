@@ -91,42 +91,55 @@ alert ('Fill the form')
     
   }
   const [selectedImage, setSelectedImage] = useState(null);
-
-const launchCam=()=>{
-  const options = {
-    mediaType: 'photo',
-    includeBase64: false,
-    saveToPhotos: true,
-  };
   
-  launchCamera(options, (response) => {
-    console.log('Response = ', response);
+    const [selectedImageUrl, setSelectedImageUrl] = useState('');
   
-    if (response.didCancel) {
-      console.log('User cancelled image picker');
-    } else if (response.error) {
-      console.log('ImagePicker Error: ', response.error);
-    } else if (response.customButton) {
-      console.log('User tapped custom button: ', response.customButton);
-    } else {
-      console.log("launch success")
-      setSelectedImage(response.assets[0].uri);
+  
+    const uploadtofbStorage=async()=>{
+  
+      const reference = storage().ref(selectedImage.assets[0].fileName);
+      const pathToFile = selectedImage.assets[0].uri;
+      await reference.putFile(pathToFile);
+  
+      const url = await storage().ref(selectedImage.assets[0].fileName).getDownloadURL();
+      setSelectedImageUrl(url);
+  }
+  
+    const launchCam = () => {
+      const options = {
+        mediaType: 'photo',
+        includeBase64: false,
+        saveToPhotos: true,
+      };
+  
+      launchCamera(options, (response) => {
+        console.log('Response = ', response);
+  
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
+        } else {
+          console.log("launch success")
+          setSelectedImage(response.assets[0].uri);
+        }
+      });
     }
-  });
-}
-
-const handleGalleryPress = () => {
-  const options = {
-    mediaType: 'photo',
-    includeBase64: false,
-  };
-
-  launchImageLibrary(options, response => {
-    if (response.assets) {
-      setSelectedImage(response.assets[0].uri);
-    }
-  });
-}
+  
+    const handleGalleryPress = () => {
+      const options = {
+        mediaType: 'photo',
+        includeBase64: false,
+      };
+  
+      launchImageLibrary(options, response => {
+        if (response.assets) {
+          setSelectedImage(response.assets[0].uri);
+        }
+      });
+    };
 
 
   return (

@@ -25,7 +25,8 @@ import Btn from './Btn';
 import {darkGreen} from './constants';
 import Field from './Field';
 import {Image} from 'react-native';
-
+import { Linking } from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
 import {
   SelectList,
   MultipleSelectList,
@@ -49,7 +50,34 @@ let FIRDATA={
   police:policeValue,
   des:description,
 }
-
+function Location() {
+  Geolocation.requestAuthorization();
+Geolocation.getCurrentPosition(
+  position => {
+    // console.log(position.coords.latitude, position.coords.longitude);
+    const label = 'CURRENT LOCATION'; // Replace with your label
+    const url = `https://www.google.com/maps/search/?api=1&query=${position.coords.latitude},${position.coords.longitude}&query_place_id=${label}`;
+    alert('LOCATION HAS BEEN SET')
+    Linking.openURL(url);
+  //   Latitude = `${position.coords.latitude}`
+  //   Longitude = `${position.coords.longitude}`
+  },
+  error => {
+    console.error(error);
+  },
+  { enableHighAccuracy: true, timeout: 3900, maximumAge: 1 }
+);
+}
+useEffect(() => {
+  Geolocation.getCurrentPosition(
+    position => {
+      setLongitude(position.coords.longitude);
+      setLatitude(position.coords.latitude);
+    },
+    error => console.log(error),
+    { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+  );
+}, []);
   var RMV= () => {
     {
      
@@ -65,7 +93,8 @@ let FIRDATA={
   }
 
  
- 
+  const [longitude, setLongitude] = useState(null);
+  const [latitude, setLatitude] = useState(null);
   const [districtOpen, setdistrictOpen] = useState();
   const [districtValue, setdistrictValue] = useState();
   const [district, setdistrict] = useState([
@@ -88,6 +117,24 @@ let FIRDATA={
 
   ]);
   const [addBtnState, setAddBtnState] = useState(true);
+  const [date, setDate] = useState();
+
+  const currentDate = new Date(); // create a new Date object with current date and time
+  const year = currentDate.getFullYear(); // get the current year (YYYY)
+  const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // get the current month (MM) and add leading zero if necessary
+  const day = currentDate.getDate().toString().padStart(2, '0'); // get the current day (DD) and add leading zero if necessary
+  const formattedDate = `${year}-${month}-${day}`; // combine the year, month, and day in the desired format
+
+  const [selectedDate, setSelectedDate] = useState(formattedDate);
+
+  const [dateModalVisible, setDateModalVisible] = useState(false);
+
+  const datemodvisible = () => {
+    setDateModalVisible(true);
+  };
+  const datemodvisiblefalse = () => {
+    setDateModalVisible(false);
+  };
     const [userList, setuserList] = useState([]);
   const {  control } = useForm();
 //   const Save = () => {
@@ -339,7 +386,53 @@ marginTop:22,
               placeholder="Enter Phone Number"
               keyboardType={'numeric'}
             />
-           
+             <Text
+                style={{
+                  color: '#10942e',
+                  fontWeight: 'bold',
+                  marginLeft: 10,
+                  fontSize: 14,
+                  name: 'cnic',
+                }}>
+                Date
+              </Text>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  borderRadius: 10,
+                  color: darkGreen,
+                  marginLeft: 12,
+                  paddingHorizontal: 10,
+                  width: 350,
+                  height: 50,
+                  borderColor: '#B7B7B7',
+                  marginBottom: 30,
+                  backgroundColor: '#eceded',
+                  marginVertical: 10,
+                }}>
+                <Text
+                  style={{
+                    marginVertical: 14,
+                    color: 'grey',
+                    height: 20,
+                  }}>
+                  {selectedDate}
+                </Text>
+
+                <TouchableOpacity
+                  onPress={datemodvisible}
+                  style={{marginLeft: 200, width: 50}}>
+                  <Text
+                    style={{
+                      color: 'grey',
+                      height: 20,
+                      margin: 14,
+                    }}>
+                    [:::]
+                  </Text>
+                </TouchableOpacity>
+              </View>
         
          <Text
               style={{
@@ -411,6 +504,36 @@ marginTop:22,
           </View>
         )}
       />
+        <Text
+              style={{
+                color: '#10942e',
+                // marginTop:15,
+                fontWeight: 'bold',
+                marginLeft: 15,
+                fontSize: 14,
+              }}>
+             LOCATION
+            </Text>
+            <TouchableOpacity    onPress={Location} >           
+              <View style={{
+                borderRadius: 10,
+                color: darkGreen,
+                marginLeft: 12,
+                paddingHorizontal: 10,
+                width: 350,
+                height:50,
+                borderColor: "#B7B7B7",
+                marginBottom:30,
+                backgroundColor: '#eceded',
+                marginVertical: 10,
+              }}
+            >  
+                <Text style={{color:'grey', marginTop:12,}}>
+               ' {longitude}' + '{latitude}'
+                </Text>
+              
+              </View>
+            </TouchableOpacity>
        <Text
               style={{
                 color: '#10942e',

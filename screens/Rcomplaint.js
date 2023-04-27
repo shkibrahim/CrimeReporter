@@ -5,6 +5,7 @@ import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
 import DatePicker from 'react-native-modern-datepicker';
 import DropDownPicker from "react-native-dropdown-picker";
+import { Linking } from 'react-native';
 import {BASE_URL, API_KEY} from '@env';
 import {
   View,
@@ -39,6 +40,8 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const Rcomplaint = ({navigation}) => {
   const [name, setname] = useState();
+  const [longitude, setLongitude] = useState(null);
+  const [latitude, setLatitude] = useState(null);
   const [cnic, setcnic] = useState();
   const [imageUri, setImageUri] = useState(null);
   const [description, setdescription] = useState();
@@ -78,7 +81,7 @@ const datemodvisiblefalse = () => {
 //       setImageUri(response.uri);
 //     }
 //   });
-var Location= () => {
+function Location() {
   Geolocation.requestAuthorization();
 Geolocation.getCurrentPosition(
   position => {
@@ -87,16 +90,25 @@ Geolocation.getCurrentPosition(
     const url = `https://www.google.com/maps/search/?api=1&query=${position.coords.latitude},${position.coords.longitude}&query_place_id=${label}`;
     alert('LOCATION HAS BEEN SET')
     Linking.openURL(url);
-    
+  //   Latitude = `${position.coords.latitude}`
+  //   Longitude = `${position.coords.longitude}`
   },
   error => {
     console.error(error);
   },
-  { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+  { enableHighAccuracy: true, timeout: 3900, maximumAge: 1 }
 );
 }
-
-
+useEffect(() => {
+  Geolocation.getCurrentPosition(
+    position => {
+      setLongitude(position.coords.longitude);
+      setLatitude(position.coords.latitude);
+    },
+    error => console.log(error),
+    { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+  );
+}, []);
 // };
   var Complaint = () => {
 //     if(name== null || cnic== null || contact==  null || crimeValue== null || districtValue== null || cityValue== null || policeValue== null || description == null )
@@ -685,14 +697,14 @@ marginTop:22,
         <Text
               style={{
                 color: '#10942e',
-                marginTop:15,
+                // marginTop:15,
                 fontWeight: 'bold',
                 marginLeft: 15,
                 fontSize: 14,
               }}>
              LOCATION
             </Text>
-            <TouchableOpacity     onPress={Location}>           
+            <TouchableOpacity    onPress={Location} >           
               <View style={{
                 borderRadius: 10,
                 color: darkGreen,
@@ -707,7 +719,7 @@ marginTop:22,
               }}
             >  
                 <Text style={{color:'grey', marginTop:12,}}>
-                 Select Location
+               ' {longitude}' + '{latitude}'
                 </Text>
               
               </View>
