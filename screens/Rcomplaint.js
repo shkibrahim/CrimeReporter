@@ -1,8 +1,9 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form'
-
+import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
+import DatePicker from 'react-native-modern-datepicker';
 import DropDownPicker from "react-native-dropdown-picker";
 import {BASE_URL, API_KEY} from '@env';
 import {
@@ -53,13 +54,49 @@ let COMPLAINTDATA={
   police:policeValue,
   des:description,
 }
- 
+const [date, setDate] = useState();
+
+const currentDate = new Date(); // create a new Date object with current date and time
+const year = currentDate.getFullYear(); // get the current year (YYYY)
+const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // get the current month (MM) and add leading zero if necessary
+const day = currentDate.getDate().toString().padStart(2, '0'); // get the current day (DD) and add leading zero if necessary
+const formattedDate = `${year}-${month}-${day}`; // combine the year, month, and day in the desired format
+
+const [selectedDate, setSelectedDate] = useState(formattedDate);
+
+const [dateModalVisible, setDateModalVisible] = useState(false);
+
+const datemodvisible = () => {
+  setDateModalVisible(true);
+};
+const datemodvisiblefalse = () => {
+  setDateModalVisible(false);
+};
 // const pickImage = () => {
 //   ImagePicker.launchImageLibrary({}, response => {
 //     if (response.uri) {
 //       setImageUri(response.uri);
 //     }
 //   });
+var Location= () => {
+  Geolocation.requestAuthorization();
+Geolocation.getCurrentPosition(
+  position => {
+    // console.log(position.coords.latitude, position.coords.longitude);
+    const label = 'CURRENT LOCATION'; // Replace with your label
+    const url = `https://www.google.com/maps/search/?api=1&query=${position.coords.latitude},${position.coords.longitude}&query_place_id=${label}`;
+    alert('LOCATION HAS BEEN SET')
+    Linking.openURL(url);
+    
+  },
+  error => {
+    console.error(error);
+  },
+  { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+);
+}
+
+
 // };
   var Complaint = () => {
 //     if(name== null || cnic== null || contact==  null || crimeValue== null || districtValue== null || cityValue== null || policeValue== null || description == null )
@@ -420,6 +457,54 @@ marginTop:22,
               placeholder="Enter Phone Number"
              
             />
+             <Text
+                style={{
+                  color: '#10942e',
+                  fontWeight: 'bold',
+                  marginLeft: 10,
+                  fontSize: 14,
+                  name: 'cnic',
+                }}>
+                Date
+              </Text>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  borderRadius: 10,
+                  color: darkGreen,
+                  marginLeft: 12,
+                  paddingHorizontal: 10,
+                  width: 350,
+                  height: 50,
+                  borderColor: '#B7B7B7',
+                  marginBottom: 30,
+                  backgroundColor: '#eceded',
+                  marginVertical: 10,
+                }}>
+                <Text
+                  style={{
+                    marginVertical: 14,
+                    color: 'grey',
+                    height: 20,
+                  }}>
+                  {selectedDate}
+                </Text>
+
+                <TouchableOpacity
+                  onPress={datemodvisible}
+                  style={{marginLeft: 200, width: 50}}>
+                  <Text
+                    style={{
+                      color: 'grey',
+                      height: 20,
+                      margin: 14,
+                    }}>
+                    [:::]
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
     <Text
               style={{
                 color: '#10942e',
@@ -605,10 +690,9 @@ marginTop:22,
                 marginLeft: 15,
                 fontSize: 14,
               }}>
-             MAP
+             LOCATION
             </Text>
-            <TouchableOpacity     onPress={() => navigation.navigate('MAPS')}>
-            {/* {imageUri && <Image source={{ uri: imageUri }} style={{ width: 200, height: 200 }} />} */}
+            <TouchableOpacity     onPress={Location}>           
               <View style={{
                 borderRadius: 10,
                 color: darkGreen,

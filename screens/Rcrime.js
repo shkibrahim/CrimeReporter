@@ -4,7 +4,8 @@ import {useForm, Controller} from 'react-hook-form';
 import DatePicker from 'react-native-modern-datepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Modal} from 'react-native-paper';
-
+import { Linking } from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {
   View,
@@ -54,7 +55,24 @@ const Rcrime = ({navigation}) => {
     police: policeValue,
     des: description,
   };
-
+  var Location= () => {
+    Geolocation.requestAuthorization();
+  Geolocation.getCurrentPosition(
+    position => {
+      // console.log(position.coords.latitude, position.coords.longitude);
+      const label = 'CURRENT LOCATION'; // Replace with your label
+      const url = `https://www.google.com/maps/search/?api=1&query=${position.coords.latitude},${position.coords.longitude}&query_place_id=${label}`;
+      alert('LOCATION HAS BEEN SET')
+      Linking.openURL(url);
+      
+    },
+    error => {
+      console.error(error);
+    },
+    { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+  );
+  }
+  
   var FIR = () => {
     {
       navigation.navigate('FIRS', {
@@ -540,6 +558,36 @@ const Rcrime = ({navigation}) => {
                   </View>
                 )}
               />
+                <Text
+              style={{
+                color: '#10942e',
+                // marginTop:15,
+                fontWeight: 'bold',
+                marginLeft: 15,
+                fontSize: 14,
+              }}>
+             LOCATION
+            </Text>
+            <TouchableOpacity     onPress={Location}>           
+              <View style={{
+                borderRadius: 10,
+                color: darkGreen,
+                marginLeft: 12,
+                paddingHorizontal: 10,
+                width: 350,
+                height:50,
+                borderColor: "#B7B7B7",
+                marginBottom:30,
+                backgroundColor: '#eceded',
+                marginVertical: 10,
+              }}
+            >  
+                <Text style={{color:'grey', marginTop:12,}}>
+                 Select Location
+                </Text>
+              
+              </View>
+            </TouchableOpacity>
               <Text
                 style={{
                   color: '#10942e',
@@ -632,7 +680,7 @@ const Rcrime = ({navigation}) => {
                     }}
                   />
                 </View>
-                <TouchableOpacity
+                {/* <TouchableOpacity
               style={{
                 backgroundColor: '#10942e',
                 borderRadius: 10,
@@ -645,7 +693,7 @@ const Rcrime = ({navigation}) => {
               <Text style={{color: 'white', fontSize: 15, marginTop: 6}}>
                 NEXT
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
               </TouchableOpacity>
               <Text
                 style={{

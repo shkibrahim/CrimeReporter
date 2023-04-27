@@ -154,12 +154,12 @@ const MP = ({navigation}) => {
           </View>
           <View style={{backgroundColor: '#10942e',marginLeft:0, width:370,height:50, borderRadius:8,marginTop:8 }}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('RMV')}>
+              onPress={() => navigation.navigate('RMP')}>
               <Text style={{fontSize:20, marginLeft:80, fontWeight:'bold', color:'white', marginTop:9, alignContent:'center'}}>REGISTER NEW REPORT</Text>
             </TouchableOpacity>
           </View>
           <View style={{backgroundColor: '#b8b8b8',marginLeft:0, width:370,height:50, borderRadius:8,marginTop:8 }}>
-            <TouchableOpacity  onPress={() => navigation.navigate('VRMH')}>
+            <TouchableOpacity  onPress={() => navigation.navigate('VRMP')}>
               <Text style={{fontSize:20, marginLeft:65, fontWeight:'bold', color:'#10942e', marginTop:9}}>VIEW REGISTERED REPORT</Text>
             </TouchableOpacity>
           </View>

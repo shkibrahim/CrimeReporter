@@ -42,6 +42,8 @@ import VCS from './screens/ITP/VCS';
 import AdminTC from './screens/AdminScreens/AdminTC';
 import Track from './screens/Track';
 import RMVB from './screens/RMVB';
+import RMP from './screens/RMP';
+import RMPB from './screens/RMPB';
 import AdminVF from './screens/AdminScreens/AdminVF';
 // import AdminVF from './screens/AdminScreens/AdminVF';
 import UserNotification from './screens/UserNotification';
@@ -83,7 +85,7 @@ function App() {
     <NavigationContainer>
      
       <Stack.Navigator
-        initialRouteName="Piechart1"
+        initialRouteName="First"
         screenOptions={{headerShown: false}}>
         {/* <Stack.Screen name="Test" component={Test} /> */}
         <Stack.Screen name="Firebaseee" component={Firebaseee} />
@@ -107,6 +109,8 @@ function App() {
         <Stack.Screen name="AdminVF" component={AdminVF} />
         <Stack.Screen name="FIR" component={FIR} />
         <Stack.Screen name="FB" component={FB} />
+        <Stack.Screen name="RMP" component={RMP} />
+        <Stack.Screen name="RMPB" component={RMPB} />
         <Stack.Screen name="ITPcall" component={ITPcall} />
         <Stack.Screen name="PMA" component={PMA} />
         <Stack.Screen name="UserNotification" component={UserNotification} />
