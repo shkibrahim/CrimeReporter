@@ -1,9 +1,7 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
-import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
+
 import {
   View,
   FlatList,
@@ -19,12 +17,7 @@ import Back3 from '../Back3';
 import {useForm, Controller} from 'react-hook-form'
 import {Image} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {
-  SelectList,
-  MultipleSelectList,
-} from 'react-native-dropdown-select-list';
-import Home from '../Home';
-import Screen1 from '../Screen1';
+
 
 const AdminVC = ({ navigation,route}) => {
   const [name, setname] = useState();
@@ -85,8 +78,8 @@ const [track, settrack] = useState([
     //   SuspectDescription: item.SuspectDescription
     // }
     
-//    console.log (AData);
-    firestore()
+
+   await firestore()
       .collection('AcceptedComplaints')
       .add({       
         name: item.name,
@@ -134,7 +127,7 @@ const [track, settrack] = useState([
     var Dataa = async () => {
       await Complaint.get().then(data => {
         setData(data.docs.map(doc => ({...doc.data(), id: doc.id})));
-        console.log(data);
+     
       });
     };
     Dataa();
@@ -240,9 +233,9 @@ const deny=async (item)=>{
                           margin: 10,
                          
                           width: 370,
-                          height: 450,
+                          height: 530,
                         }}>
-                          <ScrollView>
+                          <ScrollView style={{height:650}}>
                         <Text
                           style={{
                             color: '#10942e',
@@ -633,6 +626,90 @@ const deny=async (item)=>{
                         </Text>
                         {/* <TouchableOpacity style={{width:45, height:45}}  onPress={() => Accept(item.cnic)}><Text style= {{color:'black'}}  >X</Text></TouchableOpacity> */}
                         </View>
+                        <Text
+              style={{
+                color: '#10942e',
+                fontWeight: 'bold',
+                marginLeft: 10,
+                marginTop:16,
+                fontSize: 20,
+                alignSelf: 'center'
+              }}>
+                
+              TRACK
+            </Text>
+            <Controller
+        name="track"
+        defaultValue=""
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <View style={styles.dropdownGender}>
+            <DropDownPicker
+              style={styles.dropdown}
+              open={trackOpen}
+              value={trackValue} //genderValue
+              items={track}
+              setOpen={settrackOpen}
+              setValue={settrackValue}
+              setItems={settrack}
+              placeholder="Select track"
+              placeholderStyle={styles.placeholderStyles}
+              dropDownDirection="TOP"
+              onChangeValue={onChange}
+              zIndex={30}
+              zIndexInverse={40}
+            />
+             {/* <TouchableOpacity
+            style={{
+              backgroundColor: '#10942e',
+              borderRadius: 10,
+              width: 80,
+              marginLeft: 282,
+             marginTop:9,
+              height: 30,
+              alignItems: 'center',
+              alignContent: 'center'    
+
+            }}
+            
+           onPress={Track}
+           
+           >
+
+            <Text style={{color: 'white', fontSize:17, marginTop: 4, fontWeight:'bold'}}>
+             Update
+            </Text>
+          </TouchableOpacity> */}
+          </View>
+          
+        )}
+      />
+        <Text
+                          style={{
+                            flex:1,
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            
+                            // marginBottom:35,
+                            marginTop:-10
+                          }}>
+                       Current Tracking Status :  
+                        </Text>
+                        <Text
+                          style={{
+                            flex:2,
+                            color: 'red',
+                            // fontWeight: 'bold',
+                            marginLeft: 177,
+                            fontSize: 14,
+                            
+                            // marginBottom:35,
+                            marginTop:-19
+                          }}>
+                         {item.trackValue}
+                        </Text>
                         </ScrollView>
 
                       
@@ -647,7 +724,7 @@ const deny=async (item)=>{
               borderRadius: 10,
               width: 150,
               marginLeft: 22,
-             marginTop:0,
+             marginTop:30,
               height: 50,
               alignItems: 'center',
               alignContent: 'center'    
@@ -683,64 +760,8 @@ const deny=async (item)=>{
              DECLINE
             </Text>
           </TouchableOpacity>
-          <Text
-              style={{
-                color: '#10942e',
-                fontWeight: 'bold',
-                marginLeft: 10,
-                marginTop:16,
-                fontSize: 14,
-                name: 'cnic',
-              }}>
-                
-              TRACK
-            </Text>
-            <Controller
-        name="track"
-        defaultValue=""
-        control={control}
-        render={({ field: { onChange, value } }) => (
-          <View style={styles.dropdownGender}>
-            <DropDownPicker
-              style={styles.dropdown}
-              open={trackOpen}
-              value={trackValue} //genderValue
-              items={track}
-              setOpen={settrackOpen}
-              setValue={settrackValue}
-              setItems={settrack}
-              placeholder="Select track"
-              placeholderStyle={styles.placeholderStyles}
-              dropDownDirection="TOP"
-              onChangeValue={onChange}
-              zIndex={30}
-              zIndexInverse={40}
-            />
-             {/* <TouchableOpacity
-            style={{
-              backgroundColor: '#10942e',
-              borderRadius: 10,
-              width: 80,
-              marginLeft: 282,
-             marginTop:5,
-              height: 30,
-              alignItems: 'center',
-              alignContent: 'center'    
-
-            }}
-            
-           onPress={Track}
-           
-           >
-
-            <Text style={{color: 'white', fontSize:17, marginTop: 4, fontWeight:'bold'}}>
-             Update
-            </Text>
-          </TouchableOpacity> */}
-          </View>
-          
-        )}
-      />
+         
+        
                       </View>
                     );
                   }
@@ -781,9 +802,9 @@ const styles = StyleSheet.create({
     dropdownGender: {
     //   backgroundColor: 'rgb(220,220, 220)',
       marginHorizontal: 10,
-      width:"77%",
+      width:"99%",
     //   marginBottom: 15,
-      marginLeft:12,
+      marginLeft:2,
       borderRadius: 12,
     //   borderColor:'green',
     //   borderWidth:1,

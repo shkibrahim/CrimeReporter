@@ -1,9 +1,7 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
-import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
+
 import {
   View,
   FlatList,
@@ -48,7 +46,7 @@ const VRMH = ({routes, navigation}) => {
     var Dataa = async () => {
       await FIR.get().then(data => {
         setData(data.docs.map(doc => ({...doc.data(), id: doc.id})));
-        console.log(data);
+       
       });
     };
     Dataa();
@@ -240,7 +238,33 @@ const VRMH = ({routes, navigation}) => {
                         </Text>
                         </View>
                        
-                        
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                           
+                            marginBottom:-5,
+                          }}>
+                          DATE
+                        </Text>
+                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                          
+                          }}>
+                          {item.selectedDate}
+                        </Text>
+                        </View>
                        
                          
                         <Text
@@ -294,6 +318,33 @@ const VRMH = ({routes, navigation}) => {
                            
                           }}>
                           {item.cityValue}
+                        </Text>
+                        </View>
+
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            marginBottom:-5,
+                          }}>
+                         LOCATION:
+                        </Text>
+                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                           
+                          }}>
+                          {item.longitude} +  {item.latitude}
                         </Text>
                         </View>
                         <Text
@@ -545,7 +596,7 @@ const VRMH = ({routes, navigation}) => {
               alignContent: 'center'
 
             }}
-            onPress={() => navigation.navigate('Track',{trackstat:item.Status})}>
+            onPress={() => navigation.navigate('Track',{trackValue:item.trackValue})}>
             <Text style={{ color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
              TRACK
             </Text>

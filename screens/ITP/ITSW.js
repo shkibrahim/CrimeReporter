@@ -1,9 +1,6 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 
-import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
 import {
   View,
   Text,
@@ -13,11 +10,9 @@ import {
   TextInput,
 } from 'react-native';
 import Back3 from '../Back3';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {black} from 'react-native-paper/lib/typescript/styles/colors';
 
 import {Image} from 'react-native';
-;
+
 const ITSW = ({navigation}) => {
     
   return (
@@ -123,7 +118,7 @@ const ITSW = ({navigation}) => {
 
                   // paddingVertical: 5,
                 }}
-                onPress={() => navigation.navigate('AdminTC')}>
+                onPress={() => navigation.navigate('ITPI')}>
                 <Text
                   style={{
                     color: 'white',

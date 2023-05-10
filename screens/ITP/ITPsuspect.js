@@ -1,9 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 
-import { Dropdown } from 'react-native-element-dropdown';
-import axios from 'axios';
-import { BASE_URL, API_KEY } from '@env';
 import {
     View,
     Text,
@@ -20,27 +17,7 @@ const ITPsuspect = ({ props, navigation }) => {
     const [name, setname] = useState();
     const [cnic, setcnic] = useState();
     const [password, setpassword] = useState();
-    // const [open, setOpen] = useState(false);
-    // const [value, setValue] = useState(null);
-    // const [items, setItems] = useState([
-    //   {label: 'Apple', value: 'apple'},
-    //   {label: 'Banana', value: 'banana'}
-    // ]);
-    // const saveData=  async (name, cnic, password) => {
-    //   const user={
-    //     name:name,
 
-    //     password:password
-    //   }
-    //    try {
-    //      await AsyncStorage.setItem("userData", JSON.stringify(user));
-
-    //      alert(user.name)
-    //   } catch (error) {
-    //     alert("Something went wrong", error);
-    //   }
-
-    // }
 
     return (
         <Back3>

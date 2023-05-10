@@ -1,9 +1,7 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
-import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
+
 import {
   View,
   FlatList,
@@ -15,21 +13,8 @@ import {
   TextInput,
 } from 'react-native';
 import Back3 from './Back3';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {black} from 'react-native-paper/lib/typescript/styles/colors';
-import Background from './Background';
-import Backround2 from './Backround2';
-import Btn from './Btn';
-import {darkGreen} from './constants';
-import Field from './Field';
+
 import {Image} from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import {
-  SelectList,
-  MultipleSelectList,
-} from 'react-native-dropdown-select-list';
-import Home from './Home';
-import Screen1 from './Screen1';
 
 const VRC = ({routes, navigation}) => {
   const [name, setname] = useState();
@@ -279,6 +264,33 @@ const VRC = ({routes, navigation}) => {
                               </Text>
                             </View>
                             <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                           
+                            marginBottom:-5,
+                          }}>
+                          DATE
+                        </Text>
+                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                          
+                          }}>
+                          {item.selectedDate}
+                        </Text>
+                        </View>
+                            <Text
                               style={{
                                 color: '#10942e',
                                 fontWeight: 'bold',
@@ -400,6 +412,32 @@ const VRC = ({routes, navigation}) => {
                                 {item.cityValue}
                               </Text>
                             </View>
+                            <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            marginBottom:-5,
+                          }}>
+                         LOCATION:
+                        </Text>
+                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                           
+                          }}>
+                          {item.longitude} +  {item.latitude}
+                        </Text>
+                        </View>
                             <Text
                               style={{
                                 color: '#10942e',

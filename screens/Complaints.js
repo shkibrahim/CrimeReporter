@@ -1,33 +1,17 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 
-import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
+
 import {
   View,
   Text,
   Touchable,
   TouchableOpacity,
   ScrollView,
-  TextInput,
+  TextInput,Image,
 } from 'react-native';
 import Back3 from './Back3';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {black} from 'react-native-paper/lib/typescript/styles/colors';
-import Background from './Background';
-import Backround2 from './Backround2';
-import Btn from './Btn';
-import {darkGreen} from './constants';
-import Field from './Field';
-import {Image} from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import {
-  SelectList,
-  MultipleSelectList,
-} from 'react-native-dropdown-select-list';
-import Home from './Home';
-import Screen1 from './Screen1';
+
 
 const Complaints = ({navigation}) => {
   const [name, setname] = useState();

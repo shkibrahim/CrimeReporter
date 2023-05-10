@@ -1,9 +1,7 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
-import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
+
 import {
   View,
   Text,
@@ -14,8 +12,6 @@ import {
   TextInput,
 } from 'react-native';
 import Back3 from '../Back3';
-import { green } from '../constants';
-
 
 
 const Analytics = ({navigation}) => {

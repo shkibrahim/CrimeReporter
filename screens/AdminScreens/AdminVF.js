@@ -1,35 +1,25 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
-import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
+
+import {useForm, Controller} from 'react-hook-form'
+
 import {
   View,
   FlatList,
-  Button,
+  Button, StyleSheet,
   Text,
   Touchable,
   TouchableOpacity,
+  Image,
   ScrollView,
   TextInput,
 } from 'react-native';
 import Back3 from '../Back3';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {black} from 'react-native-paper/lib/typescript/styles/colors';
-import Background from '../Background';
-import Backround2 from '../Backround2';
-import Btn from '../Btn';
-import {darkGreen} from './constants';
-import Field from '../Field';
-import {Image} from 'react-native';
+
 import DropDownPicker from 'react-native-dropdown-picker';
-import {
-  SelectList,
-  MultipleSelectList,
-} from 'react-native-dropdown-select-list';
-import Home from '../Home';
-import Screen1 from '../Screen1';
+
 
 const VRF = ({routes, navigation}) => {
   const [name, setname] = useState();
@@ -44,6 +34,17 @@ const VRF = ({routes, navigation}) => {
   const [SuspectName, setSuspectName] = useState();
   const [SuspectContact, setSuspectContact] = useState();
   const [Reason, setReason] = useState();
+  const [trackOpen, settrackOpen] = useState();
+  const [trackValue, settrackValue] = useState();
+  const [track, settrack] = useState([
+    { label: "Accepted", value: "Accepted" },
+   
+    { label: "Sent to Investigation Team", value: "Sent to Investigation Team" },
+   
+    { label: "Case Proceeding Started", value: "Case Proceeding Started" },
+    { label: "Case Closed", value: "Case Closed" },
+  ]);
+  const {  control } = useForm();
   const [relation, setrelation] = useState();
   const [SuspectDescription, setSuspectDescription] = useState();
   var FIR = firestore().collection('FIR');
@@ -52,7 +53,7 @@ const VRF = ({routes, navigation}) => {
     var Dataa = async () => {
       await FIR.get().then(data => {
         setData(data.docs.map(doc => ({...doc.data(), id: doc.id})));
-        console.log(data);
+       
       });
     };
     Dataa();
@@ -63,15 +64,17 @@ const VRF = ({routes, navigation}) => {
     .doc(item.id)
     .update({
       Status: "Declined",
+      
     });
+    alert("Report Declined")
 }
 
 const Accept = async (item) => { 
     const Go= {
-      // ID :item.ID,
+      ID :item.ID,
       name: item.name,
       cnic:item.cnic,
-      Contact: item.Contact,
+      contact: item.contact,
       crimeValue:item.crimeValue,
       districtValue:item.districtValue,
       cityValue:item.cityValue,
@@ -81,12 +84,16 @@ const Accept = async (item) => {
       Suspectcontact:item.suspectcontact,
       reason: item.reason,
       Relation: item.relation,
-      SuspectDescription: item.SuspectDescription
-     
+      SuspectDescription: item.SuspectDescription,
+     latitude: item.latitude,
+longitude:item.longitude,
+// trackValue : item.trackValue,
+selectedDate: item.selectedDate
+
     }
     
-//    console.log (AData);
-    firestore()
+
+   await firestore()
       .collection('AcceptedFIR')
       .add({       
    Go
@@ -102,7 +109,13 @@ const Accept = async (item) => {
     .doc(item.id)
     .update({
       Status: "Accepted",
+      trackValue:trackValue,
+      // trackValue:trackValue,
     });
+    navigation.navigate('AdminTC',{  
+      trackValue: trackValue,
+     })
+    // navigation.navigate('AdminTC')
   }
 
   return (
@@ -171,7 +184,7 @@ const Accept = async (item) => {
               </Text>
             </View>
             <View style={{}}>
-              <FlatList
+            <FlatList
                 style={{width: '100%'}}
                 data={Data}
                 horizontal={true}
@@ -290,7 +303,33 @@ const Accept = async (item) => {
                           {item.contact}
                         </Text>
                         </View>
-                        
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                           
+                            marginBottom:-5,
+                          }}>
+                          DATE
+                        </Text>
+                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                          
+                          }}>
+                          {item.selectedDate}
+                        </Text>
+                        </View>
                         
                         <Text
                           style={{
@@ -369,6 +408,32 @@ const Accept = async (item) => {
                            
                           }}>
                           {item.cityValue}
+                        </Text>
+                        </View>
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            marginBottom:-5,
+                          }}>
+                         LOCATION:
+                        </Text>
+                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                           
+                          }}>
+                          {item.longitude} +  {item.latitude}
                         </Text>
                         </View>
                         <Text
@@ -489,7 +554,7 @@ const Accept = async (item) => {
                            
                             marginBottom:-5,
                           }}>
-                          SUSPECT REASON: {item.reason}
+                          SUSPECT REASON: 
                         </Text>
                         <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
                 marginBottom:30,
@@ -561,6 +626,90 @@ const Accept = async (item) => {
                           {item.SuspectDescription}
                         </Text>
                         </View>
+                        <Text
+              style={{
+                color: '#10942e',
+                fontWeight: 'bold',
+                marginLeft: 10,
+                marginTop:16,
+                fontSize: 20,
+                alignSelf: 'center'
+              }}>
+                
+              TRACK
+            </Text>
+            <Controller
+        name="track"
+        defaultValue=""
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <View style={styles.dropdownGender}>
+            <DropDownPicker
+              style={styles.dropdown}
+              open={trackOpen}
+              value={trackValue} //genderValue
+              items={track}
+              setOpen={settrackOpen}
+              setValue={settrackValue}
+              setItems={settrack}
+              placeholder="Select track"
+              placeholderStyle={styles.placeholderStyles}
+              dropDownDirection="TOP"
+              onChangeValue={onChange}
+              zIndex={30}
+              zIndexInverse={40}
+            />
+             {/* <TouchableOpacity
+            style={{
+              backgroundColor: '#10942e',
+              borderRadius: 10,
+              width: 80,
+              marginLeft: 282,
+             marginTop:9,
+              height: 30,
+              alignItems: 'center',
+              alignContent: 'center'    
+
+            }}
+            
+           onPress={Track}
+           
+           >
+
+            <Text style={{color: 'white', fontSize:17, marginTop: 4, fontWeight:'bold'}}>
+             Update
+            </Text>
+          </TouchableOpacity> */}
+          </View>
+          
+        )}
+      />
+        <Text
+                          style={{
+                            flex:1,
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            
+                            // marginBottom:35,
+                            marginTop:-10
+                          }}>
+                       Current Tracking Status :  
+                        </Text>
+                        <Text
+                          style={{
+                            flex:2,
+                            color: 'red',
+                            // fontWeight: 'bold',
+                            marginLeft: 177,
+                            fontSize: 14,
+                            
+                            // marginBottom:35,
+                            marginTop:-19
+                          }}>
+                         {item.trackValue}
+                        </Text>
                         </ScrollView>
 
                       
@@ -569,6 +718,7 @@ const Accept = async (item) => {
         </View>
                        
                       </View >
+                      {/* <View style={{ flexDirection:'row'}} > */}
                       <TouchableOpacity
             style={{
               backgroundColor: '#10942e',
@@ -607,35 +757,6 @@ const Accept = async (item) => {
              DECLINE
             </Text>
           </TouchableOpacity>
-                      {/* <View style={{ flexDirection:'row'}} > */}
-                      {/* <TouchableOpacity style={{
-              backgroundColor: '#10942e',
-              borderRadius: 10,
-              width: 150,
-              marginLeft: 10,
-              marginTop:30,
-              height: 50,
-              alignItems: 'center',
-              alignContent: 'center'
-
-            }}><Text>Status:{item.Status}</Text></TouchableOpacity> */}
-                        {/* <TouchableOpacity
-            style={{
-              backgroundColor: '#10942e',
-              borderRadius: 10,
-              width: 150,
-              marginLeft: 200,
-              marginTop:-50,
-              height: 50,
-              alignItems: 'center',
-              alignContent: 'center'
-
-            }}
-            onPress={() => navigation.navigate('Track',{trackstat:item.Status})}>
-            <Text style={{ color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
-             
-            </Text>
-          </TouchableOpacity> */}
          
                       </View>
                     );
@@ -649,5 +770,52 @@ const Accept = async (item) => {
     </Back3>
   );
 };
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  input: {
+    borderStyle: "solid",
+    borderColor: "#B7B7B7",
+    borderRadius: 7,
+    borderWidth: 1,
+    fontSize: 15,
+    height: 50,
+    marginHorizontal: 10,
+    paddingStart: 10,
+    marginBottom: 15,
+  },
+  label: {
+    marginBottom: 7,
+    marginStart: 10,
+   
+  },
+  placeholderStyles: {
+    color: "grey",
+    
+  },
+  dropdownGender: {
+  //   backgroundColor: 'rgb(220,220, 220)',
+    marginHorizontal: 10,
+    width:"99%",
+  //   marginBottom: 15,
+    marginLeft:2,
+    borderRadius: 12,
+  //   borderColor:'green',
+  //   borderWidth:1,
+    marginTop:6,
+    height:100
+  },
+  dropdownCompany: {
+    marginHorizontal: 10,
+    marginBottom: 15,
+  },
+  dropdown: {
+    borderColor: "#B7B7B7",
+    height: 50,
+  },
 
+
+ 
+});
 export default VRF;

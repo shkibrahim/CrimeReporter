@@ -2,9 +2,6 @@ import React from 'react';
 import {useEffect, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form'
 
-import axios from 'axios';
-import DropDownPicker from "react-native-dropdown-picker";
-import {BASE_URL, API_KEY} from '@env';
 import {
   View,
   StyleSheet,
@@ -16,23 +13,12 @@ import {
   TextInput,
 } from 'react-native';
 import Back3 from '../Back3';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import firestore from '@react-native-firebase/firestore';
-import {black} from 'react-native-paper/lib/typescript/styles/colors';
-import Background from '../Background';
-import Backround2 from '../Backround2';
-import Btn from '../Btn';
+
 import {darkGreen} from '../constants';
-import Field from '../Field';
+
 import {Image} from 'react-native';
 
-import {
-  SelectList,
-  MultipleSelectList,
-} from 'react-native-dropdown-select-list';
-import Home from '../Home';
-import Screen1 from '../Screen1';
-import Screen2 from '../Screen2';
+
 
 const VCS = ({navigation}) => {
   const [description, setdescription] = useState();
@@ -159,7 +145,7 @@ marginTop:22,
                 
                 //  marginRight:140
               }}
-              onPress={FIR}
+              onPress={ITPScene}
               >
               <Text style={{color: 'grey', marginTop: 0, fontSize: 10, fontWeight:'bold'}}>SUSPECT INFORMATION</Text>
             </TouchableOpacity>
@@ -393,7 +379,7 @@ marginLeft:295,
               height: 35,
               alignItems: 'center',
             }}
-            onPress={FIR}
+            onPress={ITPScene}
             // onPress={() =>{navigation.navigate('FIRS',{  name: name,
             //   cnic:cnic,
             //   contact: contact,

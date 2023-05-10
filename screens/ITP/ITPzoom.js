@@ -1,11 +1,7 @@
 import React from 'react';
 import { Linking } from 'react-native';
 
-import { useEffect, useState } from 'react';
 
-import { Dropdown } from 'react-native-element-dropdown';
-import axios from 'axios';
-import { BASE_URL, API_KEY } from '@env';
 import {
     View,
     Text,

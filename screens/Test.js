@@ -8,8 +8,6 @@ import {
   View,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
 
 const App = () => {
   const [countryData, setCountryData] = useState([]);

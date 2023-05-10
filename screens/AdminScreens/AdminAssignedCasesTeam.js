@@ -10,6 +10,7 @@ import {
   Touchable,
   TouchableOpacity,
   ScrollView,
+  
   TextInput,
 } from 'react-native';
 import Back3 from '../Back3';
@@ -17,66 +18,29 @@ import Back3 from '../Back3';
 import {Image} from 'react-native';
 
 
-const AdminVAC = ({routes, navigation}) => {
-
+const AdminAssignedCasesTeam = ({routes, navigation}) => {
+  const [name, setname] = useState();
+  const [cnic, setcnic] = useState();
+  const [description, setdescription] = useState();
+  const [contact, setcontact] = useState();
+  const [crimeValue, setcrimeValue] = useState();
+  const [districtValue, setdistrictValue] = useState();
+  const [cityValue, setcityValue] = useState();
+  const [policeValue, setpoliceValue] = useState();
   const [Data, setData] = useState([]);
 
-  var Complaint = firestore().collection('AcceptedComplaints');
+  var FIR = firestore().collection('ViewAss');
 
   useEffect(() => {
     var Dataa = async () => {
-      await Complaint.get().then(data => {
+      await FIR.get().then(data => {
         setData(data.docs.map(doc => ({...doc.data(), id: doc.id})));
-        console.log(data);
+      
       });
     };
     Dataa();
   });
-  const Accept = async (item) => { 
-    // const Go= {
-    //   name: item.name,
-    //   cnic:item.cnic,
-    //   Contact: item.Contact,
-    //   crimeValue:item.crimeValue,
-    //   districtValue:item.districtValue,
-    //   cityValue:item.cityValue,
-    //   policeValue:item.policeValue,
-    //   description:item.description,
-    //   SuspectName: item.suspectname,
-    //   Suspectcontact:item.suspectcontact,
-    //   reason: item.reason,
-    //   Relation: item.relation,
-    //   SuspectDescription: item.SuspectDescription
-    // }
-    
-//    console.log (AData);
-    firestore()
-      .collection('ViewAss')
-      .add({       
-        name: item.name,
-        cnic:item.cnic,
-        contact: item.contact,
-        crimeValue:item.crimeValue,
-        districtValue:item.districtValue,
-        cityValue:item.cityValue,
-        policeValue:item.policeValue,
-        description:item.description,
-        victimValue:item.victimValue,
-    
-        suspectname: item.suspectname,
-        suspectcontact:item.suspectcontact,
-        reason: item.reason,
-        relation: item.relation,
-        SuspectDescription: item.SuspectDescription
-      })
-      .then(() => {
-        alert('Case Assigned');
-      }).catch(()=>{
-        alert('error')
-      });
 
-   
-  }
   return (
     <Back3>
       <View style={{alignItems: 'center', width: 400}}>
@@ -139,7 +103,7 @@ const AdminVAC = ({routes, navigation}) => {
                 alignItems: 'center',
               }}>
               <Text style={{color: 'red', fontSize: 19, fontWeight: 'bold'}}>
-               CASES
+               ASSIGNED CASES
               </Text>
             </View>
             <View style={{}}>
@@ -155,7 +119,7 @@ const AdminVAC = ({routes, navigation}) => {
                     //  <FlatList 
                     <View style={{ width: 370,
                         marginRight:19,
-                        height: 680,}}>
+                        height: 640,}}>
                       <View
                         style={{
                         //   backgroundColor: 'white',
@@ -165,7 +129,7 @@ const AdminVAC = ({routes, navigation}) => {
                           margin: 10,
                          
                           width: 370,
-                          height: 450,
+                          height: 530,
                         }}>
                           <ScrollView>
                         <Text
@@ -179,7 +143,7 @@ const AdminVAC = ({routes, navigation}) => {
                           }}>
                           {index + 1}
                         </Text>
-                        
+                       
                         
                         <Text
                           style={{
@@ -241,6 +205,7 @@ const AdminVAC = ({routes, navigation}) => {
                             fontWeight: 'bold',
                             marginLeft: 10,
                             fontSize: 14,
+                           
                             marginBottom:-5,
                           }}>
                           CONTACT NO:
@@ -261,33 +226,8 @@ const AdminVAC = ({routes, navigation}) => {
                           {item.contact}
                         </Text>
                         </View>
-                        <Text
-                          style={{
-                            color: '#10942e',
-                            fontWeight: 'bold',
-                            marginBottom: 15,
-                            marginLeft: 10,
-                            fontSize: 14,
-                            marginBottom:-5,
-                          }}>
-                          VICTIM: 
-                        </Text>
-                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
-                marginBottom:30,
-                marginVertical: 10,}}>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            // fontWeight: 'bold',
-                            // marginLeft: 10,
-                            marginTop:10,
-                            marginBottom: 10,
-                            fontSize: 14,
-                            name: 'cnic',
-                          }}>
-                          {item.victimValue}
-                        </Text>
-                        </View>
+                        
+                        
                         <Text
                           style={{
                             color: '#10942e',
@@ -545,7 +485,7 @@ const AdminVAC = ({routes, navigation}) => {
                 marginBottom:30,
                 marginVertical: 10,}}>
                         <Text
-                          style={{  
+                          style={{
                             color: 'grey',
                             // fontWeight: 'bold',
                             // marginLeft: 10,
@@ -556,49 +496,50 @@ const AdminVAC = ({routes, navigation}) => {
                           }}>
                           {item.SuspectDescription}
                         </Text>
-                        {/* <TouchableOpacity style={{width:45, height:45}}  onPress={() => Accept(item.cnic)}><Text style= {{color:'black'}}  >X</Text></TouchableOpacity> */}
                         </View>
                         </ScrollView>
 
                       
                         <View style={{ marginBottom: -5}}>
-         
+       
         </View>
                        
-                      </View>
+                      </View >
+                      {/* <View style={{ flexDirection:'row'}} > */}
+                      {/* <TouchableOpacity style={{
+              backgroundColor: '#10942e',
+              borderRadius: 10,
+              width: 150,
+              marginLeft: 10,
+              marginTop:30,
+              height: 50,
+              alignItems: 'center',
+              alignContent: 'center'
+
+            }}><Text>Status:{item.Status}</Text></TouchableOpacity> */}
                         <TouchableOpacity
             style={{
               backgroundColor: '#10942e',
               borderRadius: 10,
               width: 250,
-              marginLeft: 72,
-             marginTop:40,
+              marginLeft: 70,
+              marginTop:30,
               height: 50,
               alignItems: 'center',
-              alignContent: 'center'    
+              alignContent: 'center'
 
             }}
-            
-           onPress={()=>Accept(item)}
-           
-           >
-
-            <Text style={{color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
-             ASSIGN THIS CASE
+            onPress={() => navigation.navigate('AdminPreview')}>
+            <Text style={{ color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
+            VIEW WORKING
             </Text>
           </TouchableOpacity>
-        
-
-
          
-          
-        
                       </View>
                     );
                   }
                 }}
               />
-              
             </View>
           </View>
         </View>
@@ -607,4 +548,4 @@ const AdminVAC = ({routes, navigation}) => {
   );
 };
 
-export default AdminVAC;
+export default AdminAssignedCasesTeam;

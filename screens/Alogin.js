@@ -9,11 +9,10 @@ import {
   AsyncStorage
 } from 'react-native';
 import Background2 from '../screens/Backround2';
-import Btn from './Btn';
+
 import {darkGreen} from './constants';
 import {Image} from 'react-native';
-import {green} from './constants';
-import Field from './Field';
+
 
 const Alogin = ({navigation}) => {
   const [Apass, setApass] = useState('');

@@ -1,9 +1,7 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
-import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
+
 import {
   View,
   FlatList,
@@ -20,14 +18,7 @@ import {Image} from 'react-native';
 
 
 const ITPVAC = ({routes, navigation}) => {
-  const [name, setname] = useState();
-  const [cnic, setcnic] = useState();
-  const [description, setdescription] = useState();
-  const [contact, setcontact] = useState();
-  const [crimeValue, setcrimeValue] = useState();
-  const [districtValue, setdistrictValue] = useState();
-  const [cityValue, setcityValue] = useState();
-  const [policeValue, setpoliceValue] = useState();
+
   const [Data, setData] = useState([]);
 
   var FIR = firestore().collection('ViewAss');

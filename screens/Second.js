@@ -1,9 +1,7 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 
-import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
+
 import {
   View,
   Text,
@@ -13,21 +11,9 @@ import {
   TextInput,
 } from 'react-native';
 import Back3 from './Back3';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {black} from 'react-native-paper/lib/typescript/styles/colors';
-import Background from './Background';
-import Backround2 from './Backround2';
-import Btn from './Btn';
-import {darkGreen} from './constants';
-import Field from './Field';
+
 import {Image} from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import {
-  SelectList,
-  MultipleSelectList,
-} from 'react-native-dropdown-select-list';
-import Home from './Home';
-import Screen1 from './Screen1';
+
 
 const Second = ({props, navigation}) => {
   const [name, setname] = useState();
@@ -172,7 +158,7 @@ const Second = ({props, navigation}) => {
           </View>
           <View style={{marginLeft:0,marginTop:28,width:400,height:1.5,backgroundColor:'#e1e2e2'}}></View>
           <View style={{marginTop:-44}}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("ITP")}>
              <View style={{backgroundColor:'#38bdbb', width:50,height:50, marginLeft:19, marginTop:72, borderRadius:30}}>
              </View>
           <TouchableOpacity onPress={() => navigation.navigate("ITP")}>

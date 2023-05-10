@@ -1,9 +1,6 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 
-import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
 import {
   View,
   Text,
@@ -13,21 +10,9 @@ import {
   TextInput,
 } from 'react-native';
 import Back3 from './Back3';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {black} from 'react-native-paper/lib/typescript/styles/colors';
-import Background from './Background';
-import Backround2 from './Backround2';
-import Btn from './Btn';
+
 import {darkGreen} from './constants';
-import Field from './Field';
-import {Image} from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import {
-  SelectList,
-  MultipleSelectList,
-} from 'react-native-dropdown-select-list';
-import Home from './Home';
-import Screen1 from './Screen1';
+
 
 const MADTask = ({props, navigation}) => {
     const [history, setHistory] = useState([]);
@@ -35,7 +20,7 @@ const MADTask = ({props, navigation}) => {
   const [Price, setPrice] = useState();
   const [Percentage, setPercentage] = useState();
   const [password, setpassword] = useState();
-  const [FinalPrice, setFinalPrice] = useState(0);
+  const [FinalPrice, setFinalPrice] = useState();
   const [discount, setdiscount] = useState();
   const [Save, setSave] = useState(0);
   const [PriceAfterDiscount, setPriceAfterDiscount] = useState();
@@ -77,6 +62,7 @@ const clearInputs = () => {
     setPercentage('');
     setFinalPrice('');
     setSave('');
+    setHistory('')
   };
 
 
@@ -232,7 +218,7 @@ const clearInputs = () => {
             {history.length > 0 ? (
         <View style={{}}>
           <Text style={{fontSize:22, fontWeight:'bold'}}>History:</Text>
-          <ScrollView style={{marginLeft:12}}>
+          <ScrollView style={{marginLeft:12, height:120}}>
             {history.map((calculation, index) => (
               <Text key={index} style={{}}>
               {index+1}  {calculation}

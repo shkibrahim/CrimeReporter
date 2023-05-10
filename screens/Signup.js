@@ -1,37 +1,25 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
-import RadioGroup from 'react-native-radio-buttons-group';
 
-import axios from 'axios';
 import DropDownPicker from "react-native-dropdown-picker";
-import {BASE_URL, API_KEY} from '@env';
+
 import {useForm, Controller} from 'react-hook-form'
 import {
   View,
   StyleSheet,
   Text,
-  Touchable,
+
   TouchableOpacity,
-  ScrollView,
+
   TextInput,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {black} from 'react-native-paper/lib/typescript/styles/colors';
-import Background from './Background';
-import Backround2 from './Backround2';
-import Btn from './Btn';
+
 import {darkGreen} from './constants';
-import Field from './Field';
+
 import {Image} from 'react-native';
 
-import {
-  SelectList,
-  MultipleSelectList,
-} from 'react-native-dropdown-select-list';
-import Home from './Home';
-import Screen1 from './Screen1';
-import Screen2 from './Screen2';
+
 
 const Signup = ({navigation}) => {
   const [email, setemail] = useState();

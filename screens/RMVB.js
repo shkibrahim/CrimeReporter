@@ -1,9 +1,7 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form'
-import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
+
 import firestore from '@react-native-firebase/firestore';
 import {
   View,
@@ -15,23 +13,13 @@ import {
   TextInput,
 } from 'react-native';
 import Back3 from './Back3';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {black} from 'react-native-paper/lib/typescript/styles/colors';
-import Background from './Background';
-import Backround2 from './Backround2';
-import Btn from './Btn';
+
 import {darkGreen} from './constants';
-import Field from './Field';
+
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {Image} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {
-  SelectList,
-  MultipleSelectList,
-} from 'react-native-dropdown-select-list';
-import Home from './Home';
-import Screen1 from './Screen1';
-import Screen2 from './Screen2';
+
 import ImagePicker from 'react-native-image-picker';
 
 const RMVB = ({navigation,route}) => {
@@ -78,6 +66,7 @@ const RMVB = ({navigation,route}) => {
   const [VehicleNumber, setVehicleNumber] = useState();
   const [Model, setModel] = useState();
   
+  const [trackValue, settrackValue] = useState(null);
   const [Color, setColor] = useState();
   const [VehicleDescription, setVehicleDescription] = useState();
   const { name } = route.params;
@@ -96,7 +85,7 @@ const RMVB = ({navigation,route}) => {
     {
 alert ('Fill the form')
     }
-    // console.log(cityValue)
+  
     else{
     firestore()
       .collection('RMV')
@@ -113,6 +102,7 @@ alert ('Fill the form')
         VehicleNumber: VehicleNumber,
         VehicleTypeValue: VehicleTypeValue,
         Model: Model,
+        trackValue: trackValue,
         Color:Color,
         VehicleDescription: VehicleDescription,
         Status:"Pending",

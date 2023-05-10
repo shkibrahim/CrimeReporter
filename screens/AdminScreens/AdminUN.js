@@ -1,9 +1,6 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 
-import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
 import {
   View,
   Text,
@@ -13,47 +10,12 @@ import {
   TextInput,
 } from 'react-native';
 import Back3 from '../Back3';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {black} from 'react-native-paper/lib/typescript/styles/colors';
-import Background from '../Background';
-import Backround2 from '../Backround2';
-import Btn from '../Btn';
-import {darkGreen} from '../constants';
-import Field from '../Field';
+
 import {Image} from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import {
-  SelectList,
-  MultipleSelectList,
-} from 'react-native-dropdown-select-list';
-import Home from '../Home';
-import Screen1 from '../Screen1';
+
 
 const AdminUN = ({navigation}) => {
-  const [name, setname] = useState();
-  const [cnic, setcnic] = useState();
-  const [password, setpassword] = useState();
-  // const [open, setOpen] = useState(false);
-  // const [value, setValue] = useState(null);
-  // const [items, setItems] = useState([
-  //   {label: 'Apple', value: 'apple'},
-  //   {label: 'Banana', value: 'banana'}
-  // ]);
-  // const saveData=  async (name, cnic, password) => {
-  //   const user={
-  //     name:name,
 
-  //     password:password
-  //   }
-  //    try {
-  //      await AsyncStorage.setItem("userData", JSON.stringify(user));
-
-  //      alert(user.name)
-  //   } catch (error) {
-  //     alert("Something went wrong", error);
-  //   }
-
-  // }
 
   return (
     <Back3>
@@ -67,7 +29,7 @@ const AdminUN = ({navigation}) => {
             alignItems: 'center',
           }}>
           <View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
                  onPress={() => navigation.navigate('FIR')}>
               <Image
                 source={require('../../images/menu.png')}
@@ -79,15 +41,15 @@ const AdminUN = ({navigation}) => {
                   marginTop: 12,
                 }}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
-          <View style={{marginBottom: 19, marginTop: -35}}>
+          <View style={{marginBottom: 12, marginTop: 12}}>
             <Text style={{color: 'white', fontSize: 19, fontWeight: 'bold'}}>
               CRIME REPORTER
             </Text>
           </View>
           <View>
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
               <Image
                 source={require('../../images/loout.png')}
                 style={{
@@ -98,7 +60,7 @@ const AdminUN = ({navigation}) => {
                   marginTop:-44,
                 }}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <View
             style={{
@@ -152,15 +114,25 @@ const AdminUN = ({navigation}) => {
           <View style={{marginLeft: 0, marginTop: -320}}>
           
           </View>
-          <View style={{backgroundColor: '#10942e',marginLeft:0, width:370,height:50, borderRadius:8,marginTop:8 }}>
+          <View style={{backgroundColor: '#b8b8b8',marginLeft:0, width:370,height:50, borderRadius:8,marginTop:8 }}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Rcrime')}>
-              <Text style={{fontSize:20, marginLeft:50, fontWeight:'bold', color:'white', marginTop:9, alignContent:'center'}}>REGISTER MISSING CRIMINAL</Text>
+              onPress={() => navigation.navigate('AdminRMC')}>
+              <Text style={{fontSize:20, marginLeft:50, fontWeight:'bold', color:'#10942e', marginTop:9, alignContent:'center'}}>REGISTER MISSING CRIMINAL</Text>
             </TouchableOpacity>
           </View>
           <View style={{backgroundColor: '#b8b8b8',marginLeft:0, width:370,height:50, borderRadius:8,marginTop:8 }}>
-            <TouchableOpacity  onPress={() => navigation.navigate('VRF')}>
+            <TouchableOpacity  onPress={() => navigation.navigate('AdminRMV')}>
               <Text style={{fontSize:20, marginLeft:45, fontWeight:'bold', color:'#10942e', marginTop:9}}>REGISTER MISSING VEHICLE</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{backgroundColor: '#b8b8b8',marginLeft:0, width:370,height:50, borderRadius:8,marginTop:8 }}>
+            <TouchableOpacity  onPress={() => navigation.navigate('AdminRMD')}>
+              <Text style={{fontSize:20, marginLeft:36, fontWeight:'bold', color:'#10942e', marginTop:9}}>REGISTER MISSING DOCUMENTS</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{backgroundColor: '#b8b8b8',marginLeft:0, width:370,height:50, borderRadius:8,marginTop:8 }}>
+            <TouchableOpacity  onPress={() => navigation.navigate('AdminVRNotification')}>
+              <Text style={{fontSize:20, fontWeight:'bold', color:'#10942e',alignSelf:'center', marginTop:9}}>VIEW RESPONSE</Text>
             </TouchableOpacity>
           </View>
    

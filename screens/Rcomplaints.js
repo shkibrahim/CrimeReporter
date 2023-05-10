@@ -1,9 +1,7 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 
-import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
+
 import firestore from '@react-native-firebase/firestore';
 import {
   View,
@@ -15,23 +13,11 @@ import {
 } from 'react-native';
 import Back3 from './Back3';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {black} from 'react-native-paper/lib/typescript/styles/colors';
-import Background from './Background';
-import Backround2 from './Backround2';
-import Btn from './Btn';
+
 import {darkGreen} from './constants';
-import Field from './Field';
+
 import {Image} from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import {
-  SelectList,
-  MultipleSelectList,
-} from 'react-native-dropdown-select-list';
-import Home from './Home';
-import Screen1 from './Screen1';
-import Screen2 from './Screen2';
-import Rcomplaint from './Rcomplaint';
+
 
 const Rcomplaints = ({navigation,route}) => {
 
@@ -44,6 +30,9 @@ const Rcomplaints = ({navigation,route}) => {
   const [SuspectDescription, setSuspectDescription] = useState();
   const { name } = route.params;
   const {victimValue} = route.params;
+  const { selectedDate} = route.params;
+  const { longitude} = route.params;
+  const { latitude} = route.params;
   const { cnic} = route.params;
   const { description} = route.params;
     // const {trackValue} = route.params;
@@ -58,7 +47,7 @@ const Rcomplaints = ({navigation,route}) => {
     id:Math.random().toString(),
   }
   var Complaint = () => {
-    if(name== null || cnic== null || contact==  null || crimeValue== null || districtValue== null || cityValue== null || policeValue== null || description == null ||
+    if(name== null || cnic== null || contact==  null || crimeValue== null || districtValue== null || cityValue== null || policeValue== null || description == null || selectedDate == null || longitude == null || latitude == null ||
        SuspectName == null || SuspectContact == null || Reason == null || relation == null || SuspectDescription == null || victimValue == null )
     {
 alert ('Fill the form')
@@ -75,6 +64,9 @@ alert ('Fill the form')
         cnic:cnic,
         victimValue:victimValue,
         contact: contact,
+        latitude : latitude,
+        longitude : longitude,
+        selectedDate : selectedDate,
         crimeValue:crimeValue,
         districtValue:districtValue,
         cityValue:cityValue,
@@ -88,7 +80,8 @@ alert ('Fill the form')
         Status:"Pending"
       })
       .then(() => {
-        alert('User added!');
+        alert('Complaint Registered!');
+        navigation.navigate('Complaints')
       }).catch(()=>{
         alert('error')
       });

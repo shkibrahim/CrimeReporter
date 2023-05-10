@@ -1,9 +1,7 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 
-import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
+
 import firestore from '@react-native-firebase/firestore';
 import {
   View,
@@ -14,29 +12,20 @@ import {
   TextInput,
 } from 'react-native';
 import Back3 from './Back3';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {black} from 'react-native-paper/lib/typescript/styles/colors';
-import Background from './Background';
-import Backround2 from './Backround2';
-import Btn from './Btn';
+
 import {darkGreen} from './constants';
-import Field from './Field';
+
 import {Image} from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
+
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {
-  SelectList,
-  MultipleSelectList,
-} from 'react-native-dropdown-select-list';
-import Home from './Home';
-import Screen1 from './Screen1';
-import Screen2 from './Screen2';
+
 
 const FIRS = ({navigation,route}) => {
 
 
  
   const [SuspectName, setSuspectName] = useState();
+  const [trackValue, settrackValue] = useState(null);
   const [SuspectContact, setSuspectContact] = useState();
   const [Reason, setReason] = useState();
   const [relation, setrelation] = useState();
@@ -48,18 +37,20 @@ const FIRS = ({navigation,route}) => {
   const { crimeValue } = route.params;
   const { districtValue } = route.params;
   const{policeValue} = route.params;
+  const{selectedDate} = route.params;
+  const { latitude } = route.params;
   const { cityValue } = route.params;
-  const { firDate } = route.params;
+  const { longitude } = route.params;
   const [Data,setData] = useState([]);
   const ID = {
     id:Math.random().toString(),
   }
   var FIR = () => {
-    if(name== null || cnic== null || contact==  null || crimeValue== null || districtValue== null || cityValue== null || policeValue== null || description == null || SuspectName == null || SuspectContact == null || Reason == null || relation == null || SuspectDescription == null || firDate == null  )
+    if(name== null || cnic== null || contact==  null || crimeValue== null || districtValue== null || cityValue== null || policeValue== null || description == null || SuspectName == null || SuspectContact == null || Reason == null || relation == null || SuspectDescription == null  || selectedDate == null || longitude == null|| latitude == null )
     {
 alert ('Fill the form')
     }
-    // console.log(cityValue)
+
     else{
     firestore()
       .collection('FIR')
@@ -77,12 +68,17 @@ alert ('Fill the form')
         suspectcontact:SuspectContact,
         reason:Reason,
         relation:relation,
+        selectedDate:selectedDate,
+        longitude:longitude,
+        latitude:latitude,
+        trackValue:trackValue,
         Status:"Pending",
         SuspectDescription:SuspectDescription,
-        firDate:firDate,
+      
       })
       .then(() => {
-        alert('User added!');
+        alert('FIR Registered!');
+        navigation.navigate('FIR')
       }).catch(()=>{
         alert('error')
       });

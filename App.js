@@ -52,9 +52,13 @@ import Analytics from './screens/AdminScreens/Analytics';
 import AdminVMH  from './screens/AdminScreens/AdminVMH';
 import AdminUN  from './screens/AdminScreens/AdminUN';
 import AdminIT from './screens/AdminScreens/AdminIT';
+import AdminMP from './screens/AdminScreens/AdminMP';
 import AdminCIT from './screens/AdminScreens/AdminCIT';
 import AdminVAC from './screens/AdminScreens/AdminVAC';
 import AdminVCT from './screens/AdminScreens/AdminVCT';
+import AdminUpdate from './screens/AdminScreens/AdminUpdate';
+import AdminPreview from './screens/AdminScreens/AdminPreview';
+import AdminRMC from './screens/AdminScreens/AdminRMC';
 import ITSW from './screens/ITP/ITSW';
 import ITPcall from './screens/ITP/ITPcall';
 import PMA from './screens/PMA';
@@ -63,10 +67,14 @@ import ITPsuspect from './screens//ITP/ITPsuspect';
 import MAPS from './screens/MAPS';
 import ITPzoom from './screens//ITP/ITPzoom';
 import ITPVAC from './screens/ITP/ITPVAC';
+import ITPI from './screens/ITP/ITPI';
+import ITPreview from './screens/ITP/ITPreview';
+import AdminAssignedCasesTeam from './screens/AdminScreens/AdminAssignedCasesTeam';
 // import VRFu from './screens/VRFu';
 // import AuthStack from './screens/AuthStack';
 // import CustomDrawer from './screens/CustomDrawer';
 import VRMH from './screens/VRMH';
+import VRMP from './screens/VRMP';
 import MV from './screens/MV';
 import MADTask  from './screens/MADTask';
 import MP from './screens/MP';
@@ -94,20 +102,25 @@ function App() {
         <Stack.Screen name="Piechart1" component={Piechart1} />
         {/* <Stack.Screen name="AdminVF" component={AdminVF} /> */}
         <Stack.Screen name="AdminVC" component={AdminVC} />
+        <Stack.Screen name="AdminMP" component={AdminMP} />
         <Stack.Screen name="AdminVAC" component={AdminVAC} />
         <Stack.Screen name="AdminVCT" component={AdminVCT} />
         <Stack.Screen name="AdminIT" component={AdminIT} />
         <Stack.Screen name="AdminCIT" component={AdminCIT} />
+        <Stack.Screen name="AdminUpdate" component={AdminUpdate} />
         <Stack.Screen name="AdminVMH" component={AdminVMH} />
+        <Stack.Screen name="AdminRMC" component={AdminRMC} />
         <Stack.Screen name="Home" component={Home} />
-        {/* <Stack.Screen name="MADTask" component={MADTask} /> */}
+        <Stack.Screen name="MADTask" component={MADTask} />
         {/* <Stack.Screen name="Todo" component={Todo} /> */}
         <Stack.Screen name="ITSW" component={ITSW} />
         <Stack.Screen name="Analytics" component={Analytics} />
         <Stack.Screen name="AdminTC" component={AdminTC} />
+        <Stack.Screen name="AdminPreview" component={AdminPreview} />
         <Stack.Screen name="AdminUN" component={AdminUN} />
         <Stack.Screen name="AdminVF" component={AdminVF} />
         <Stack.Screen name="FIR" component={FIR} />
+        <Stack.Screen name="ITPI" component={ITPI} />
         <Stack.Screen name="FB" component={FB} />
         <Stack.Screen name="RMP" component={RMP} />
         <Stack.Screen name="RMPB" component={RMPB} />
@@ -137,18 +150,21 @@ function App() {
         <Stack.Screen name="VRF" component={VRF} />
         <Stack.Screen name="VRC" component={VRC} />
         <Stack.Screen name="MAPS" component={MAPS} />
-
+        <Stack.Screen name="ITPreview" component={ITPreview} />
         <Stack.Screen name="ITPzoom" component={ITPzoom} />
         {/* <Stack.Screen name="VRFu" component={VRFu} /> */}
         <Stack.Screen name="First" component={First} />
         <Stack.Screen name="ITPPanel" component={ITPPanel} />
         <Stack.Screen name="VRMH" component={VRMH} />
+        <Stack.Screen name="VRMP" component={VRMP} />
         <Stack.Screen name="VCD" component={VCD} />
         <Stack.Screen name="FIRS" component={FIRS} />
         <Stack.Screen name="Screen2" component={Screen2} />
         <Stack.Screen name="Screen3" component={Screen3} />
         <Stack.Screen name="Second" component={Second} />
         <Stack.Screen name="Complaints" component={Complaints} />
+        <Stack.Screen name="AdminAssignedCasesTeam" component={AdminAssignedCasesTeam} />
+        
         <Stack.Screen name="Rcomplaints" component={Rcomplaints} />
         {/* <Stack.Screen name="CustomDrawer" component={CustomDrawer} /> */}
       </Stack.Navigator>

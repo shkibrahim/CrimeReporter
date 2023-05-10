@@ -1,9 +1,7 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
-import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
+
 import {
   View,
   Text,
@@ -219,7 +217,7 @@ const AdminTC = ({navigation}) => {
                   width: 175,
                   height: 150,
                 }}
-                onPress={() => navigation.navigate('Signup')}>
+                onPress={() => navigation.navigate('AdminMP')}>
                 <Text
                   style={{
                     color: 'white',

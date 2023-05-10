@@ -2,9 +2,7 @@ import React from 'react';
 import {useEffect, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import firestore from '@react-native-firebase/firestore';
-import axios from 'axios';
-import DropDownPicker from 'react-native-dropdown-picker';
-import {BASE_URL, API_KEY} from '@env';
+
 import {
   View,
   StyleSheet,

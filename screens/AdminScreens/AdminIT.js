@@ -1,9 +1,6 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 
-import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
 import {
   View,
   Text,
@@ -13,8 +10,7 @@ import {
   TextInput,
 } from 'react-native';
 import Back3 from '../Back3';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {black} from 'react-native-paper/lib/typescript/styles/colors';
+
 // import Background from './Background';
 // import Backround2 from './Backround2';
 // import Btn from './Btn';

@@ -1,9 +1,7 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form'
-import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
+
 import firestore from '@react-native-firebase/firestore';
 import {
   View,
@@ -15,23 +13,13 @@ import {
   TextInput,
 } from 'react-native';
 import Back3 from './Back3';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {black} from 'react-native-paper/lib/typescript/styles/colors';
-import Background from './Background';
-import Backround2 from './Backround2';
-import Btn from './Btn';
+
 import {darkGreen} from './constants';
-import Field from './Field';
+
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {Image} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {
-  SelectList,
-  MultipleSelectList,
-} from 'react-native-dropdown-select-list';
-import Home from './Home';
-import Screen1 from './Screen1';
-import Screen2 from './Screen2';
+
 import ImagePicker from 'react-native-image-picker';
 
 const RMPB = ({navigation,route}) => {
@@ -78,12 +66,15 @@ const RMPB = ({navigation,route}) => {
   const [MissingPersonName, setMissingPersonName] = useState();
   const [Age, setAge] = useState();
   const [Model, setModel] = useState();
-  
+  const [trackValue, settrackValue] = useState("pending");
   const [Color, setColor] = useState();
   const [VisualDescription, setVisualDescription] = useState();
   const { name } = route.params;
   const { cnic} = route.params;
+  const { latitude} = route.params;
+  const { longitude} = route.params;
   const {Relation} = route.params;
+  const { selectedDate} = route.params;
   const { contact } = route.params;
   const { districtValue } = route.params;
   const{policeValue} = route.params;
@@ -96,7 +87,7 @@ const RMPB = ({navigation,route}) => {
     navigation.goBack();
   }
   var RMV = () => {
-    if(name== null || cnic== null || contact==  null  || districtValue== null || GenderValue == null||  cityValue== null || policeValue== null ||  Relation == null ||  VisualDescription == null || MissingPersonName == null || Age == null  )
+    if(name== null || cnic== null || contact==  null  || districtValue== null || GenderValue == null||  cityValue== null || policeValue== null ||  Relation == null ||  VisualDescription == null || MissingPersonName == null || Age == null  || selectedDate == null || longitude== null || latitude == null )
     {
 alert ("Fill the information")
     }
@@ -107,6 +98,9 @@ alert ("Fill the information")
       .add({
         name: name,
         cnic:cnic,
+        selectedDate:selectedDate,
+        longitude:longitude,
+        latitude:latitude,
         contact: contact,
         ID:ID,
         // selectedImage : selectedImage,
@@ -115,6 +109,8 @@ alert ("Fill the information")
         cityValue:cityValue,
         policeValue:policeValue,
         Relation: Relation,
+        trackValue:trackValue,
+        
        Age : Age,
        GenderValue :GenderValue,
         VisualDescription: VisualDescription,
@@ -273,7 +269,7 @@ marginTop:22,
               }}>
             MISSING PERSON NAME
             </Text>
-            <Text style={{color: 'black'}}>{MissingPersonName}</Text>
+         
 
             <TextInput
            

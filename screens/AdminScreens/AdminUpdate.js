@@ -14,32 +14,50 @@ import {
 } from 'react-native';
 import Back3 from '../Back3';
 
-
 import {Image} from 'react-native';
 
-const AdminVCT= ({routes, navigation}) => {
 
+const AdminUpdate = ({routes, navigation}) => {
+
+  const [AdminRemarksa, setAdminRemarksa] = useState();
   const [Data, setData] = useState([]);
 
-  var Team = firestore().collection('Team');
- 
+  var ITPI = firestore().collection('ITPI');
 
   useEffect(() => {
     var Dataa = async () => {
-      await Team.get().then(data => {
+      await ITPI.get().then(data => {
         setData(data.docs.map(doc => ({...doc.data(), id: doc.id})));
-       
+      
       });
     };
     Dataa();
   });
-  var Delete=async(ID)=>{
-    await Team
-    .doc(ID)
-    .delete()
 
-    Dataa();
+
+  const Update = async (item) => { 
+
+    await firestore()
+    .collection('ITPI')
+    .doc(item.id)
+    .update({
+    AdminRemarks: AdminRemarksa,
+      // trackValue:trackValue,
+    });
+    
+    navigation.navigate("ITPreview")
+    // navigation.navigate('AdminTC')
   }
+//   const deny=async (item)=>{
+//     await firestore()
+//     .collection('FIR')
+//     .doc(item.id)
+//     .update({
+//       Status: "Declined",
+      
+//     });
+//     alert("Report Declined")
+// }
 
   return (
     <Back3>
@@ -103,15 +121,15 @@ const AdminVCT= ({routes, navigation}) => {
                 alignItems: 'center',
               }}>
               <Text style={{color: 'red', fontSize: 19, fontWeight: 'bold'}}>
-             CREATED TEAMS
+             INFORMATION OF CASE
               </Text>
             </View>
             <View style={{}}>
               <FlatList
                 style={{width: '100%'}}
                 data={Data}
-                horizontal={true}
-                // Horizontal = {true}
+                // horizontal={true}
+                Horizontal = {true}
                 showsHorizontalScrollIndicator={false}
                 renderItem={({item, index}) => {
                   if (item != undefined) {
@@ -141,34 +159,10 @@ const AdminVCT= ({routes, navigation}) => {
                             alignItems:'center',
                             name: 'cnic',
                           }}>
-                          {index + 1}
+                         ---
                         </Text>
-                        <Text
-                          style={{
-                            color: '#10942e',
-                            fontWeight: 'bold',
-                            marginLeft: 10,
-                            fontSize: 14,
-                           
-                          }}>
-                         TEAM ID: 
-                        </Text>
-                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
-                marginBottom:30,
-                marginVertical: 10,}}>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            // fontWeight: 'bold',
-                            // marginLeft: 10,
-                            marginTop:10,
-                            marginBottom: 10,
-                            fontSize: 14,
-                            name: 'cnic',
-                          }}>
-                          {item.TeamID}
-                        </Text>
-                        </View>
+                       
+                        
                         <Text
                           style={{
                             color: '#10942e',
@@ -178,7 +172,7 @@ const AdminVCT= ({routes, navigation}) => {
                             fontSize: 14,
                             // name: 'cnic',
                           }}>
-                         TEAM NAME:
+                         Time:
                         </Text>
                         <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
                 marginBottom:30,
@@ -193,7 +187,7 @@ const AdminVCT= ({routes, navigation}) => {
                             fontSize: 14,
                             
                           }}>
-                          {item.TeamName}
+                        {item.selectedTime}
                         </Text>
                         </View>
                         <Text
@@ -205,7 +199,7 @@ const AdminVCT= ({routes, navigation}) => {
                             marginBottom:-5,
                            
                           }}>
-                          TEAM LEADER
+                         Date:
                         </Text>
                         <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
                 marginBottom:30,
@@ -220,7 +214,7 @@ const AdminVCT= ({routes, navigation}) => {
                             fontSize: 14,
                             name: 'cnic',
                           }}>
-                          {item.TeamLeader}
+                          {item.selectedDate}
                         </Text>
                         </View>
                         <Text
@@ -232,7 +226,7 @@ const AdminVCT= ({routes, navigation}) => {
                            
                             marginBottom:-5,
                           }}>
-                          EXPERTIES
+                          Tracking Status:
                         </Text>
                         <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
                 marginBottom:30,
@@ -247,20 +241,20 @@ const AdminVCT= ({routes, navigation}) => {
                             fontSize: 14,
                           
                           }}>
-                          {item.ExpertiesValue}
+                          {item.trackValue}
                         </Text>
                         </View>
+                        
+                        
                         <Text
                           style={{
                             color: '#10942e',
                             fontWeight: 'bold',
-                            marginBottom: 15,
                             marginLeft: 10,
                             fontSize: 14,
                             marginBottom:-5,
-                           
                           }}>
-                         NO OF MEMBER
+                          Investigation Remarks:
                         </Text>
                         <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
                 marginBottom:30,
@@ -273,13 +267,80 @@ const AdminVCT= ({routes, navigation}) => {
                             marginTop:10,
                             marginBottom: 10,
                             fontSize: 14,
-                            name: 'cnic',
+                         
                           }}>
-                          {item.MemberNumber}
+                          {item.CaseInformation}
                         </Text>
                         </View>
-                       
-                      
+
+                        
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            marginBottom:5,
+                          }}>
+                          Admin Remarks:
+                        </Text>
+                        <View style={{
+                  borderRadius: 10,
+                  marginLeft: 0,
+                  // paddingHorizontal: 10,
+                  width: 368,
+                  height: 150,
+                  borderColor: '#B7B7B7',
+                  // marginBottom: 30,
+                  backgroundColor: '#eceded',}}>
+              <TextInput
+                // style={{
+                //   borderRadius: 10,
+                //   color: 'black',
+                //   marginLeft: 12,
+                //   paddingHorizontal: 10,
+                //   width: 350,
+                //   height: 150,
+                //   borderColor: '#B7B7B7',
+                //   marginBottom: 30,
+                //   backgroundColor: '#eceded',
+                //   marginVertical: 10,
+                // }}
+                placeholderTextColor="red"
+                // value={cnic}
+                // keyboardType='Numeric'
+                // onChangeText={cnic => {
+                //   name === '' ||
+                //   cnic === '' ||
+                //   contact === '' ||
+                //   description === ''
+                //     ? setAddBtnState(true)
+                value={AdminRemarksa}
+                onChangeText={
+               
+                  setAdminRemarksa
+                }
+                //     : setAddBtnState(false);
+                //   setcnic(cnic);
+                // }}
+                placeholder="Give your Remarks here"
+                style={{  color: 'green',
+                
+                color: 'black',
+                borderRadius: 10,
+                marginLeft: -2,
+                // paddingHorizontal: 10,
+                width: 350,
+                height: 150,
+              
+                // marginVertical: 10,
+                // borderColor:'green',
+                marginTop:-52
+            ,}}
+            multiline={true}
+                // secureTextEntry={true}
+              />
+              </View>
                         </ScrollView>
 
                       
@@ -288,43 +349,35 @@ const AdminVCT= ({routes, navigation}) => {
         </View>
                        
                       </View >
-                     
+                      {/* <View style={{ flexDirection:'row'}} > */}
+                      {/* <TouchableOpacity style={{
+              backgroundColor: '#10942e',
+              borderRadius: 10,
+              width: 150,
+              marginLeft: 10,
+              marginTop:30,
+              height: 50,
+              alignItems: 'center',
+              alignContent: 'center'
+
+            }}><Text>Status:{item.Status}</Text></TouchableOpacity> */}
                         <TouchableOpacity
             style={{
               backgroundColor: '#10942e',
               borderRadius: 10,
-              width: 160,
-              marginLeft: 17,
-              marginTop:0,
+              width: 250,
+              marginLeft: 70,
+              marginTop:30,
               height: 50,
-              alignSelf:'flex-start',
               alignItems: 'center',
               alignContent: 'center'
 
             }}
-            onPress={() => navigation.navigate('AdminVAC')}>
-            <Text style={{ color: 'white', fontSize:17, marginTop: 13, fontWeight:'bold', alignSelf:'center'}}>
-         ASSIGN A CASE
+            onPress={Update}>
+            <Text style={{ color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
+            Update your Remarks
             </Text>
-          </TouchableOpacity> 
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#10942e',
-              borderRadius: 10,
-              width: 160,
-              // marginLeft: 80,
-              marginTop:-49,
-              height: 50,
-              alignSelf:'flex-end',
-              alignItems: 'center',
-              alignContent: 'center'
-
-            }}
-            onPress={() => navigation.navigate('AdminAssignedCasesTeam')}>
-            <Text style={{ color: 'white', fontSize:17, marginTop: 13, fontWeight:'bold', alignSelf:'center'}}>
-        VIEW CASES
-            </Text>
-          </TouchableOpacity> 
+          </TouchableOpacity>
          
                       </View>
                     );
@@ -339,4 +392,4 @@ const AdminVCT= ({routes, navigation}) => {
   );
 };
 
-export default AdminVCT;
+export default AdminUpdate;

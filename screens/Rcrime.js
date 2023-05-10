@@ -97,7 +97,10 @@ useEffect(() => {
         cityValue: cityValue,
         policeValue: policeValue,
         description: description,
-        firDate: selectedDate,
+        selectedDate: selectedDate,
+        longitude: longitude,
+        latitude: latitude,
+        
       });
     }
   };
@@ -371,6 +374,7 @@ useEffect(() => {
                 }}
                 placeholderTextColor="grey"
                 value={cnic}
+                keyboardType='Numeric'
                 onChangeText={cnic => {
                   name === '' ||
                   cnic === '' ||
@@ -409,6 +413,7 @@ useEffect(() => {
                 }}
                 placeholderTextColor="grey"
                 value={contact}
+                keyboardType='Numeric'
                 onChangeText={contact => {
                   name === '' ||
                   cnic === '' ||

@@ -1,54 +1,46 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
-import {Dropdown} from 'react-native-element-dropdown';
-import axios from 'axios';
-import {BASE_URL, API_KEY} from '@env';
+
+import {useForm, Controller} from 'react-hook-form'
+
 import {
   View,
   FlatList,
   Button,
-  Text,
+  Text,StyleSheet,
   Touchable,
   TouchableOpacity,
   ScrollView,
   TextInput,
 } from 'react-native';
 import Back3 from '../Back3';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {black} from 'react-native-paper/lib/typescript/styles/colors';
-import Background from '../Background';
-import Backround2 from '../Backround2';
-import Btn from '../Btn';
-import {darkGreen} from '../constants';
-import Field from '../Field';
+
 import {Image} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {
-  SelectList,
-  MultipleSelectList,
-} from 'react-native-dropdown-select-list';
-import Home from '../Home';
-import Screen1 from '../Screen1';
+
 
 const AdminVMH = ({routes, navigation}) => {
-  const [name, setname] = useState();
-  const [cnic, setcnic] = useState();
-  const [description, setdescription] = useState();
-  const [contact, setcontact] = useState();
-  const [crimeValue, setcrimeValue] = useState();
-  const [districtValue, setdistrictValue] = useState();
-  const [cityValue, setcityValue] = useState();
-  const [policeValue, setpoliceValue] = useState();
+  
   const [Data, setData] = useState([]);
-
+  const [trackOpen, settrackOpen] = useState();
+  const [trackValue, settrackValue] = useState();
+  const [track, settrack] = useState([
+    { label: "Accepted", value: "Accepted" },
+   
+    { label: "Sent to Investigation Team", value: "Sent to Investigation Team" },
+   
+    { label: "Case Proceeding Started", value: "Case Proceeding Started" },
+    { label: "Case Closed", value: "Case Closed" },
+  ]);
+  const {  control } = useForm();
   var RMV = firestore().collection('RMV');
 
   useEffect(() => {
     var Dataa = async () => {
       await RMV.get().then(data => {
         setData(data.docs.map(doc => ({...doc.data(), id: doc.id})));
-        console.log(data);
+     
       });
     };
     Dataa();
@@ -68,7 +60,17 @@ const Accept = async (item) => {
         ID: item.ID,
         name: item.name,
         cnic:item.cnic,
-       
+       districtValue:item.districtValue,
+       cityValue:item.cityValue,
+       policeValue:item.policeValue,
+       description:item.description,
+       VehicleName:item.VehicleName,
+       VehicleNumber: item.VehicleNumber,
+       VehicleTypeValue:item.VehicleTypeValue,
+       Model: item.Model,
+       Color:item.Color,
+       VehicleDescription: item.VehicleDescription,
+
         contact: item.contact,
         
         districtValue:item.districtValue,
@@ -78,8 +80,8 @@ const Accept = async (item) => {
      
     }
     
-//    console.log (AData);
-    firestore()
+
+   await firestore()
       .collection('AcceptedREPORTS')
       .add({       
    Go
@@ -95,7 +97,11 @@ const Accept = async (item) => {
     .doc(item.id)
     .update({
       Status: "Accepted",
+      trackValue:trackValue,
     });
+    navigation.navigate('AdminTC',{  
+      trackValue: trackValue,
+     })
   }
 
 
@@ -558,6 +564,91 @@ const Accept = async (item) => {
                           {item.VehicleDescription}
                         </Text>
                         </View>
+                        <Text
+              style={{
+                color: '#10942e',
+                fontWeight: 'bold',
+                marginLeft: 10,
+                marginTop:16,
+                fontSize: 20,
+                alignSelf: 'center'
+              }}>
+                
+              TRACK
+            </Text>
+            <Controller
+        name="track"
+        defaultValue=""
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <View style={styles.dropdownGender}>
+            <DropDownPicker
+              style={styles.dropdown}
+              open={trackOpen}
+              value={trackValue} //genderValue
+              items={track}
+              setOpen={settrackOpen}
+              setValue={settrackValue}
+              setItems={settrack}
+              placeholder="Select track"
+              placeholderStyle={styles.placeholderStyles}
+              dropDownDirection="TOP"
+              onChangeValue={onChange}
+              zIndex={30}
+              zIndexInverse={40}
+            />
+
+             {/* <TouchableOpacity
+            style={{
+              backgroundColor: '#10942e',
+              borderRadius: 10,
+              width: 80,
+              marginLeft: 282,
+             marginTop:9,
+              height: 30,
+              alignItems: 'center',
+              alignContent: 'center'    
+
+            }}
+            
+           onPress={Track}
+           
+           >
+
+            <Text style={{color: 'white', fontSize:17, marginTop: 4, fontWeight:'bold'}}>
+             Update
+            </Text>
+          </TouchableOpacity> */}
+          </View>
+          
+        )}
+      />
+       <Text
+                          style={{
+                            flex:1,
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            
+                            // marginBottom:35,
+                            marginTop:-10
+                          }}>
+                       Current Tracking Status :  
+                        </Text>
+                        <Text
+                          style={{
+                            flex:2,
+                            color: 'red',
+                            // fontWeight: 'bold',
+                            marginLeft: 177,
+                            fontSize: 14,
+                            
+                            // marginBottom:35,
+                            marginTop:-19
+                          }}>
+                         {item.trackValue}
+                        </Text>
                         </ScrollView>
 
                       
@@ -648,5 +739,52 @@ const Accept = async (item) => {
     </Back3>
   );
 };
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  input: {
+    borderStyle: "solid",
+    borderColor: "#B7B7B7",
+    borderRadius: 7,
+    borderWidth: 1,
+    fontSize: 15,
+    height: 50,
+    marginHorizontal: 10,
+    paddingStart: 10,
+    marginBottom: 15,
+  },
+  label: {
+    marginBottom: 7,
+    marginStart: 10,
+   
+  },
+  placeholderStyles: {
+    color: "grey",
+    
+  },
+  dropdownGender: {
+  //   backgroundColor: 'rgb(220,220, 220)',
+    marginHorizontal: 10,
+    width:"99%",
+  //   marginBottom: 15,
+    marginLeft:2,
+    borderRadius: 12,
+  //   borderColor:'green',
+  //   borderWidth:1,
+    marginTop:2,
+    height:100
+  },
+  dropdownCompany: {
+    marginHorizontal: 10,
+    marginBottom: 15,
+  },
+  dropdown: {
+    borderColor: "#B7B7B7",
+    height: 50,
+  },
 
+
+ 
+});
 export default AdminVMH;
