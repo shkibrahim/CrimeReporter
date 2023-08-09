@@ -1,15 +1,15 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form'
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import DropDownPicker from "react-native-dropdown-picker";
-
+import { StorageKeys } from '../Data/StorageKeys';
 import {
   View,
   StyleSheet,
   Text,
-  Touchable,
-  TouchableOpacity,
+  Touchable,Keyboard,
+  Pressable,
   ScrollView,
   FlatList,
   TextInput,
@@ -23,10 +23,27 @@ import { Linking } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 
 const RMV = ({navigation}) => {
+  const [isKeyboardActive, setIsKeyboardActive] = useState(false);
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => setIsKeyboardActive(true),
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => setIsKeyboardActive(false),
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
   const [name, setname] = useState();
   const [cnic, setcnic] = useState();
   const [description, setdescription] = useState();
   const [contact, setcontact] = useState();
+  
 let FIRDATA={
   name:name,
   cnic:cnic,
@@ -56,6 +73,15 @@ Geolocation.getCurrentPosition(
 );
 }
 useEffect(() => {
+  AsyncStorage.getItem(StorageKeys.CurrentUser)
+  .then(data => {
+    if (data != null) {
+      const us = JSON.parse(data);
+      console.log('user is : ', us);
+      setcnic(us.cnic);
+    }
+  })
+  .catch(error => console.log(error));
   Geolocation.getCurrentPosition(
     position => {
       setLongitude(position.coords.longitude);
@@ -169,14 +195,14 @@ useEffect(() => {
   
       <View
         style={{
-          height: 400,
+          
           width: 460,
           borderTopLeftRadius: 130,
           paddingTop: 0,
           alignItems: 'center',
         }}>
         <View>
-        <TouchableOpacity
+        <Pressable
          onPress={() => navigation.navigate('FIR')}>
        <Image
         source={require('../images/arrow.png')}
@@ -189,7 +215,7 @@ marginLeft:-175,
 
         }}
       />
-      </TouchableOpacity>
+      </Pressable>
       </View>
         <View style={{marginBottom: 19, marginTop:-35}}>
           <Text style={{color: 'white', fontSize: 20, fontWeight:'bold'}}>
@@ -211,7 +237,7 @@ marginLeft:-175,
           {/* <ScrollView style={{backgroundColor:'white',borderRadius:37, width:390, marginLeft:-18}}> */}
           <View style={{flexDirection: 'row', marginBottom: 20}}>
           <View style={{flex: 1, marginLeft: 80}}>
-            <TouchableOpacity
+            <Pressable
               style={{
                
 marginTop:22,
@@ -228,16 +254,16 @@ marginTop:22,
              CASE INFORMATION
               </Text>
            
-            </TouchableOpacity>
+            </Pressable>
             <View style={{width:400, marginLeft:-79}}>
-                <TouchableOpacity   onPress={() =>navigation.navigate('Signup')}>
+                <Pressable   onPress={() =>navigation.navigate('Signup')}>
             <Text style={{color:'#10942e'}}>-----------------------------------------------</Text>
-            </TouchableOpacity>
+            </Pressable>
           
             </View>
           </View>
           <View style={{flex: 2, marginLeft: 60, }}>
-            <TouchableOpacity
+            <Pressable
               style={{
                 //  backgroundColor:'black',
 
@@ -253,7 +279,7 @@ marginTop:22,
               onPress={() =>navigation.navigate('RMVB')}
               >
               <Text style={{color: 'grey', marginTop: 0, fontSize: 10, fontWeight:'bold'}}>VEHICLE INFORMATION</Text>
-            </TouchableOpacity>
+            </Pressable>
             
           </View>
              
@@ -311,10 +337,10 @@ marginTop:22,
             </Text>
 
             <TextInput
-           
+             editable={false}
               style={{
                 borderRadius: 10,
-                color: darkGreen,
+                color: 'grey',
                 marginLeft: 12,
                 paddingHorizontal: 10,
                 width: 350,
@@ -407,7 +433,7 @@ marginTop:22,
                   {selectedDate}
                 </Text>
 
-                <TouchableOpacity
+                <Pressable
                   onPress={datemodvisible}
                   style={{marginLeft: 200, width: 50}}>
                   <Text
@@ -418,7 +444,7 @@ marginTop:22,
                     }}>
                     [:::]
                   </Text>
-                </TouchableOpacity>
+                </Pressable>
               </View>
         
          <Text
@@ -501,7 +527,7 @@ marginTop:22,
               }}>
              LOCATION
             </Text>
-            <TouchableOpacity    onPress={Location} >           
+            <Pressable    onPress={Location} >           
               <View style={{
                 borderRadius: 10,
                 color: darkGreen,
@@ -520,7 +546,7 @@ marginTop:22,
                 </Text>
               
               </View>
-            </TouchableOpacity>
+            </Pressable>
        <Text
               style={{
                 color: '#10942e',
@@ -599,11 +625,16 @@ marginTop:22,
               // secureTextEntry={true}
             />
         </ScrollView>
+        {isKeyboardActive ? (
+              <Text style={{height:180}}></Text>
+            ) : (
+              null
+            )}
         </View>
        
   
         <View style={{marginLeft: 280,marginTop:-20 }}>
-          <TouchableOpacity
+          <Pressable
             style={{
               backgroundColor: '#10942e',
               borderRadius:10,
@@ -624,7 +655,7 @@ marginTop:22,
             <Text style={{color: 'white', fontSize: 15, marginTop: 6}}>
             NEXT
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
 

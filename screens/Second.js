@@ -6,7 +6,7 @@ import {
   View,
   Text,
   Touchable,
-  TouchableOpacity,
+  Pressable,
   ScrollView,
   TextInput,
 } from 'react-native';
@@ -56,7 +56,7 @@ const Second = ({props, navigation}) => {
           <Text style={{color: 'white', fontSize: 19, fontWeight: 'bold'}}>
               CRIME REPORTER
             </Text>
-            {/* <TouchableOpacity>
+            {/* <Pressable>
               <Image
                 source={require('../images/menu.png')}
                 style={{
@@ -67,7 +67,7 @@ const Second = ({props, navigation}) => {
                   marginTop: 12,
                 }}
               />
-            </TouchableOpacity> */}
+            </Pressable> */}
           </View>
       
          
@@ -82,12 +82,12 @@ const Second = ({props, navigation}) => {
               height: 650,
             }}>
                 <View style={{marginBottom:0}}>
-                    <TouchableOpacity
+                    <Pressable
                     onPress={() => navigation.navigate("Home")}
                     >
              <View style={{backgroundColor:'#007711', width:50,height:50, marginLeft:19, marginTop:72, borderRadius:30}}>
              </View>
-          <TouchableOpacity     onPress={() => navigation.navigate("Home")} >
+          <Pressable     onPress={() => navigation.navigate("Home")} >
           <Image
                 source={require('../images/user.png')}
                 style={{
@@ -98,13 +98,13 @@ const Second = ({props, navigation}) => {
                   marginTop:-39,
                 }}
               />
-          </TouchableOpacity>
-          <TouchableOpacity     onPress={() => navigation.navigate("Home")}>
+          </Pressable>
+          <Pressable     onPress={() => navigation.navigate("Home")}>
          <Text style={{color:'black', fontSize:24, fontWeight:"bold", width:183, marginLeft:100,marginTop:-44}}>INLAND CITIZEN</Text>
-          </TouchableOpacity>
+          </Pressable>
           <View style={{backgroundColor:'#b8d9bd', width:35,height:35, marginLeft:329, marginTop:-42, borderRadius:30}}>
              </View>
-          <TouchableOpacity     onPress={() => navigation.navigate("Home")}>
+          <Pressable     onPress={() => navigation.navigate("Home")}>
           <Image
                 source={require('../images/arrow1.png')}
                 style={{
@@ -115,16 +115,16 @@ const Second = ({props, navigation}) => {
                   marginTop:-26,
                 }}
               />
-          </TouchableOpacity>
-          </TouchableOpacity>
+          </Pressable>
+          </Pressable>
 
           </View>
           <View style={{marginLeft:0,marginTop:28,width:400,height:1.5,backgroundColor:'#e1e2e2'}}></View>
           <View style={{marginTop:-44}}>
-            <TouchableOpacity   onPress={() => navigation.navigate("Alogin")}>
+            <Pressable   onPress={() => navigation.navigate("Alogin")}>
              <View style={{backgroundColor:'#ffc600', width:50,height:50, marginLeft:19, marginTop:72, borderRadius:30}}>
              </View>
-          <TouchableOpacity  onPress={() => navigation.navigate("Alogin")}>
+          <Pressable  onPress={() => navigation.navigate("Alogin")}>
           <Image
                 source={require('../images/admin.png')}
                 style={{
@@ -135,13 +135,13 @@ const Second = ({props, navigation}) => {
                   marginTop:-43,
                 }}
               />
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Alogin")}>
+          </Pressable>
+          <Pressable  onPress={() => navigation.navigate("Alogin")}>
          <Text style={{color:'black', fontSize:24, fontWeight:"bold", width:183, marginLeft:100,marginTop:-44}}>ADMIN</Text>
-          </TouchableOpacity>
+          </Pressable>
           <View style={{backgroundColor:'#ffe899', width:35,height:35, marginLeft:329, marginTop:-42, borderRadius:30}}>
              </View>
-          <TouchableOpacity  onPress={() => navigation.navigate("Alogin")}>
+          <Pressable  onPress={() => navigation.navigate("Alogin")}>
           <Image
                 source={require('../images/arrow1.png')}
                 style={{
@@ -152,16 +152,16 @@ const Second = ({props, navigation}) => {
                   marginTop:-26,
                 }}
               />
-          </TouchableOpacity>
+          </Pressable>
           
-          </TouchableOpacity>
+          </Pressable>
           </View>
           <View style={{marginLeft:0,marginTop:28,width:400,height:1.5,backgroundColor:'#e1e2e2'}}></View>
           <View style={{marginTop:-44}}>
-            <TouchableOpacity onPress={() => navigation.navigate("ITP")}>
+            <Pressable onPress={() => navigation.navigate("ITP")}>
              <View style={{backgroundColor:'#38bdbb', width:50,height:50, marginLeft:19, marginTop:72, borderRadius:30}}>
              </View>
-          <TouchableOpacity onPress={() => navigation.navigate("ITP")}>
+          <Pressable onPress={() => navigation.navigate("ITP")}>
           <Image
                 source={require('../images/team.png')}
                 style={{
@@ -172,13 +172,13 @@ const Second = ({props, navigation}) => {
                   marginTop:-43,
                 }}
               />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("ITP")}>
+          </Pressable>
+          <Pressable onPress={() => navigation.navigate("ITP")}>
          <Text style={{color:'black', fontSize:24, fontWeight:"bold", width:183, marginLeft:100,marginTop:-44}}>ITP</Text>
-          </TouchableOpacity>
+          </Pressable>
           <View style={{backgroundColor:'#b3e6e5', width:35,height:35, marginLeft:329, marginTop:-42, borderRadius:30}}>
              </View>
-          <TouchableOpacity onPress={() => navigation.navigate("ITP")}>
+          <Pressable onPress={() => navigation.navigate("ITP")}>
           <Image
                 source={require('../images/arrow3.png')}
                 style={{
@@ -189,9 +189,9 @@ const Second = ({props, navigation}) => {
                   marginTop:-26,
                 }}
               />
-          </TouchableOpacity>
+          </Pressable>
           
-          </TouchableOpacity>
+          </Pressable>
           </View>
           <Image
                 source={require('../images/n.jpg')}

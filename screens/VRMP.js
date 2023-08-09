@@ -8,7 +8,7 @@ import {
   Button,
   Text,
   Touchable,
-  TouchableOpacity,
+  Pressable,
   ScrollView,
   TextInput,
 } from 'react-native';
@@ -45,14 +45,14 @@ const VRMP = ({routes, navigation}) => {
       <View style={{alignItems: 'center', width: 400}}>
         <View
           style={{
-            height: 400,
+          
             width: 460,
             borderTopLeftRadius: 130,
             paddingTop: 0,
             alignItems: 'center',
           }}>
           <View>
-            <TouchableOpacity onPress={() => navigation.navigate('UserPanel')}>
+            <Pressable onPress={() => navigation.navigate('UserPanel')}>
               <Image
                 source={require('../images/arrow.png')}
                 style={{
@@ -63,7 +63,7 @@ const VRMP = ({routes, navigation}) => {
                   marginTop: 12,
                 }}
               />
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <View style={{marginBottom: 19, marginTop: -35}}>
             <Text style={{color: 'white', fontSize: 19, fontWeight: 'bold'}}>
@@ -71,7 +71,7 @@ const VRMP = ({routes, navigation}) => {
             </Text>
           </View>
           {/* <View>
-            <TouchableOpacity>
+            <Pressable>
               <Image
                 source={require('../images/loout.png')}
                 style={{
@@ -82,7 +82,7 @@ const VRMP = ({routes, navigation}) => {
                   marginTop: -44,
                 }}
               />
-            </TouchableOpacity>
+            </Pressable>
           </View> */}
           <View
             style={{
@@ -143,7 +143,53 @@ const VRMP = ({routes, navigation}) => {
                           {index + 1}
                         </Text>
                        
-                        
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                           
+                          }}>
+                        Criminal Image
+                        </Text>
+                        <View
+                style={{
+                  alignItems: 'center',
+                  marginLeft: 140,
+                  width: 90,
+                  height: 87,
+                  backgroundColor: 'black',
+                  borderRadius: 55,
+                  marginTop: 12,
+                }}>
+                <Image
+                  style={{
+                    width: 90,
+                    borderRadius: 55,
+                    height: 87,
+                    resizeMode:'cover',
+                    // marginBottom: 20,
+                    marginLeft: 0,
+                    marginTop: 0,
+                  }}
+                  source={{uri: item.MissingPerson}}
+                />
+                <View style={{marginTop: -50, marginLeft: 49}}>
+                  {/* <Pressable  disabled= {!inputEditable} onPress={handleGalleryPress}>
+                    <Image
+                      source={require('../images/load.png')}
+                      style={{
+                        width: 70,
+                        height: 70,
+
+                     
+                        marginTop: 18,
+                      }}
+                    />
+                  </Pressable> */}
+                </View>
+              </View>
                         <Text
                           style={{
                             color: '#10942e',
@@ -483,7 +529,7 @@ const VRMP = ({routes, navigation}) => {
                        
                       </View >
                       {/* <View style={{ flexDirection:'row'}} > */}
-                      <TouchableOpacity style={{
+                      <Pressable style={{
               backgroundColor: '#10942e',
               borderRadius: 10,
               width: 150,
@@ -493,8 +539,8 @@ const VRMP = ({routes, navigation}) => {
               alignItems: 'center',
               alignContent: 'center'
 
-            }}><Text>Status:{item.Status}</Text></TouchableOpacity>
-                        <TouchableOpacity
+            }}><Text>Status:{item.Status}</Text></Pressable>
+                        <Pressable
             style={{
               backgroundColor: '#10942e',
               borderRadius: 10,
@@ -510,7 +556,7 @@ const VRMP = ({routes, navigation}) => {
             <Text style={{ color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
              TRACK
             </Text>
-          </TouchableOpacity>
+          </Pressable>
          
                       </View>
                     );

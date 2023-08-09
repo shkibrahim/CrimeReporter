@@ -1,7 +1,7 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
-
+import Pie from 'react-native-pie';
 import {
   View,
   Text,
@@ -12,45 +12,71 @@ import {
   TextInput,
 } from 'react-native';
 import Back3 from '../Back3';
-
+import RMP from '../RMP';
 
 const Analytics = ({navigation}) => {
-    const [Complaintdata, setData1] = useState([]);
-    const [RMVdata, setData3] = useState([]);
-    const [firdata, setData2] = useState([]);
-    var Complaint = firestore().collection('AcceptedComplaints');
-    var fir = firestore().collection('AcceptedFIR');
-    var RMV = firestore().collection('AcceptedREPORTS');
-    useEffect(() => {
-        var FilterList=[]
-        var Dataa = async () => {
-          await Complaint.get().then(data => {
-            setData1(data.docs.map(doc => ({...doc.data(), id: doc.id})));
-          });
-          await RMV.get().then(data => {
-            setData3(data.docs.map(doc => ({...doc.data(), id: doc.id})));
-          });
-          await fir.get().then(data => {
-            setData2(data.docs.map(doc => ({...doc.data(), id: doc.id})));
-          });
-        };
-        Dataa();
-      });
+  const [Complaintdata, setData1] = useState([]);
+  const [RMVdata, setData3] = useState([]);
+  const [firdata, setData2] = useState([]);
+  const [missingdata, setData4] = useState([]);
+  const [fc, setfc] = useState(0);
+  const [cc, setcc] = useState(0);
+  const [mc, setmc] = useState(0);
+  const [miss, setmiss] = useState(0);
+  var Complaint = firestore().collection('AcceptedComplaints');
+  var fir = firestore().collection('AcceptedFIR');
+  var missing = firestore().collection('AcceptedMissingPersonREPORTS');
+  var RMV = firestore().collection('AcceptedREPORTS');
+ 
+  useEffect(()=>{
+    const total=(firdata.length+Complaintdata.length+RMVdata.length+missingdata.length)
+    if(total >0 ){
+      var len4=missingdata.length
+    var len1=firdata.length
+    var len2=Complaintdata.length
+    var len3=RMVdata.length
+    var percent=100/(firdata.length+Complaintdata.length+RMVdata.length+missingdata.length)
+    setfc(len1*percent)
+    setcc(len2*percent) 
+    setmc(len3*percent)
+    setmiss(len4*percent)
 
-      const show1=async()=>{
-        var count=0;
-        firdata.forEach(element => {
-            if(element.crimeValue==="Kidnapping"){
-            count+=1;
-        }
-        });
-          alert(count)
+    }
+  },[firdata,Complaintdata,RMVdata,missingdata])
+
+  useEffect(() => {
+    var FilterList = [];
+    var Dataa = async () => {
+      await Complaint.get().then(data => {
+        setData1(data.docs.map(doc => ({...doc.data(), id: doc.id})));
+      });
+      await RMV.get().then(data => {
+        setData3(data.docs.map(doc => ({...doc.data(), id: doc.id})));
+      });
+      await fir.get().then(data => {
+        setData2(data.docs.map(doc => ({...doc.data(), id: doc.id})));
+      });
+      await missing.get().then(data => {
+        setData4(data.docs.map(doc => ({...doc.data(), id: doc.id})));
+      });
+    };
+    Dataa();
+
+  },[]);
+
+  const show1 = async () => {
+    var count = 0;
+    firdata.forEach(element => {
+      if (element.crimeValue === 'Kidnapping') {
+        count += 1;
       }
+    });
+    alert(count);
+  };
 
   return (
     <Back3>
       <View style={{alignItems: 'center', width: 400}}>
-      
         <View
           style={{
             height: 400,
@@ -60,21 +86,8 @@ const Analytics = ({navigation}) => {
             paddingTop: 0,
             alignItems: 'center',
           }}>
-          <View>
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
-              <Image
-                source={require('../../images/menu.png')}
-                style={{
-                  width: 28,
-                  height: 38,
-                  marginLeft: -175,
-                  paddingTop: 12,
-                  marginTop: 12,
-                }}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={{marginBottom: 19, marginTop: -35}}>
+          
+          <View style={{marginBottom: 19, marginTop: 15}}>
             <Text style={{color: 'white', fontSize: 19, fontWeight: 'bold'}}>
               ANALYTICS
             </Text>
@@ -87,173 +100,199 @@ const Analytics = ({navigation}) => {
               marginRight: 9,
               width: 390,
 
-              marginBottom: 30,
-              height: 650,
+              // marginBottom: 30,
+              height: 750,
             }}>
             <View style={{marginLeft: 170, marginTop: -18}}>
               <View>
                 <Image
-                  source={require('../../images/p.png')}
+                  // source={require('../../images/p.png')}
                   style={{
                     width: 400,
                     // borderRadius: 35,
-                    height: 260,
+                    // height: 260,
                     marginLeft: -174,
                     paddingTop: 12,
                     marginTop: 12,
                   }}
                 />
+                
               </View>
-              <View>
-                <Image
-                  source={require('../../images/logo1.png')}
-                  style={{
-                    width: 90,
-                    borderRadius: 0,
-                    height: 80,
-                    marginLeft: -160,
-                    paddingTop: 12,
-                    marginTop: -249,
-                  }}
-                />
-              </View>
-              <View>
-                <Image
-                  source={require('../../images/text.png')}
-                  style={{
-                    width: 410,
-                    borderRadius: 0,
-                    height: 620,
-                    marginLeft: -220,
-
-                    marginTop: -320,
-                  }}
+              
+              <View 
+                style={{position:'absolute' , marginLeft:-60, marginTop:55, marginBottom:50}}
+              >
+              <Pie
+                  radius={92}
+                  innerRadius={30}
+                  sections={[
+                    {
+                      // percentage: (doneTaskCount/(pendingTaskCount+doneTaskCount))*100,
+                      percentage: fc,
+                      color: 'orange',
+                    },
+                    {
+                      // percentage: (pendingTaskCount/(pendingTaskCount+doneTaskCount))*100,
+                      percentage: cc,
+                      color: 'green',
+                    },
+                    {
+                      // percentage: (pendingTaskCount/(pendingTaskCount+doneTaskCount))*100,
+                      percentage: mc,
+                      color: 'red',
+                    },
+                    {
+                      // percentage: (pendingTaskCount/(pendingTaskCount+doneTaskCount))*100,
+                      percentage: miss,
+                      color: 'blue',
+                    },
+                    // {
+                    //   percentage: 6,
+                    //   color: '#CEA9BC',
+                    // },  
+                  ]}
+                  dividerSize={1}
+                  backgroundColor={'white'}
+                  strokeCap={'butt'}
                 />
               </View>
             </View>
-          </View>
+         
+<ScrollView>
+          {/* <View style={{marginTop: -480, marginLeft: -280}}></View>
 
-          <View style={{marginTop: -480, marginLeft: -280, }}></View>
-
-          <View style={{marginLeft: 300, marginTop: -18, }}></View>
-
-          <View style={{flexDirection: 'row', marginBottom: 20, marginTop: 100,backgroundColor: 'white'}}>
+          <View style={{marginLeft: 300, marginTop: -18}}></View> */}
+<View style={{marginLeft:-30, marginTop:130,}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginBottom: 20,
+              marginTop: 100,
+              
+              
+              backgroundColor: 'white',
+            }}>
             <View style={{flex: 1, marginLeft: 73}}>
-              <TouchableOpacity
+              <TouchableOpacity  onPress={() => navigation.navigate('AdminCases')}
                 style={{
-                //   backgroundColor: '#e8bd0f',
+                  //   backgroundColor: '#e8bd0f',
                   alignItems: 'center',
                   borderRadius: 17,
                   marginLeft: -29,
-                  borderColor:'green',
-                  borderWidth:2,
+                  // marginRight:29,
+                  borderColor: 'green',
+                  borderWidth: 2,
                   width: 175,
-                  height: 150,             
+                  height: 150,
                 }}
-                onPress={() => navigation.navigate('AdminVF')}>
-                     <Text
+             >
+                <Text
                   style={{
-                    color: 'red',
+                    color: 'grey',
                     fontSize: 62,
                     marginTop: 7,
                     fontWeight: 'bold',
                   }}>
-                {Complaintdata.length+firdata.length+ RMVdata.length}
+                  {Complaintdata.length + firdata.length + RMVdata.length + missingdata.length} 
                 </Text>
                 <Text
                   style={{
                     color: 'green',
                     fontSize: 22,
-                    marginTop:7,
+                    marginTop: 7,
                     fontWeight: 'bold',
                   }}>
-                 TOTAL CASES
+                  TOTAL CASES
                 </Text>
-            
               </TouchableOpacity>
             </View>
             <View style={{flex: 2, marginLeft: 62}}>
               <TouchableOpacity
                 style={{
-                //   backgroundColor: '#7ba946',
-                  borderColor:'green',
-                  borderWidth:2,
+                  //   backgroundColor: '#7ba946',
+                  borderColor: 'green',
+                  borderWidth: 2,
                   alignItems: 'center',
                   borderRadius: 17,
-                  marginLeft: -10,
+                  marginLeft: 10,
                   width: 175,
                   height: 150,
                 }}
-                onPress={() => navigation.navigate('AdminVC')}>
-              
+                onPress={() => navigation.navigate('FIRAnalytics')}>
                 <Text
                   style={{
-                    color: 'red',
+                    color: 'orange',
                     fontSize: 62,
                     marginTop: 7,
                     fontWeight: 'bold',
                   }}>
-                {firdata.length}
+                  {firdata.length}
                 </Text>
                 <Text
                   style={{
                     color: 'green',
                     fontSize: 22,
-                    marginTop:7,
+                    marginTop: 7,
                     fontWeight: 'bold',
                   }}>
-                FIR
+                  FIR
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
-          <View style={{flexDirection: 'row', marginBottom: 20, marginTop: -5, backgroundColor:'white'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginBottom: 20,
+              marginTop: -5,
+              backgroundColor: 'white',
+            }}>
             <View style={{flex: 1, marginLeft: 30}}>
               <TouchableOpacity
                 style={{
-                //   backgroundColor: '#f37924',
-                  borderColor:'green',
-                  borderWidth:2,
+                  //   backgroundColor: '#f37924',
+                  borderColor: 'green',
+                  borderWidth: 2,
                   alignItems: 'center',
                   borderRadius: 17,
                   marginLeft: 15,
                   width: 175,
                   height: 150,
                 }}
-                onPress={() => navigation.navigate('Signup')}>
-                 <Text
+              >
+                <Text
                   style={{
-                    color: 'red',
+                    color: 'green',
                     fontSize: 62,
                     marginTop: 7,
                     fontWeight: 'bold',
                   }}>
-                {Complaintdata.length}
+                  {Complaintdata.length}
                 </Text>
                 <Text
                   style={{
                     color: 'green',
                     fontSize: 22,
-                    marginTop:7,
+                    marginTop: 7,
                     fontWeight: 'bold',
                   }}>
-                COMPLAINTS
+                  COMPLAINTS
                 </Text>
               </TouchableOpacity>
             </View>
             <View style={{flex: 2, marginLeft: 124}}>
               <TouchableOpacity
                 style={{
-                //   backgroundColor: '#dd2b27',
-                  borderColor:'green',
-                  borderWidth:2,
+                  //   backgroundColor: '#dd2b27',
+                  borderColor: 'green',
+                  borderWidth: 2,
                   alignItems: 'center',
                   borderRadius: 17,
-                  marginLeft: -22,
+                  // marginLeft: 0,
                   width: 175,
                   height: 150,
                 }}
-                onPress={() => navigation.navigate('AdminVMH')}>
+              >
                 <Text
                   style={{
                     color: 'red',
@@ -261,66 +300,99 @@ const Analytics = ({navigation}) => {
                     marginTop: 7,
                     fontWeight: 'bold',
                   }}>
-                {RMVdata.length}
+                  {RMVdata.length}
                 </Text>
                 <Text
                   style={{
                     color: 'green',
                     fontSize: 18,
-                    marginTop:7,
+                    marginTop: 7,
                     fontWeight: 'bold',
                   }}>
-              MISSING VEHICLES
+                  MISSING VEHICLES
                 </Text>
               </TouchableOpacity>
             </View>
-            
           </View>
-          <View style={{flex: 1, marginLeft: 30}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginBottom: 20,
+              marginTop: -5,
+              backgroundColor: 'white',
+            }}>
+            <View style={{flex: 1, marginLeft: 30}}>
               <TouchableOpacity
                 style={{
-                //   backgroundColor: '#4aa8c2',
-                  borderColor:'green',
-                  borderWidth:2,
+                  //   backgroundColor: '#f37924',
+                  borderColor: 'green',
+                  borderWidth: 2,
                   alignItems: 'center',
                   borderRadius: 17,
-                  marginLeft: -35,
-                  width: 364,
-                  height: 100,
-                  marginTop:-8
+                  marginLeft: 15,
+                  width: 175,
+                  height: 150,
                 }}
-                onPress={() => navigation.navigate('AdminRBI')}>
-                {/* <Text
+                >
+                <Text
                   style={{
-                    color: 'white',
-                    fontSize: 52,
-                    marginTop: 20,
+                    color: 'blue',
+                    // borderWidth:2,
+                    // borderColor:'black',
+                    fontSize: 62,
+                    marginTop: 7,
                     fontWeight: 'bold',
                   }}>
-                  ANALYTICS
-                </Text> */}
-                 <Text
-                  style={{
-                    color: 'green',
-                    fontSize: 23,
-                    marginTop: 19,
-                    fontWeight: 'bold',
-                    marginLeft:-2
-                  }}>
-                 VIEW
+                  {missingdata.length}
                 </Text>
                 <Text
                   style={{
-                    color: 'orange',
-                    fontSize: 28,
-                    // marginTop: 19,
+                    color: 'green',
+                    fontSize: 18,
+                    marginTop: 7,
                     fontWeight: 'bold',
-                    marginLeft:-2
                   }}>
-                REPORTS BY ITP'S
+                MISSING PERSON
                 </Text>
               </TouchableOpacity>
             </View>
+            <View style={{flex: 2, marginLeft: 124}}>
+              <TouchableOpacity
+                style={{
+                  //   backgroundColor: '#dd2b27',
+                  borderColor: 'green',
+                  borderWidth: 2,
+                  alignItems: 'center',
+                  borderRadius: 17,
+                  // marginLeft: -22,
+                  width: 175,
+                  height: 150,
+                }}
+                onPress={() => navigation.navigate('CalenderView')}>
+                <Text
+                  style={{
+                    color: 'green',
+                    fontSize: 32,
+                    marginTop: 37,
+                    fontWeight: 'bold',
+                  }}>
+                 CALENDER
+                </Text>
+                <Text
+                  style={{
+                    color: 'red',
+                    fontSize: 26,
+                    marginTop: 7,
+                    fontWeight: 'bold',
+                  }}>
+                 VIEW
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          </View>
+          </ScrollView>
+          </View>
         </View>
       </View>
     </Back3>

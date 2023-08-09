@@ -51,10 +51,9 @@ const FIR = ({navigation}) => {
             alignItems: 'center',
           }}>
           <View>
-            <TouchableOpacity
-                 onPress={() => navigation.navigate('FIR')}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image
-                source={require('../images/menu.png')}
+                source={require('../images/arrow.png')}
                 style={{
                   width: 28,
                   height: 38,
@@ -71,7 +70,7 @@ const FIR = ({navigation}) => {
             </Text>
           </View>
           <View>
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
               <Image
                 source={require('../images/loout.png')}
                 style={{
@@ -82,7 +81,7 @@ const FIR = ({navigation}) => {
                   marginTop:-44,
                 }}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <View
             style={{

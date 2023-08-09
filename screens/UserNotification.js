@@ -1,11 +1,8 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
-import firestore from '@react-native-firebase/firestore';
 
 import {
   View,
-  FlatList,
-  Button,
   Text,
   Touchable,
   TouchableOpacity,
@@ -18,27 +15,7 @@ import {Image} from 'react-native';
 
 
 const UserNotification = ({navigation}) => {
-  const [name, setname] = useState();
-  const [cnic, setcnic] = useState();
-  const [description, setdescription] = useState();
-  const [contact, setcontact] = useState();
-  const [crimeValue, setcrimeValue] = useState();
-  const [districtValue, setdistrictValue] = useState();
-  const [cityValue, setcityValue] = useState();
-  const [policeValue, setpoliceValue] = useState();
-  const [Data, setData] = useState([]);
 
-  var Complaint = firestore().collection('Complaint');
-
-  useEffect(() => {
-    var Dataa = async () => {
-      await Complaint.get().then(data => {
-        setData(data.docs.map(doc => ({...doc.data(), id: doc.id})));
-        console.log(data);
-      });
-    };
-    Dataa();
-  });
 
   return (
     <Back3>
@@ -52,7 +29,7 @@ const UserNotification = ({navigation}) => {
             alignItems: 'center',
           }}>
           <View>
-            <TouchableOpacity onPress={() => navigation.navigate('UserPanel')}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image
                 source={require('../images/arrow.png')}
                 style={{
@@ -65,25 +42,25 @@ const UserNotification = ({navigation}) => {
               />
             </TouchableOpacity>
           </View>
-          <View style={{marginBottom: 19, marginTop: -35}}>
+          <View style={{marginBottom: 12, marginTop:-35}}>
             <Text style={{color: 'white', fontSize: 19, fontWeight: 'bold'}}>
               CRIME REPORTER
             </Text>
           </View>
-          {/* <View>
-            <TouchableOpacity>
+          <View>
+            {/* <TouchableOpacity>
               <Image
-                source={require('../images/loout.png')}
+                source={require('../../images/loout.png')}
                 style={{
                   width: 30,
                   height: 27,
                   marginLeft: 320,
-
-                  marginTop: -44,
+                
+                  marginTop:-44,
                 }}
               />
-            </TouchableOpacity>
-          </View> */}
+            </TouchableOpacity> */}
+          </View>
           <View
             style={{
               backgroundColor: 'white',
@@ -94,506 +71,69 @@ const UserNotification = ({navigation}) => {
               marginBottom: 30,
               height: 650,
             }}>
-            <View
-              style={{
-                marginBottom: 0,
-                marginTop: 15,
-                alignContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text style={{color: 'red', fontSize: 19, fontWeight: 'bold'}}>
-                NOTIFICATIONS
-              </Text>
-            </View>
-            <View style={{}}>
-              <FlatList
-                style={{width: '100%'}}
-                data={Data}
-                horizontal={true}
-                // Horizontal = {true}
-                showsHorizontalScrollIndicator={false}
-                renderItem={({item, index}) => {
-                  if (item != undefined) {
-                    return (
-                    //  <FlatList 
-                    <View style={{ width: 370,
-                        marginRight:19,
-                        height: 640,}}>
-                      <View
-                        style={{
-                        //   backgroundColor: 'white',
-                          borderColor: 'red',
-                          marginBottom: 10,
-                        //   borderRadius: 19,
-                          margin: 10,
-                         
-                          width: 370,
-                          height: 530,
-                        }}>
-                          <ScrollView>
-                        <Text
-                          style={{
-                            color: '#10942e',
-                            fontWeight: 'bold',
-                            marginLeft: 180,
-                            fontSize: 18,
-                            alignItems:'center',
-                            name: 'cnic',
-                          }}>
-                          {index + 1}
-                        </Text>
-                        <Text
-                          style={{
-                            color: '#10942e',
-                            fontWeight: 'bold',
-                            marginLeft: 10,
-                            fontSize: 14,
-                           
-                          }}>
-                          ID: 
-                        </Text>
-                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
-                marginBottom:30,
-                marginVertical: 10,}}>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            // fontWeight: 'bold',
-                            // marginLeft: 10,
-                            marginTop:10,
-                            marginBottom: 10,
-                            fontSize: 14,
-                            name: 'cnic',
-                          }}>
-                          {1+ 2+ Math.Random}
-                        </Text>
-                        </View>
-                        <Text
-                          style={{
-                            color: '#10942e',
-                            marginBottom:-5,
-                            fontWeight: 'bold',
-                            marginLeft: 10,
-                            fontSize: 14,
-                            // name: 'cnic',
-                          }}>
-                          NAME:
-                        </Text>
-                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
-                marginBottom:30,
-                marginVertical: 10,}}>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            // fontWeight: 'bold',
-                            // marginLeft: 10,
-                            marginTop:10,
-                            marginBottom: 10,
-                            fontSize: 14,
-                            
-                          }}>
-                          {item.name}
-                        </Text>
-                        </View>
-                        <Text
-                          style={{
-                            color: '#10942e',
-                            fontWeight: 'bold',
-                            marginLeft: 10,
-                            fontSize: 14,
-                            marginBottom:-5,
-                           
-                          }}>
-                          CNIC:
-                        </Text>
-                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
-                marginBottom:30,
-                marginVertical: 10,}}>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            // fontWeight: 'bold',
-                            // marginLeft: 10,
-                            marginTop:10,
-                            marginBottom: 10,
-                            fontSize: 14,
-                            name: 'cnic',
-                          }}>
-                          {item.cnic}
-                        </Text>
-                        </View>
-                        <Text
-                          style={{
-                            color: '#10942e',
-                            fontWeight: 'bold',
-                            marginLeft: 10,
-                            fontSize: 14,
-                           
-                            marginBottom:-5,
-                          }}>
-                          CONTACT NO:
-                        </Text>
-                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
-                marginBottom:30,
-                marginVertical: 10,}}>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            // fontWeight: 'bold',
-                            // marginLeft: 10,
-                            marginTop:10,
-                            marginBottom: 10,
-                            fontSize: 14,
-                          
-                          }}>
-                          {item.contact}
-                        </Text>
-                        </View>
-                        <Text
-                          style={{
-                            color: '#10942e',
-                            fontWeight: 'bold',
-                            marginBottom: 15,
-                            marginLeft: 10,
-                            fontSize: 14,
-                            marginBottom:-5,
-                           
-                          }}>
-                          VICTIM: 
-                        </Text>
-                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
-                marginBottom:30,
-                marginVertical: 10,}}>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            // fontWeight: 'bold',
-                            // marginLeft: 10,
-                            marginTop:10,
-                            marginBottom: 10,
-                            fontSize: 14,
-                            name: 'cnic',
-                          }}>
-                          {item.victimValue}
-                        </Text>
-                        </View>
-                        <Text
-                          style={{
-                            color: '#10942e',
-                            fontWeight: 'bold',
-                            marginLeft: 10,
-                            fontSize: 14,
-                            marginBottom:-5,
-                          }}>
-                          CRIME TYPE:
-                        </Text>
-                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
-                marginBottom:30,
-                marginVertical: 10,}}>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            // fontWeight: 'bold',
-                            // marginLeft: 10,
-                            marginTop:10,
-                            marginBottom: 10,
-                            fontSize: 14,
-                         
-                          }}>
-                          {item.crimeValue}
-                        </Text>
-                        </View>
-                        <Text
-                          style={{
-                            color: '#10942e',
-                            fontWeight: 'bold',
-                            marginLeft: 10,
-                            marginBottom:-5,
-                            fontSize: 14,
-                            
-                          }}>
-                          DISTRICT: 
-                        </Text>
-                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
-                marginBottom:30,
-                marginVertical: 10,}}>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            // fontWeight: 'bold',
-                            // marginLeft: 10,
-                            marginTop:10,
-                            marginBottom: 10,
-                            fontSize: 14,
-                           
-                          }}>
-                          {item.districtValue}
-                        </Text>
-                        </View>
-                        <Text
-                          style={{
-                            color: '#10942e',
-                            fontWeight: 'bold',
-                            marginLeft: 10,
-                            fontSize: 14,
-                            marginBottom:-5,
-                          }}>
-                          CITY: 
-                        </Text>
-                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
-                marginBottom:30,
-                marginVertical: 10,}}>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            // fontWeight: 'bold',
-                            // marginLeft: 10,
-                            marginTop:10,
-                            marginBottom: 10,
-                            fontSize: 14,
-                           
-                          }}>
-                          {item.cityValue}
-                        </Text>
-                        </View>
-                        <Text
-                          style={{
-                            color: '#10942e',
-                            fontWeight: 'bold',
-                            marginLeft: 10,
-                            fontSize: 14,
-                           
-                            marginBottom:-5,
-                          }}>
-                          POLICE STATION: 
-                        </Text>
-                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
-                marginBottom:30,
-                marginVertical: 10,}}>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            // fontWeight: 'bold',
-                            // marginLeft: 10,
-                            marginTop:10,
-                            marginBottom: 10,
-                            fontSize: 14,
-                           
-                          }}>
-                          {item.policeValue}
-                        </Text>
-                        </View>
-                        <Text
-                          style={{
-                            color: '#10942e',
-                            fontWeight: 'bold',
-                            marginLeft: 10,
-                            fontSize: 14,
-                            marginBottom:-5,
-                          }}>
-                          DESCRIPTION: 
-                        </Text>
-
-                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
-                marginBottom:30,
-                marginVertical: 10,}}>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            // fontWeight: 'bold',
-                            // marginLeft: 10,
-                            marginTop:10,
-                            marginBottom: 10,
-                            fontSize: 14,
-                           
-                          }}>
-                          {item.description}
-                        </Text>
-                        </View>
-                        <Text
-                          style={{
-                            color: '#10942e',
-                            fontWeight: 'bold',
-                            marginLeft: 10,
-                            fontSize: 14,
-                            name: 'cnic',
-                            
-                            marginBottom:-5,
-                          }}>
-                          SUSPECT NAME: 
-                        </Text>
-                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
-                marginBottom:30,
-                marginVertical: 10,}}>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            // fontWeight: 'bold',
-                            // marginLeft: 10,
-                            marginTop:10,
-                            marginBottom: 10,
-                            fontSize: 14,
-                            name: 'cnic',
-                          }}>
-                          {item.suspectname}
-                        </Text>
-                        </View>
-                        <Text
-                          style={{
-                            color: '#10942e',
-                            fontWeight: 'bold',
-                            marginLeft: 10,
-                            fontSize: 14,
-                            
-                            marginBottom:-5,
-                          }}>
-                          SUSPECT CONTACT INFORMATION:
-                        </Text>
-                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
-                marginBottom:30,
-                marginVertical: 10,}}>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            // fontWeight: 'bold',
-                            // marginLeft: 10,
-                            marginTop:10,
-                            marginBottom: 10,
-                            fontSize: 14,
-                            
-                          }}>
-                          {item.suspectcontact}
-                        </Text>
-                        </View>
-                        <Text
-                          style={{
-                            color: '#10942e',
-                            fontWeight: 'bold',
-                            marginLeft: 10,
-                            fontSize: 14,
-                           
-                            marginBottom:-5,
-                          }}>
-                          SUSPECT REASON: {item.reason}
-                        </Text>
-                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
-                marginBottom:30,
-                marginVertical: 10,}}>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            // fontWeight: 'bold',
-                            // marginLeft: 10,
-                            marginTop:10,
-                            marginBottom: 10,
-                            fontSize: 14,
-                           
-                          }}>
-                          {item.reason}
-                        </Text>
-                        </View>
-                        <Text
-                          style={{
-                            color: '#10942e',
-                            fontWeight: 'bold',
-                            marginLeft: 10,
-                            fontSize: 14,
-                           
-                            marginBottom:-5,
-                          }}>
-                          SUSPECT RELATION WITH YOU: 
-                        </Text>
-                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
-                marginBottom:30,
-                marginVertical: 10,}}>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            // fontWeight: 'bold',
-                            // marginLeft: 10,
-                            marginTop:10,
-                            marginBottom: 10,
-                            fontSize: 14,
-                            
-                          }}>
-                          {item.name}
-                        </Text>
-                        </View>
-                        <Text
-                          style={{
-                            color: '#10942e',
-                            fontWeight: 'bold',
-                            marginLeft: 10,
-                            fontSize: 14,
-                            
-                            marginBottom:-5,
-                          }}>
-                          SUSPECT DESCRIPTION:
-                        </Text>
-                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
-                marginBottom:30,
-                marginVertical: 10,}}>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            // fontWeight: 'bold',
-                            // marginLeft: 10,
-                            marginTop:10,
-                            marginBottom: 10,
-                            fontSize: 14,
-                            
-                          }}>
-                          {item.SuspectDescription}
-                        </Text>
-                        </View>
-                        </ScrollView>
-
-                      
-                        <View style={{ marginBottom: -5}}>
-          {/* <TouchableOpacity
-            style={{
-              backgroundColor: '#10942e',
-              borderRadius: 10,
-              width: 150,
-              height: 50,
-              alignItems: 'center',
-
-            }}
-        //    onPress={Users}
-           >
-            <Text style={{color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
-              SUBMIT
-            </Text>
-          </TouchableOpacity> */}
-        </View>
-                       
-                      </View>
-                        <TouchableOpacity
-            style={{
-              backgroundColor: '#10942e',
-              borderRadius: 10,
-              width: 150,
-              marginLeft: 122,
-             marginTop:30,
-              height: 50,
-              alignItems: 'center',
-              alignContent: 'center'
-
-            }}
-        //    onPress={Users}
-           >
-            <Text style={{color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
-             TRACK
-            </Text>
-          </TouchableOpacity>
-                      </View>
-                    );
-                  }
-                }}
-              />
+            <View style={{marginLeft: 170, marginTop: -18}}>
+            <View style={{marginTop:90, marginLeft:-72}}>
+                <Text style={{color:'red', fontWeight:'bold', fontSize:20, fontFamily:'Impact'}}>VIEW NOTIFICATIONS</Text></View>
+              <View>
+                <Image
+                  source={require('../images/p.png')}
+                  style={{
+                    width: 350,
+                    borderRadius:12,
+                    height: 150,
+                    marginLeft: -150,
+                    paddingTop: 12,
+                    marginTop: 12,
+                  }}
+                />
+              </View>
+          
+              <View style={{marginTop: -190, marginLeft: -140}}>
+              <Image
+                  source={require('../images/logo1.png')}
+                  style={{
+                    width: 130,
+                    borderRadius: 35,
+                    height: 100,
+                    marginLeft:105,
+                   
+                    marginTop: 72,
+                  }}
+                />
+              </View>
+              
             </View>
           </View>
+        
+          
+          
+         
+          
+          
+         
+          <View style={{marginLeft: 0, marginTop: -320}}>
+          
+          </View>
+          <View style={{alignSelf:'center',backgroundColor: '#b8b8b8',marginLeft:0, width:370,height:50, borderRadius:8,marginTop:8 }}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('UserNVMC')}>
+              <Text style={{fontSize:20, marginLeft:90, fontWeight:'bold', color:'#10942e', marginTop:9, alignContent:'center'}}>MISSING CRIMINAL</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{backgroundColor: '#b8b8b8',marginLeft:0, width:370,height:50, borderRadius:8,marginTop:8 }}>
+            <TouchableOpacity  onPress={() => navigation.navigate('UserNVMV')}>
+              <Text style={{fontSize:20, marginLeft:95, fontWeight:'bold', color:'#10942e', marginTop:9}}>MISSING VEHICLE</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{backgroundColor: '#b8b8b8',marginLeft:0, width:370,height:50, borderRadius:8,marginTop:8 }}>
+            <TouchableOpacity  onPress={() => navigation.navigate('UserNVMD')}>
+              <Text style={{fontSize:20, marginLeft:80, fontWeight:'bold', color:'#10942e', marginTop:9}}>MISSING DOCUMENTS</Text>
+            </TouchableOpacity>
+          </View>
+        
+   
         </View>
+       
       </View>
     </Back3>
   );

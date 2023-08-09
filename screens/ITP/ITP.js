@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
-  Touchable,
+  Touchable,ActivityIndicator,
   TouchableOpacity,
   TextInput,
   Button,
@@ -16,6 +16,7 @@ import {Image} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 const ITP = ({navigation}) => {
   const [Teampass, setTeampass] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [Teamid, setTeamid] = useState();
   // const {cnic, pass} = Data([]);
   const [Data, setData] = useState([]);
@@ -24,6 +25,7 @@ const ITP = ({navigation}) => {
       alert ('Fill the CNIC and password')
     }
     else{
+      setIsLoading(true);
       firestore()
         .collection('Team')
         .where('TeamID', '==', Teamid)
@@ -38,7 +40,7 @@ const ITP = ({navigation}) => {
             querySnapshot.forEach((documentSnapshot) => {
               const user = documentSnapshot.data();
               // alert('Welcome ');
-              navigation.navigate("ITPPanel")
+              navigation.replace("ITPPanel")
             });
           }
         })
@@ -116,7 +118,7 @@ const ITP = ({navigation}) => {
             value= {Teamid}
 
             placeholderTextColor="grey"
-            placeholder="Enter CNIC"
+            placeholder="Enter ID"
             keyboardType={'numeric'}
           />
 
@@ -181,6 +183,10 @@ const ITP = ({navigation}) => {
               paddingVertical: 5,
               marginVertical: 1,
             }}>
+              
+{isLoading ? (
+                <ActivityIndicator color="white" />
+              ) : (
             <Text
               style={{
                 color: 'white',
@@ -190,6 +196,7 @@ const ITP = ({navigation}) => {
               }}>
               SIGN IN
             </Text>
+                )}
           </TouchableOpacity>
           {/* <View
             style={{

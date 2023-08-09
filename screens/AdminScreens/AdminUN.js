@@ -121,17 +121,23 @@ const AdminUN = ({navigation}) => {
             </TouchableOpacity>
           </View>
           <View style={{backgroundColor: '#b8b8b8',marginLeft:0, width:370,height:50, borderRadius:8,marginTop:8 }}>
-            <TouchableOpacity  onPress={() => navigation.navigate('AdminRMV')}>
+            <TouchableOpacity  
+            onPress={() => navigation.navigate('AdminRMV')}
+            >
               <Text style={{fontSize:20, marginLeft:45, fontWeight:'bold', color:'#10942e', marginTop:9}}>REGISTER MISSING VEHICLE</Text>
             </TouchableOpacity>
           </View>
           <View style={{backgroundColor: '#b8b8b8',marginLeft:0, width:370,height:50, borderRadius:8,marginTop:8 }}>
-            <TouchableOpacity  onPress={() => navigation.navigate('AdminRMD')}>
+            <TouchableOpacity 
+             onPress={() => navigation.navigate('AdminRMD')}
+            >
               <Text style={{fontSize:20, marginLeft:36, fontWeight:'bold', color:'#10942e', marginTop:9}}>REGISTER MISSING DOCUMENTS</Text>
             </TouchableOpacity>
           </View>
           <View style={{backgroundColor: '#b8b8b8',marginLeft:0, width:370,height:50, borderRadius:8,marginTop:8 }}>
-            <TouchableOpacity  onPress={() => navigation.navigate('AdminVRNotification')}>
+            <TouchableOpacity 
+             onPress={() => navigation.navigate('AdminVRNotification')}
+             >
               <Text style={{fontSize:20, fontWeight:'bold', color:'#10942e',alignSelf:'center', marginTop:9}}>VIEW RESPONSE</Text>
             </TouchableOpacity>
           </View>

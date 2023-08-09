@@ -136,14 +136,14 @@ const [track, settrack] = useState([
 // Data = AData,
 //   }
 
-const deny=async (item)=>{
-    await firestore()
-    .collection('Complaint')
-    .doc(item.id)
-    .update({
-      Status: "Declined",
-    });
-}
+// const deny=async (item)=>{
+//     await firestore()
+//     .collection('Complaint')
+//     .doc(item.id)
+//     .update({
+//       Status: "Declined",
+//     });
+// }
 
   return (
     <Back3>
@@ -723,7 +723,7 @@ const deny=async (item)=>{
               backgroundColor: '#10942e',
               borderRadius: 10,
               width: 150,
-              marginLeft: 22,
+              marginLeft: 112,
              marginTop:30,
               height: 50,
               alignItems: 'center',
@@ -736,13 +736,13 @@ const deny=async (item)=>{
            >
 
             <Text style={{color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
-             ACCEPT 
+             SEEN
             </Text>
           </TouchableOpacity>
         
 
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{
               backgroundColor: '#10942e',
               borderRadius: 10,
@@ -759,7 +759,7 @@ const deny=async (item)=>{
             <Text style={{color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
              DECLINE
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
          
         
                       </View>

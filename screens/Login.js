@@ -3,10 +3,9 @@ import {
   View,
   Text,
   Touchable,
-  TouchableOpacity,
-  TextInput,
+  Pressable,
+  TextInput, ActivityIndicator,
   Button,
-  AsyncStorage
 } from 'react-native';
 import Background2 from '../screens/Backround2';
 import Btn from './Btn';
@@ -15,16 +14,21 @@ import {Image} from 'react-native';
 import {green} from './constants';
 import Field from './Field';
 import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { StorageKeys } from '../Data/StorageKeys';
+
 const Login = ({navigation}) => {
   const [Loginpass, setLoginpass] = useState();
   const [Logincnic, setLogincnic] = useState();
   // const {cnic, pass} = Data([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [Data, setData] = useState([]);
   var Login = () => {
     if(Logincnic== null || Loginpass == null){
       alert ('Fill the CNIC and password')
     }
     else{
+      setIsLoading(true);
       firestore()
         .collection('Users')
         .where('cnic', '==', Logincnic)
@@ -32,14 +36,19 @@ const Login = ({navigation}) => {
         .get()
         .then((querySnapshot) => {
           if(querySnapshot.empty){
-            alert('Incorrect CNIC or password!')
+            alert('Incorrect CNIC or password!')  
           }
           else{
             // Login successful
-            querySnapshot.forEach((documentSnapshot) => {
+              querySnapshot.forEach((documentSnapshot) => {
               const user = documentSnapshot.data();
-              // alert('Welcome ');
-              navigation.navigate("UserPanel")
+
+              AsyncStorage.setItem(StorageKeys.CurrentUser, JSON.stringify(user))
+              .then(() => {
+                console.log('User Stored Successfully')
+              })
+              .catch((error) => console.log(error));
+              navigation.replace("UserPanel")
             });
           }
         })
@@ -149,7 +158,7 @@ const Login = ({navigation}) => {
 
           {/* <Btn bgColor={green} textColor='white' btnLabel="Login" onPress={()=>validate} /> */}
 
-          <TouchableOpacity
+          <Pressable
             onPress={Login}
             style={{
               backgroundColor: '#10942e',
@@ -161,6 +170,10 @@ const Login = ({navigation}) => {
               paddingVertical: 5,
               marginVertical: 1,
             }}>
+
+{isLoading ? (
+                <ActivityIndicator color="white" />
+              ) : (
             <Text
               style={{
                 color: 'white',
@@ -170,7 +183,8 @@ const Login = ({navigation}) => {
               }}>
               SIGN IN
             </Text>
-          </TouchableOpacity>
+                   )}
+          </Pressable>
           <View
             style={{
               display: 'flex',
@@ -181,12 +195,12 @@ const Login = ({navigation}) => {
             <Text style={{fontSize: 16, color: 'grey'}}>
               Don't have an account?{' '}
             </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+            <Pressable onPress={() => navigation.navigate('Signup')}>
               <Text
                 style={{color: '#10942e', fontWeight: 'bold', fontSize: 16}}>
                 Signup
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <Text style={{fontSize: 14, color: 'red', marginTop: 20}}>
             PPF expects all users to act responsibly while using CRMPF{' '}
@@ -198,11 +212,11 @@ const Login = ({navigation}) => {
               justifyContent: 'center',
             }}>
             <Text style={{fontSize: 14, color: 'red'}}>For guidance read </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+            <Pressable onPress={() => navigation.navigate('Signup')}>
               <Text style={{color: 'red', fontWeight: 'bold', fontSize: 14}}>
                 citizen's guidelines manual
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <View
             style={{
@@ -214,13 +228,13 @@ const Login = ({navigation}) => {
             <Text style={{fontSize: 16, color: 'grey'}}>
               In case of any issue.{' '}
             </Text>
-            <TouchableOpacity >
+            <Pressable >
             {/* onPress={() => navigation.navigate('Signup')} */}
               <Text
                 style={{color: '#10942e', fontWeight: 'bold', fontSize: 16}}>
                 Contact Us
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
       </View>

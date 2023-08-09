@@ -10,7 +10,7 @@ import {
   Button,
   Text,StyleSheet,
   Touchable,
-  TouchableOpacity,
+  Pressable,
   ScrollView,
   TextInput,
 } from 'react-native';
@@ -20,7 +20,7 @@ import {Image} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 
-const AdminMP = ({routes, navigation}) => {
+const AdminMP = ({route, navigation}) => {
   const [name, setname] = useState();
   const [cnic, setcnic] = useState();
   const [description, setdescription] = useState();
@@ -53,15 +53,15 @@ const AdminMP = ({routes, navigation}) => {
     Dataa();
   });
 
-  const deny=async (item)=>{
-    await firestore()
-    .collection('RMP')
-    .doc(item.id)
-    .update({
-      Status: "Declined",
-    });
-    alert('declined')
-}
+//   const deny=async (item)=>{
+//     await firestore()
+//     .collection('RMP')
+//     .doc(item.id)
+//     .update({
+//       Status: "Declined",
+//     });
+//     alert('declined')
+// }
 const Accept = async (item) => { 
     const Go= {
         ID: item.ID,
@@ -111,14 +111,14 @@ const Accept = async (item) => {
       <View style={{alignItems: 'center', width: 400}}>
         <View
           style={{
-            height: 400,
+           
             width: 460,
             borderTopLeftRadius: 130,
             paddingTop: 0,
             alignItems: 'center',
           }}>
           <View>
-            <TouchableOpacity onPress={() => navigation.navigate('UserPanel')}>
+            <Pressable onPress={() => navigation.navigate('UserPanel')}>
               <Image
                 source={require('../../images/arrow.png')}
                 style={{
@@ -129,7 +129,7 @@ const Accept = async (item) => {
                   marginTop: 12,
                 }}
               />
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <View style={{marginBottom: 19, marginTop: -35}}>
             <Text style={{color: 'white', fontSize: 19, fontWeight: 'bold'}}>
@@ -137,7 +137,7 @@ const Accept = async (item) => {
             </Text>
           </View>
           {/* <View>
-            <TouchableOpacity>
+            <Pressable>
               <Image
                 source={require('../images/loout.png')}
                 style={{
@@ -148,7 +148,7 @@ const Accept = async (item) => {
                   marginTop: -44,
                 }}
               />
-            </TouchableOpacity>
+            </Pressable>
           </View> */}
           <View
             style={{
@@ -208,7 +208,53 @@ const Accept = async (item) => {
                           }}>
                           {index + 1}
                         </Text>
-                       
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                           
+                          }}>
+                      Missing Person Image
+                        </Text>
+                        <View
+                style={{
+                  alignItems: 'center',
+                  marginLeft: 140,
+                  width: 90,
+                  height: 87,
+                  backgroundColor: 'black',
+                  borderRadius: 55,
+                  marginTop: 12,
+                }}>
+                <Image
+                  style={{
+                    width: 90,
+                    borderRadius: 55,
+                    height: 87,
+                    resizeMode:'cover',
+                    // marginBottom: 20,
+                    marginLeft: 0,
+                    marginTop: 0,
+                  }}
+                  source={{uri: item.MissingPerson}}
+                />
+                <View style={{marginTop: -50, marginLeft: 49}}>
+                  {/* <Pressable  disabled= {!inputEditable} onPress={handleGalleryPress}>
+                    <Image
+                      source={require('../images/load.png')}
+                      style={{
+                        width: 70,
+                        height: 70,
+
+                     
+                        marginTop: 18,
+                      }}
+                    />
+                  </Pressable> */}
+                </View>
+              </View>
                         
                         <Text
                           style={{
@@ -571,7 +617,7 @@ const Accept = async (item) => {
               zIndexInverse={40}
             />
 
-             {/* <TouchableOpacity
+             {/* <Pressable
             style={{
               backgroundColor: '#10942e',
               borderRadius: 10,
@@ -591,7 +637,7 @@ const Accept = async (item) => {
             <Text style={{color: 'white', fontSize:17, marginTop: 4, fontWeight:'bold'}}>
              Update
             </Text>
-          </TouchableOpacity> */}
+          </Pressable> */}
           </View>
           
         )}
@@ -632,12 +678,12 @@ const Accept = async (item) => {
         </View>
                        
                       </View >
-                      <TouchableOpacity
+                      <Pressable
             style={{
               backgroundColor: '#10942e',
               borderRadius: 10,
               width: 150,
-              marginLeft: 22,
+              marginLeft: 12,
              marginTop:30,
               height: 50,
               alignItems: 'center',
@@ -649,10 +695,10 @@ const Accept = async (item) => {
            
            >
             <Text style={{color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
-             ACCEPT 
+             SEEN 
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </Pressable>
+          <Pressable
             style={{
               backgroundColor: '#10942e',
               borderRadius: 10,
@@ -664,16 +710,21 @@ const Accept = async (item) => {
               alignContent: 'center'
 
             }}
-           onPress={()=>{deny(item)}}
+             onPress={() => navigation.navigate('AdminSearchMP',{  
+              MissingPerson:item.MissingPerson,
+              MPcnic: item.MPcnic,
+              
+             
+             })}
            >
             <Text style={{color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
-             DECLINE
+             SEARCH
             </Text>
-          </TouchableOpacity>
+          </Pressable>
                     
               
                       {/* <View style={{ flexDirection:'row'}} > */}
-                      {/* <TouchableOpacity style={{
+                      {/* <Pressable style={{
               backgroundColor: '#10942e',
               borderRadius: 10,
               width: 150,
@@ -683,8 +734,8 @@ const Accept = async (item) => {
               alignItems: 'center',
               alignContent: 'center'
 
-            }}><Text>Status:{item.Status}</Text></TouchableOpacity>
-                        <TouchableOpacity
+            }}><Text>Status:{item.Status}</Text></Pressable>
+                        <Pressable
             style={{
               backgroundColor: '#10942e',
               borderRadius: 10,
@@ -700,7 +751,7 @@ const Accept = async (item) => {
             <Text style={{ color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
              TRACK
             </Text>
-          </TouchableOpacity> */}
+          </Pressable> */}
          
                       </View>
                     );

@@ -164,10 +164,10 @@ const Accept = async (item) => {
                 // alignItems: 'center',
               }}>
               <Text style={{color: '#10942e', fontSize: 19, fontWeight: 'bold'}}>
-              Case ID:
+              Case ID: 2424Acok4
               </Text>
               <Text style={{color: '#10942e', fontSize: 19, fontWeight: 'bold'}}>
-              Case Type:
+              Case Type: Murder
               </Text>
             </View>
             <View style={{}}>

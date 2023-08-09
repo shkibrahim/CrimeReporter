@@ -46,15 +46,15 @@ const AdminVMH = ({routes, navigation}) => {
     Dataa();
   });
 
-  const deny=async (item)=>{
-    await firestore()
-    .collection('RMV')
-    .doc(item.id)
-    .update({
-      Status: "Declined",
-    });
-    alert('declined')
-}
+//   const deny=async (item)=>{
+//     await firestore()
+//     .collection('RMV')
+//     .doc(item.id)
+//     .update({
+//       Status: "Declined",
+//     });
+//     alert('declined')
+// }
 const Accept = async (item) => { 
     const Go= {
         ID: item.ID,
@@ -674,10 +674,10 @@ const Accept = async (item) => {
            
            >
             <Text style={{color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
-             ACCEPT 
+             SEEN 
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{
               backgroundColor: '#10942e',
               borderRadius: 10,
@@ -694,7 +694,7 @@ const Accept = async (item) => {
             <Text style={{color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
              DECLINE
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
                     
               
                       {/* <View style={{ flexDirection:'row'}} > */}

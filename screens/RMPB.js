@@ -1,14 +1,14 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form'
-
+import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import {
   View,
   Text,
-  Touchable,
+  Touchable, ActivityIndicator,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,Keyboard,
   ScrollView,
   TextInput,
 } from 'react-native';
@@ -23,7 +23,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import ImagePicker from 'react-native-image-picker';
 
 const RMPB = ({navigation,route}) => {
-    const [CompanyOpen, setCompanyOpen] = useState();
+    const [MPcnic, setMPcnic] = useState();
     const [CompanyValue, setCompanyValue] = useState();
     const [Company, setCompany] = useState([
       { label: "Honda", value: "Honda" },
@@ -63,11 +63,28 @@ const RMPB = ({navigation,route}) => {
          });
         
     };
+    const [isKeyboardActive, setIsKeyboardActive] = useState(false);
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => setIsKeyboardActive(true),
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => setIsKeyboardActive(false),
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
   const [MissingPersonName, setMissingPersonName] = useState();
   const [Age, setAge] = useState();
   const [Model, setModel] = useState();
   const [trackValue, settrackValue] = useState("pending");
   const [Color, setColor] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [VisualDescription, setVisualDescription] = useState();
   const { name } = route.params;
   const { cnic} = route.params;
@@ -86,13 +103,27 @@ const RMPB = ({navigation,route}) => {
   var GoBack = () => { 
     navigation.goBack();
   }
-  var RMV = () => {
-    if(name== null || cnic== null || contact==  null  || districtValue== null || GenderValue == null||  cityValue== null || policeValue== null ||  Relation == null ||  VisualDescription == null || MissingPersonName == null || Age == null  || selectedDate == null || longitude== null || latitude == null )
+  var RMV = async() => {
+
+
+    
+    if(name== null || cnic== null || contact==  null  || districtValue== null || GenderValue == null||  cityValue== null || policeValue== null ||  Relation == null ||  VisualDescription == null || MissingPersonName == null || Age == null  || selectedDate == null ||  MPcnic == null )
     {
 alert ("Fill the information")
     }
     // console.log(cityValue)
     else{
+      setIsLoading(true);
+      const reference = storage().ref(selectedImage1.assets[0].fileName);
+    const pathToFile = selectedImage;
+
+    await reference.putFile(pathToFile);
+
+    const url = await storage()
+      .ref(selectedImage1.assets[0].fileName)
+      .getDownloadURL();
+    setSelectedImageUrl(url);
+
     firestore()
       .collection('RMP')
       .add({
@@ -103,6 +134,7 @@ alert ("Fill the information")
         latitude:latitude,
         contact: contact,
         ID:ID,
+      MPcnic:MPcnic,
         // selectedImage : selectedImage,
         MissingPersonName : MissingPersonName,
         districtValue:districtValue,
@@ -110,7 +142,7 @@ alert ("Fill the information")
         policeValue:policeValue,
         Relation: Relation,
         trackValue:trackValue,
-        
+        MissingPerson:url,
        Age : Age,
        GenderValue :GenderValue,
         VisualDescription: VisualDescription,
@@ -127,6 +159,28 @@ alert ("Fill the information")
     }
     
   }
+  const [selectedImage1, setSelectedImage1] = useState(null);
+
+  const [selectedImageUrl, setSelectedImageUrl] = useState('');
+
+  const FIR2= async () => {
+    console.log('111111: ',selectedImage1.assets[0].fileName)
+    console.log('111111: ',selectedImage)
+    const reference = storage().ref(selectedImage1.assets[0].fileName);
+    const pathToFile = selectedImage;
+
+    await reference.putFile(pathToFile);
+
+    const url = await storage()
+      .ref(selectedImage1.assets[0].fileName)
+      .getDownloadURL();
+    setSelectedImageUrl(url);
+
+    console.log('111111: ',selectedImage1.assets[0].fileName)
+    console.log('111111: ',selectedImage)
+    console.log('111111: ',url)
+  };
+
   const [selectedImage, setSelectedImage] = useState(null);
 
   const launchCam=()=>{
@@ -157,13 +211,14 @@ alert ("Fill the information")
       mediaType: 'photo',
       includeBase64: false,
     };
-  
+
     launchImageLibrary(options, response => {
       if (response.assets) {
         setSelectedImage(response.assets[0].uri);
+        setSelectedImage1(response);
       }
     });
-  }
+  };
   return (
     <Back3>
     <View style={{alignItems: 'center', width: 400}}>
@@ -171,14 +226,14 @@ alert ("Fill the information")
   
       <View
         style={{
-          height: 400,
+       
           width: 460,
           borderTopLeftRadius: 130,
           paddingTop: 0,
           alignItems: 'center',
         }}>
        <View>
-        <TouchableOpacity onPress={GoBack}>
+        <Pressable onPress={GoBack}>
        <Image
         source={require('../images/arrow.png')}
         style={{
@@ -190,7 +245,7 @@ marginLeft:-175,
 
         }}
       />
-      </TouchableOpacity>
+      </Pressable>
       </View>
         <View style={{marginBottom: 19, marginTop:-35}}>
           <Text style={{color: 'white', fontSize: 20, fontWeight:'bold'}}>
@@ -212,7 +267,7 @@ marginLeft:-175,
           {/* <ScrollView style={{backgroundColor:'white',borderRadius:37, width:390, marginLeft:-18}}> */}
           <View style={{flexDirection: 'row', marginBottom: 20}}>
           <View style={{flex: 1, marginLeft: 80}}>
-            <TouchableOpacity
+            <Pressable
               style={{
                
 marginTop:22,
@@ -229,11 +284,11 @@ marginTop:22,
               CASE REGISTERER
               </Text>
            
-            </TouchableOpacity>
+            </Pressable>
          
           </View>
           <View style={{flex: 2, marginLeft: 60, }}>
-            <TouchableOpacity 
+            <Pressable 
               style={{
                 //  backgroundColor:'black',
 
@@ -248,7 +303,7 @@ marginTop:22,
               }}
              >
               <Text style={{color: '#10942e', fontSize: 10, fontWeight:'bold'}}>M.PERSON INFORMATION</Text>
-            </TouchableOpacity>
+            </Pressable>
             <View style={{width:400, marginLeft:-29,marginTop:-7}}>
               
             <Text style={{color:'#10942e'}}>---------------------------------------------------------------</Text>
@@ -289,6 +344,38 @@ marginTop:22,
               value={MissingPersonName}
               onChangeText={setMissingPersonName}
               placeholder="Enter Name"
+              // secureTextEntry={true}
+            />
+             <Text
+              style={{
+                color: '#10942e',
+                marginTop:15,
+                fontWeight: 'bold',
+                marginLeft: 15,
+                fontSize: 14,
+              }}>
+            MISSING PERSON CNIC
+            </Text>
+
+            <TextInput
+           
+              style={{
+                borderRadius: 10,
+                color: darkGreen,
+                marginLeft: 12,
+                paddingHorizontal: 10,
+                width: 350,
+                height:50,
+                borderColor: "#B7B7B7",
+                marginBottom:30,
+                backgroundColor: '#eceded',
+                marginVertical: 10,
+              }}
+              placeholderTextColor="grey"
+              value={MPcnic}
+              onChangeText={setMPcnic}
+              placeholder="Enter Cnic"
+              keyboardType={'numeric'}
               // secureTextEntry={true}
             />
             <Text
@@ -345,7 +432,7 @@ marginTop:22,
           marginBottom: 20,marginLeft:-300, marginTop:10}} source={{uri: selectedImage}} />
       )}</View>
 
-            <TouchableOpacity  onPress= {handleGalleryPress}>
+            <Pressable  onPress= {handleGalleryPress}>
               <View style={{
                 borderRadius: 10,
                 color: darkGreen,
@@ -373,7 +460,7 @@ marginLeft:295,
       />
 
               </View>
-            </TouchableOpacity>
+            </Pressable>
             <Text
               style={{
                 color: '#10942e',
@@ -447,25 +534,42 @@ marginLeft:295,
             />
            
         </ScrollView>
+        {isKeyboardActive ? (
+              <Text style={{height:180}}></Text>
+            ) : (
+              null
+            )}
         </View>
   
         <View style={{marginLeft: 280, }}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#10942e',
-              borderRadius: 10,
-              width: 200,
-              height: 50,
-              alignItems: 'center',
-              marginLeft:-245,
-              marginTop:-22
-            }}
-            // onPress={() => navigation.navigate('UserPanel')}
-           onPress={RMV}>
-            <Text style={{color: 'white', fontSize: 19, marginTop: 12, fontWeight:'bold'}}>
-         REGISTER REPORT
-            </Text>
-          </TouchableOpacity>
+        <Pressable
+              style={{
+                backgroundColor: '#10942e',
+                borderRadius: 10,
+                width: 200,
+                height: 50,
+                alignItems: 'center',
+                marginLeft: -245,
+                marginTop: -22,
+              }}
+              // onPress={() => navigation.navigate('UserPanel')}
+              onPress={RMV}>
+                {isLoading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text
+                style={{
+                  color: 'white',
+                  fontSize: 19,
+                  marginTop: 12,
+                  fontWeight: 'bold',
+                }}>
+                REGISTER REPORT
+              </Text>
+              )}
+
+              
+            </Pressable>
         </View>
       </View>
 

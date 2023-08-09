@@ -23,6 +23,7 @@ import {Image} from 'react-native';
 
 const Signup = ({navigation}) => {
   const [email, setemail] = useState();
+  // const [emailborder, setemailborder] = useState();
   const [name, setname] = useState();
   const [cnic, setcnic] = useState();
 //  const[userList,setuserList]= useState();
@@ -35,50 +36,80 @@ const [gender, setgender] = useState([
   { label: "Other", value: "Other" },
 ]);
   const {  control } = useForm();
+  // useEffect(() => {
+  //   if (!email.includes("@") && !email.includes(".") ) {
+  //     setclr({...setclr, emailborder:'red'});
+  //   }
+  
+  // }, []);
+  const [clr, setclr] = useState ({emailborder: 'white'});
+  const [clra, setclra] = useState ({emailbordera: 'white'});
   var Signup = () => {
-    if(cnic== null ){
-      alert ('Provide cnic')
+    if(cnic== null || name == null || email == null || genderValue == null){
+      alert ('Complete the Details')
     }
+    // if(cnic== null ){
+    //   alert ('Fill the form')
+    //   // navigation.navigate("Signup")
+    // }
     else{
-      firestore()
-        .collection('Users')
-        .where('cnic', '!=', cnic )
-      //  alert('Cnic already registered')
-        .get()
-        .then((querySnapshot) => {
-          if( cnic.length != 13){
-            alert(' Incomplete CNIC')
-              navigation.navigate("Signup")
-          }
-          if(querySnapshot.empty){
-            alert('CNIC already registered ')
-              navigation.navigate("Signup")
-          }
-          else{
-            // Login successful
-            querySnapshot.forEach((documentSnapshot) => {
-              const user = documentSnapshot.data();
-              // alert('Welcome ');
-              // navigation.navigate("Login")
-            });
-          }
-        })
-        .catch((error) => {
-          alert('Error: ' + error);
-        });
-    }
-    {
-     
-      navigation.navigate('Screen2',{  
-        name: name,
-        cnic:cnic,
-        genderValue:genderValue,
-        email: email,
+    firestore()
+    .collection('Users')
+    .where('cnic', '==', cnic)
+    // .where('email', '!=', email)
+    .get()
+    .then((querySnapshot) => {
+      if(querySnapshot.empty){
+        if(cnic== null || name == null || email == null || genderValue == null){
+          alert ('Complete the Details')
+        }
+        // alert('Incorrect CNIC or password!') 
+        if(cnic.length != 13 ) {
+alert('Incorrect cnic')
+        }
+        if (email.includes("@") && email.includes(".") && cnic.length == 13  &&  name != null && genderValue != null) {
+          
+          navigation.navigate('Screen2',{  
+            name: name,
+            cnic:cnic,
+            genderValue:genderValue,
+            email:email,
+          })
 
-       })
-    }
+        }
+        if (!email.includes("@") && !email.includes(".") ) {
+          setclr({...setclr, emailborder:'red'});
+        }
+        if ( cnic.length != 13 ) {
+          setclra({...setclra, emailbordera:'red'});
+        }
+        // if (!email.includes("@") && !email.includes(".") && cnic.length == 13  &&  name != null && genderValue != null) {
+        //   emailborder: 'red'
 
+        // }
+      }
+ 
+      else{
+        alert('This cnic already had an account')
+        // Login successful
+        //   querySnapshot.forEach((documentSnapshot) => {
+        //   const user = documentSnapshot.data();
+
+        //   AsyncStorage.setItem(StorageKeys.CurrentUser, JSON.stringify(user))
+        //   .then(() => {
+        //     console.log('User Stored Successfully')
+        //   })
+        //   .catch((error) => console.log(error));
+        //   navigation.replace("UserPanel")
+        // });
+      }
+    })
+    .catch((error) => {
+      alert('Error: ' + error);
+    });
   }
+}
+
   var CnicChk = () => {
   
   }
@@ -100,7 +131,7 @@ const [gender, setgender] = useState([
 
       <View
         style={{
-          height: 400,
+        
           width: 460,
           borderTopLeftRadius: 130,
           paddingTop: 0,
@@ -211,7 +242,7 @@ const [gender, setgender] = useState([
               }}
               placeholderTextColor="grey"
               value={name}
-              onChangeText={(setname)  
+              onChangeText={setname
             }
               placeholder="Enter Name"
               // secureTextEntry={true}
@@ -233,10 +264,12 @@ const [gender, setgender] = useState([
                 borderRadius: 10,
                 color: darkGreen,
                 marginLeft: 2,
+                borderWidth: 1.5,
+                borderColor: clr.emailborder,
                 paddingHorizontal: 10,
                 width: 350,
                 height:50,
-                borderColor: "#B7B7B7",
+                // borderColor: "#B7B7B7",
                 marginBottom:30,
                 backgroundColor: 'white',
                 marginVertical: 10,
@@ -268,6 +301,8 @@ const [gender, setgender] = useState([
              borderRadius: 10,
              color: darkGreen,
              marginLeft: 2,
+             borderWidth:1.5,
+             borderColor:clra.emailbordera,
              marginBottom:30,
              paddingHorizontal: 10,
              width: 350,
@@ -282,6 +317,7 @@ const [gender, setgender] = useState([
            placeholder="Enter CNIC (Without dashes)"
            keyboardType={'numeric'}
            // secureTextEntry={true}
+           maxLength={13} 
          />
          <Text
               style={{
@@ -310,7 +346,7 @@ const [gender, setgender] = useState([
               setItems={setgender}
               placeholder="Select gender"
               placeholderStyle={styles.placeholderStyles}
-              dropDownDirection="DOWN"
+              dropDownDirection="TOP"
               onChangeValue={onChange}
               zIndex={30}
               zIndexInverse={40}

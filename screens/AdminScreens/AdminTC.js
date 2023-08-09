@@ -6,7 +6,7 @@ import {
   View,
   Text,
   Touchable,
-  TouchableOpacity,
+  Pressable,
   Image,
   ScrollView,
   TextInput,
@@ -57,7 +57,7 @@ const AdminTC = ({navigation}) => {
             alignItems: 'center',
           }}>
           <View>
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <Pressable onPress={() => navigation.openDrawer()}>
               <Image
                 source={require('../../images/menu.png')}
                 style={{
@@ -68,7 +68,7 @@ const AdminTC = ({navigation}) => {
                   marginTop: 12,
                 }}
               />
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <View style={{marginBottom: 19, marginTop: -35}}>
             <Text style={{color: 'white', fontSize: 19, fontWeight: 'bold'}}>
@@ -135,7 +135,7 @@ const AdminTC = ({navigation}) => {
 
           <View style={{flexDirection: 'row', marginBottom: 20, marginTop: 100,backgroundColor: 'white'}}>
             <View style={{flex: 1, marginLeft: 73}}>
-              <TouchableOpacity
+              <Pressable
                 style={{
                   backgroundColor: '#e8bd0f',
                   alignItems: 'center',
@@ -166,10 +166,10 @@ const AdminTC = ({navigation}) => {
                   {`FIR
                 `}
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
             <View style={{flex: 2, marginLeft: 62}}>
-              <TouchableOpacity
+              <Pressable
                 style={{
                   backgroundColor: '#7ba946',
 
@@ -179,7 +179,8 @@ const AdminTC = ({navigation}) => {
                   width: 175,
                   height: 150,
                 }}
-                onPress={() => navigation.navigate('AdminVC')}>
+                onPress={() => navigation.navigate('AdminVC')}
+                >
                 <Text
                   style={{
                     color: 'orange',
@@ -202,12 +203,12 @@ const AdminTC = ({navigation}) => {
                 COMPLAINTS
                
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
           <View style={{flexDirection: 'row', marginBottom: 20, marginTop: -5, backgroundColor:'white'}}>
             <View style={{flex: 1, marginLeft: 30}}>
-              <TouchableOpacity
+              <Pressable
                 style={{
                   backgroundColor: '#f37924',
 
@@ -217,7 +218,9 @@ const AdminTC = ({navigation}) => {
                   width: 175,
                   height: 150,
                 }}
-                onPress={() => navigation.navigate('AdminMP')}>
+
+                onPress={() => navigation.navigate('AdminMP')}
+                >
                 <Text
                   style={{
                     color: 'white',
@@ -239,10 +242,10 @@ const AdminTC = ({navigation}) => {
                   {' '}
                  MISSING PERSON 
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
             <View style={{flex: 2, marginLeft: 124}}>
-              <TouchableOpacity
+              <Pressable
                 style={{
                   backgroundColor: '#dd2b27',
 
@@ -252,7 +255,9 @@ const AdminTC = ({navigation}) => {
                   width: 175,
                   height: 150,
                 }}
-                onPress={() => navigation.navigate('AdminVMH')}>
+                // disabled = {true}
+                onPress={() => navigation.navigate('AdminVMH')}
+                >
                 <Text
                   style={{
                     color: 'yellow',
@@ -273,53 +278,48 @@ const AdminTC = ({navigation}) => {
                   }}>
                  MISSING VEHICLES
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
+              <Pressable
+                style={{
+                  backgroundColor: '#f37924',
+
+                  alignItems: 'center',
+                  borderRadius: 17,
+                  marginLeft: -210,
+                  marginTop:10,
+                  width: 365,
+                  height: 100,
+                }}
+
+                onPress={() => navigation.navigate('AdminSVF')}
+                >
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 22,
+                    marginTop:27,
+                    fontWeight: 'bold',
+                    marginLeft: 6,
+                  }}>
+                 SEARCH{' '}
+                </Text>
+                <Text
+                  style={{
+                    color: '#4aa8c2',
+                    fontSize: 20,
+                    marginTop: -5,
+                    marginLeft: -5,
+                    fontWeight: 'bold',
+                  }}>
+                  {' '}
+               FIR
+                </Text>
+              </Pressable>
             </View>
             
           </View>
           <View style={{flex: 1, marginLeft: 30}}>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: '#4aa8c2',
-
-                  alignItems: 'center',
-                  borderRadius: 17,
-                  marginLeft: -35,
-                  width: 364,
-                  height: 100,
-                  marginTop:-8
-                }}
-                onPress={() => navigation.navigate('AdminRBI')}>
-                {/* <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 52,
-                    marginTop: 20,
-                    fontWeight: 'bold',
-                  }}>
-                  ANALYTICS
-                </Text> */}
-                 <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 23,
-                    marginTop: 19,
-                    fontWeight: 'bold',
-                    marginLeft:-2
-                  }}>
-                 VIEW
-                </Text>
-                <Text
-                  style={{
-                    color: 'orange',
-                    fontSize: 28,
-                    // marginTop: 19,
-                    fontWeight: 'bold',
-                    marginLeft:-2
-                  }}>
-                REPORTS BY ITP'S
-                </Text>
-              </TouchableOpacity>
+            
             </View>
         </View>
       </View>

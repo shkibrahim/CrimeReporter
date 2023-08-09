@@ -1,6 +1,6 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
-
+import { Linking } from 'react-native';
 import {
   View,
   Text,
@@ -13,8 +13,42 @@ import Back3 from '../Back3';
 
 import {Image} from 'react-native';
 
-const ITSW = ({navigation}) => {
+const ITSW = ({route,navigation}) => {
+  const {Evidence} = route.params;
+  const {contact} = route.params;
+  const {suspectcnic} = route.params;
+
+
+
+  
+    const ITPzoom = () => {
+      Linking.openURL('zoomus://');
+    };
+  const Whatsapp = () => {
+   
+      let formattedNumber = contact;
+  
+       
+   
+      
+  
+    //  alert(formattedNumber);
+  
+     let url = `whatsapp://send?phone=${formattedNumber}`;
+ 
+     Linking.openURL(url)
+         .then((data) => {
+             console.log('WhatsApp Opened');
+         })
+         .catch(() => {
+             alert('Make sure WhatsApp is installed on your device');
+         });
+ 
     
+  
+  
+        }
+        
   return (
     <Back3>
       <View style={{alignItems: 'center', width: 400}}>
@@ -28,7 +62,7 @@ const ITSW = ({navigation}) => {
             alignItems: 'center',
           }}>
           <View>
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            {/* <TouchableOpacity onPress={() => navigation.openDrawer()}>
               <Image
                 source={require('../../images/menu.png')}
                 style={{
@@ -39,9 +73,9 @@ const ITSW = ({navigation}) => {
                   marginTop: 12,
                 }}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
-          <View style={{marginBottom: 19, marginTop: -35}}>
+          <View style={{marginBottom: 19, marginTop: 15}}>
             <Text style={{color: 'white', fontSize: 19, fontWeight: 'bold'}}>
              INVESTIGATION TEAM
             </Text>
@@ -152,7 +186,8 @@ const ITSW = ({navigation}) => {
                   width: 175,
                   height: 150,
                 }}
-                onPress={() => navigation.navigate('ITPcall')}>
+                onPress={Whatsapp}
+                >
                 <Text
                   style={{
                     color: 'orange',
@@ -189,7 +224,8 @@ const ITSW = ({navigation}) => {
                   width: 175,
                   height: 150,
                 }}
-                onPress={() => navigation.navigate('ITPzoom')}>
+                onPress={ ITPzoom}
+                >
                 <Text
                   style={{
                     color: 'white',
@@ -224,7 +260,11 @@ const ITSW = ({navigation}) => {
                   width: 175,
                   height: 150,
                 }}
-                onPress={() => navigation.navigate('AdminUN')}>
+                onPress={() => navigation.navigate('Suspectstatus',{  
+                  suspectcnic:suspectcnic,
+                 
+                 })}
+                 >
                 <Text
                   style={{
                     color: 'yellow',
@@ -233,7 +273,7 @@ const ITSW = ({navigation}) => {
                     fontWeight: 'bold',
                     marginLeft: 6,
                   }}>
-                  UPLOAD{' '}
+                  SUSPECT{' '}
                 </Text>
                 <Text
                   style={{
@@ -242,7 +282,7 @@ const ITSW = ({navigation}) => {
                     marginTop: -5,
                     fontWeight: 'bold',
                   }}>
-                  NOTIFICATIONS
+                  STATUS
                 </Text>
               </TouchableOpacity>
             </View>
@@ -256,19 +296,70 @@ const ITSW = ({navigation}) => {
                   alignItems: 'center',
                   borderRadius: 17,
                   marginLeft: 15,
-                  width: 364,
+                  width: 175,
                   height: 150,
+                  alignContent:'center'
                 }}
-                onPress={() => navigation.navigate('ITPsuspect')}>
+                onPress={() => navigation.navigate('ITPsuspect')}
+                >
                 <Text
                   style={{
                     color: 'white',
-                    fontSize: 26,
-                    marginTop: 60,
+                    fontSize: 20,
+                    marginTop: 49,
                     fontWeight: 'bold',
-                    marginLeft:-12
+                    marginLeft:-1
                   }}>
-                 SUSPECT CALL HISTORY 
+                 SUSPECT {' '}
+                </Text>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 20,
+                    // marginTop: 60,
+                    fontWeight: 'bold',
+                    marginLeft:-10
+                  }}>
+                 CALL HISTORY 
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{flex: 2, marginLeft: 70}}>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#f37924',
+
+                  alignItems: 'center',
+                  borderRadius: 17,
+                  marginLeft: 15,
+                  width: 175,
+                  height: 150,
+                }}
+                onPress={() => navigation.navigate('ITPSimilarCases',{  
+                  Evidence:Evidence,
+                 
+                 })}
+                 >
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 22,
+                    marginTop: 47,
+                    fontWeight: 'bold',
+                    marginLeft: 6,
+                  }}>
+              SIMILAR{' '}
+                </Text>
+                <Text
+                  style={{
+                    color: '#7ba946',
+                    fontSize: 22,
+                    marginTop: -5,
+                    marginLeft: -12,
+                    fontWeight: 'bold',
+                  }}>
+                  {' '}
+               CASES
                 </Text>
               </TouchableOpacity>
             </View>

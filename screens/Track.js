@@ -22,19 +22,20 @@ const Track = ({navigation, route}) => {
   // const [firdata, setData2] = useState([]);
   // var Tracker = firestore().collection('Track');
   const {trackval} = route.params;
-
+  const { selectedTime1} = route.params; 
+  const { selectedDate1} = route.params;
   useEffect(() => {
     if (trackval === 'Accepted') {
-      setclr({...setclr, bgcolor:'red',txtcolor:'white'});
+      setclr({...setclr, bgcolor:'red',txtcolor:'red'});
     }
     if (trackval === 'Sent to Investigation Team') {
-      setclr1({...setclr1, bgcolor:'red',txtcolor:'white'});
+      setclr1({...setclr1, bgcolor:'red',txtcolor:'red'});
     }
     if (trackval === 'Case Proceeding Started') {
-      setclr2({...setclr2, bgcolor:'red',txtcolor:'white'});
+      setclr2({...setclr2, bgcolor:'red',txtcolor:'red'});
     }
     if (trackval === 'Case Closed') {
-      setclr3({...setclr3, bgcolor:'red',txtcolor:'white'});
+      setclr3({...setclr3, bgcolor:'red',txtcolor:'red'});
       setBtnstat(false);
     }
   }, []);
@@ -81,20 +82,45 @@ const Track = ({navigation, route}) => {
   // }
   //   });
 
-  const [clr, setclr] = useState ({bgcolor:'white' , txtcolor: "green"});
-  const [clr1, setclr1] = useState ({bgcolor:'white' , txtcolor: "green"});
-  const [clr2, setclr2] = useState ({bgcolor:'white' , txtcolor: "green"});
-  const [clr3, setclr3] = useState ({bgcolor:'white' , txtcolor: "green"});
+  const [clr, setclr] = useState ({bgcolor:'grey' , txtcolor: "grey"});
+  const [clr1, setclr1] = useState ({bgcolor:'grey' , txtcolor: "grey"});
+  const [clr2, setclr2] = useState ({bgcolor:'grey' , txtcolor: "grey"});
+  const [clr3, setclr3] = useState ({bgcolor:'grey' , txtcolor: "grey"});
   const [btnstat, setBtnstat]=useState(true)
-  // const [name, setname] = useState();
-  // const [cnic, setcnic] = useState();
-  // const [description, setdescription] = useState();
-  // const [contact, setcontact] = useState();
 
   return (
     <Back3>
       <View style={{alignItems: 'center', width: 400}}>
-  
+      {/* <View style={{ width: 370,
+                        marginRight:19,
+                        height: 'auto',}}> */}
+                      {/* <View
+                        style={{
+                        //   backgroundColor: 'white',
+                          borderColor: 'red',
+                          marginBottom: 10,
+                        //   borderRadius: 19,
+                          margin: 10,
+                         
+                          width: 370,
+                          height:'auto',
+                        }}>
+                        
+                       
+                       
+                        
+                      
+                    
+                     
+                    
+                       
+                      </View > */}
+                     
+                    
+              
+             
+         
+                
 
         <View
           style={{
@@ -105,7 +131,7 @@ const Track = ({navigation, route}) => {
             alignItems: 'center',
           }}>
           <View>
-            <TouchableOpacity onPress={() => navigation.navigate('Complaints')}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image
                 source={require('../images/arrow.png')}
                 style={{
@@ -136,8 +162,290 @@ const Track = ({navigation, route}) => {
             }}>
             {/* <ScrollView style={{backgroundColor:'white',borderRadius:37, width:390, marginLeft:-18}}> */}
           </View>
-          {/* <Text style={{color:'red', marginTop:-100}}>texr:{trackValue}</Text> */}
-          <View style={{marginLeft: -90, marginTop: -650}}>
+          
+          <View style ={{
+                            flexDirection: 'row',
+                            height:'auto',
+                            marginTop:-650,
+                            marginLeft:-20
+                }}>
+                    <View style ={{
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            marginLeft: 18,
+                            // marginTop:10,
+                            // marginBottom: 10,
+                            fontSize: 14,
+                            
+                          }}>
+                          {selectedTime1}
+                        </Text>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            // marginTop:10,
+                            // marginBottom: 10,
+                            fontSize: 14,
+                            
+                          }}>
+                          {selectedDate1}
+                        </Text>
+                        </View>
+                   
+                        {/* <View style ={{
+                marginBottom:30,
+                backgroundColor:'grey',
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'black',
+                            // fontWeight: 'bold',
+                            marginLeft: 18,
+                            marginTop:10,
+                            // marginBottom: 10,
+                            fontSize: 14,
+                            
+                          }}>
+                          {selectedTime1}
+                        </Text>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            // marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                            
+                          }}>
+                          {selectedDate1}
+                        </Text>
+                        </View> */}
+                        <View style={{
+                            backgroundColor:clr.bgcolor,
+                            // marginBottom:30,
+                            marginVertical: 20,
+                            marginLeft:10,
+                            width:24,
+                         
+                            borderRadius:22,
+                            height:24
+                        }}>
+<Text style={{color:'white',   alignSelf:'center',marginTop:2}}>1</Text>
+<View style={{  marginTop:8,marginLeft:12,backgroundColor: 'grey', width: 0.4, height:70}}> 
+                        
+                        </View>
+                        </View>
+                        
+<View style={{ marginVertical: 20,}}>
+    {/* <Text style={{color:'green',  }}>   {item.trackValue}</Text> */}
+    <Text style={{color: clr.txtcolor, fontWeight:'bold', marginLeft:10}}>Accepted and Seen</Text>
+    {/* <View style={{marginLeft:10, borderRadius:6 , width:220,alignSelf:'center'}}>
+     
+
+    </View> */}
+    <Text style={{color:'grey', marginLeft:10}}>Your Report has been seen </Text>
+    <Text style={{color:'grey', marginLeft:10}}>and Forwarded </Text>
+ 
+</View>
+                        </View>
+                        <View style ={{
+                            flexDirection: 'row',
+                            height:'auto',
+                            marginTop:30,
+                            marginLeft:-20
+                }}>
+                   
+                        {/* <View style ={{
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            marginLeft: 18,
+                            marginTop:10,
+                            // marginBottom: 10,
+                            fontSize: 14,
+                            
+                          }}>
+                          {selectedTime}
+                        </Text>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            // marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                            
+                          }}>
+                          {selectedDate}
+                        </Text>
+                        </View> */}
+                        <View style={{
+                            backgroundColor: clr1.bgcolor,
+                            // marginBottom:30,
+                            marginVertical: 20,
+                            marginLeft:10,
+                            width:24,
+                         
+                            borderRadius:22,
+                            height:24
+                        }}>
+<Text style={{color:'white',   alignSelf:'center',marginTop:2}}>2</Text>
+<View style={{  marginTop:8,marginLeft:12,backgroundColor: 'grey', width: 0.4, height:70}}> 
+                        
+                        </View>
+                        </View>
+                        
+<View style={{ marginVertical: 20,}}>
+    {/* <Text style={{color:'green',  }}>   {item.trackValue}</Text> */}
+    <Text style={{color: clr1.txtcolor, fontWeight:'bold', marginLeft:10}}>Sent to Investigation Team</Text>
+    {/* <View style={{marginLeft:10, borderRadius:6 , width:220,alignSelf:'center'}}>
+     
+
+    </View> */}
+    <Text style={{color:'grey', marginLeft:10}}>Your Report has been sent </Text>
+    <Text style={{color:'grey', marginLeft:10}}>to Investigation Team </Text>
+ 
+</View>
+                        </View>
+                        <View style ={{
+                            flexDirection: 'row',
+                            height:'auto',
+                            marginTop:30,
+                            marginLeft:-28
+                }}>
+                   
+                        {/* <View style ={{
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            marginLeft: 18,
+                            marginTop:10,
+                            // marginBottom: 10,
+                            fontSize: 14,
+                            
+                          }}>
+                          {selectedTime}
+                        </Text>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            // marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                            
+                          }}>
+                          {selectedDate}
+                        </Text>
+                        </View> */}
+                        <View style={{
+                            backgroundColor: clr2.bgcolor,
+                            // marginBottom:30,
+                            marginVertical: 20,
+                            marginLeft:10,
+                            width:24,
+                         
+                            borderRadius:22,
+                            height:24
+                        }}>
+<Text style={{color:'white',   alignSelf:'center',marginTop:2}}>3</Text>
+<View style={{  marginTop:8,marginLeft:12,backgroundColor: 'grey', width: 0.4, height:70}}> 
+                        
+                        </View>
+                        </View>
+                        
+<View style={{ marginVertical: 20,}}>
+    {/* <Text style={{color:'green',  }}>   {item.trackValue}</Text> */}
+    <Text style={{color: clr2.txtcolor, fontWeight:'bold', marginLeft:10}}>Case Proceeding Started</Text>
+    {/* <View style={{marginLeft:10, borderRadius:6 , width:220,alignSelf:'center'}}>
+     
+
+    </View> */}
+    <Text style={{color:'grey', marginLeft:10}}>Your Report has been</Text>
+    <Text style={{color:'grey', marginLeft:10}}>on working  </Text>
+ 
+</View>
+                        </View>
+                        <View style ={{
+                            flexDirection: 'row',
+                            height:'auto',
+                            marginTop:30,
+                            marginLeft:-60,
+                            marginBottom:100
+                }}>
+                   
+                        {/* <View style ={{
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            marginLeft: 18,
+                            marginTop:10,
+                            // marginBottom: 10,
+                            fontSize: 14,
+                            
+                          }}>
+                          {selectedTime}
+                        </Text>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            // marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                            
+                          }}>
+                          {selectedDate}
+                        </Text>
+                        </View> */}
+                        <View style={{
+                            backgroundColor: clr3.bgcolor,
+                            // marginBottom:30,
+                            marginVertical: 20,
+                            marginLeft:10,
+                            width:24,
+                         
+                            borderRadius:22,
+                            height:24
+                        }}>
+<Text style={{color:'white',   alignSelf:'center',marginTop:2}}>4</Text>
+{/* <View style={{  marginTop:8,marginLeft:12,backgroundColor: 'grey', width: 0.4, height:70}}> 
+                        
+                        </View> */}
+                        </View>
+                        
+<View style={{ marginVertical: 20,}}>
+    {/* <Text style={{color:'green',  }}>   {item.trackValue}</Text> */}
+    <Text style={{color: clr3.txtcolor, fontWeight:'bold', marginLeft:10}}>Case closed</Text>
+    {/* <View style={{marginLeft:10, borderRadius:6 , width:220,alignSelf:'center'}}>
+     
+
+    </View> */}
+    <Text style={{color:'grey', marginLeft:10}}>Your Case has been</Text>
+    <Text style={{color:'grey', marginLeft:10}}>solved  </Text>
+ 
+</View>
+                        </View>
+          {/* <View style={{marginLeft: -90, marginTop: -650}}>
             <TouchableOpacity
               style={{
                 backgroundColor: clr.bgcolor,
@@ -266,8 +574,8 @@ const Track = ({navigation, route}) => {
                 Case Closed
               </Text>
             </TouchableOpacity>
-          </View>
-          <View style={{marginLeft: -220, marginTop: 27}}>
+          </View> */}
+          <View style={{marginLeft: -220, marginTop: 27, }}>
             <TouchableOpacity
             disabled={btnstat}
               style={{
@@ -287,6 +595,29 @@ const Track = ({navigation, route}) => {
                   marginTop: 13,
                 }}>
                 PROVIDE FEEDBACK
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ marginTop:-50,marginLeft:210}}>
+            <TouchableOpacity
+            // disabled={btnstat}
+              style={{
+                backgroundColor: 'green',
+                borderColor: 'green',
+                borderWidth: 2,
+                borderRadius: 8,
+                width: 140,
+                height: 50,
+              }}
+              onPress={() => navigation.navigate('CaseDetails')}>
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: 12,
+                  marginLeft: 28,
+                  marginTop: 13,
+                }}>
+            CASE DETAILS
               </Text>
             </TouchableOpacity>
           </View>

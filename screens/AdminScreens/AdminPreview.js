@@ -18,9 +18,10 @@ import Back3 from '../Back3';
 
 import {Image} from 'react-native';
 
-const AdminPreview = ({routes, navigation}) => {
+const AdminPreview = ({route, navigation}) => {
   const [name, setname] = useState();
   const [btnstate, setbtnstate] = useState(false);
+  const [btnstate1, setbtnstate1] = useState(true);
   const [cnic, setcnic] = useState();
   const [description, setdescription] = useState();
   const [contact, setcontact] = useState();
@@ -52,27 +53,40 @@ const AdminPreview = ({routes, navigation}) => {
     Dataa();
   });
 
-//   const deny=async (item)=>{
-//     await firestore()
-//     .collection('RMV')
-//     .doc(item.id)
-//     .update({
-//       Status: "Declined",
-//     });
-//     alert('declined')
-// }
 const AdminUppdate= (item)=>{
-    if (item.AdminRemarks != "No Remarks Yet")
-    {
-        alert('You cannot update once you have given Remarks')
-        console.log("helo")
-        btnstate == true;
-    }
-   if (item.AdminRemarks = "No Remarks Yet")
-   {
-  navigation.navigate("AdminUpdate")
+
+  firestore()
+    .collection('ITPI')
+    .where('AdminRemarks', '==', "No Remarks Yet")
+   
+    .get()
+    .then((querySnapshot) => {
+      if(querySnapshot.empty){
+
+        
+      }
+      else{
+        console.log(item.trackValue)
+        navigation.navigate('AdminUpdate', {
+          selectedTime: item.selectedTime,
+         selectedDate: item.selectedDate,
+       trackValue:item.trackValue,
+       InvestigationRemarks:item.CaseInformation,
+        ID:item.ID
+
+        });
+      };
+    })
+    .catch((error) => {
+      alert('Error: ' + error);
+    });
+
 }
+const Feedback = async (item) => { 
+if (item.trackValue == 'Stage:4 Case Completed')
+btnstate1 == false
 }
+
 const Accept = async (item) => { 
     const Go= {
     //     ID: item.ID,
@@ -183,12 +197,12 @@ const Accept = async (item) => {
                 // alignContent: 'center',
                 // alignItems: 'center',
               }}>
-              <Text style={{color: '#10942e', fontSize: 19, fontWeight: 'bold'}}>
+              {/* <Text style={{color: '#10942e', fontSize: 19, fontWeight: 'bold'}}>
               Case ID:
               </Text>
               <Text style={{color: '#10942e', fontSize: 19, fontWeight: 'bold'}}>
               Case Type:
-              </Text>
+              </Text> */}
             </View>
             <View style={{}}>
               <FlatList
@@ -290,9 +304,10 @@ const Accept = async (item) => {
     <Text style={{color:'red', }}>{item.AdminRemarks}</Text>
     </ScrollView>
 <TouchableOpacity  style={{height:32,width:102, borderRadius:4,borderWidth:2, borderColor:'green', backgroundColor:'lightyellow'}}
- onPress={AdminUppdate}
+ onPress={()=>AdminUppdate(item)}
  disabled = {btnstate}>
     <Text style={{color:'green', alignSelf:'center', marginTop:4}}>Give Remarks</Text></TouchableOpacity>
+    
     </View>
 </View>
                         </View>
@@ -307,41 +322,17 @@ const Accept = async (item) => {
                      
                     
               
-                      {/* <View style={{ flexDirection:'row'}} > */}
-                      {/* <TouchableOpacity style={{
-              backgroundColor: '#10942e',
-              borderRadius: 10,
-              width: 150,
-              marginLeft: 10,
-              marginTop:30,
-              height: 50,
-              alignItems: 'center',
-              alignContent: 'center'
-
-            }}><Text>Status:{item.Status}</Text></TouchableOpacity>
-                        <TouchableOpacity
-            style={{
-              backgroundColor: '#10942e',
-              borderRadius: 10,
-              width: 150,
-              marginLeft: 200,
-              marginTop:-50,
-              height: 50,
-              alignItems: 'center',
-              alignContent: 'center'
-
-            }}
-            onPress={() => navigation.navigate('Track',{trackstat:item.Status})}>
-            <Text style={{ color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
-             TRACK
-            </Text>
-          </TouchableOpacity> */}
+             
          
                       </View>
                     );
                   }
                 }}
               />
+              <TouchableOpacity  style={{height:32,width:102, borderRadius:4,marginTop:220,marginLeft:12 ,borderColor:'green', backgroundColor:'green'}}
+ onPress={Feedback}
+ disabled = {btnstate1}>
+    <Text style={{color:'white', alignSelf:'center', marginTop:4}}>Feedback</Text></TouchableOpacity>
             </View>
           </View>
         </View>

@@ -5,7 +5,7 @@ import {
   View,
   Text,
 
-  TouchableOpacity,
+  Pressable,
 
 } from 'react-native';
 import Back3 from './Back3';
@@ -77,47 +77,13 @@ const UserPanel = ({navigation}) => {
             alignItems: 'center',
           }}>
           <View>
-            <TouchableOpacity
- onPress={handlePress}
+            <Pressable
+ onPress ={()=> navigation.goBack()}
     >
-       <Modal visible={modalVisible} onRequestClose={handleClose}>
-                            <View >
-                                <Text>Select image from</Text>
-
-                                {/* <TouchableOpacity activeOpacity={0.5} onPress={Gallery}>
-                                    <View >
-                                        <MaterialIcons
-                                            name="camera"
-                                            size={40}
-                                            color="#02AABD"
-                                        />
-                                        <Text>Gallery</Text>
-                                    </View>
-                                </TouchableOpacity> */}
-
-                                {/* <TouchableOpacity activeOpacity={0.5} onPress={takePhoto}>
-                                    <View >
-                                        <MaterialIcons name="image" size={40} color="#02AABD" />
-                                        <Text style={styles.inModText}>Take a Photo</Text>
-                                    </View>
-                                </TouchableOpacity> */}
-
-                                <View>
-                                    <TouchableOpacity onPress={handleClose}>
-                                        <LinearGradient
-                                            start={{ x: 0, y: 0 }}
-                                            end={{ x: 1, y: 0 }}
-                                            colors={['#02AABD', '#02AABD']}
-                                         >
-                                            <Text >Cancel</Text>
-                                        </LinearGradient>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        </Modal>
+    
             
               <Image
-                source={require('../images/menu.png')}
+                source={require('../images/arrow.png')}
                 style={{
                   width: 28,
                   height: 38,
@@ -126,7 +92,7 @@ const UserPanel = ({navigation}) => {
                   marginTop: 12,
                 }}
               />
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <View style={{marginBottom: 19, marginTop: -35}}>
             <Text style={{color: 'white', fontSize: 19, fontWeight: 'bold'}}>
@@ -134,7 +100,7 @@ const UserPanel = ({navigation}) => {
             </Text>
           </View>
           <View>
-            <TouchableOpacity     onPress={() => navigation.navigate('UserNotification')}>
+            <Pressable     onPress={() => navigation.navigate('UserNotification')}>
               <Image
                 source={require('../images/icon.png')}
                 style={{
@@ -145,7 +111,7 @@ const UserPanel = ({navigation}) => {
                   marginTop:-54,
                 }}
               />
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <View
             style={{
@@ -229,14 +195,14 @@ color:'black',
           </View>
           
           <View style={{marginLeft: 300, marginTop:-18}}>
-            {/* <TouchableOpacity>
+            {/* <Pressable>
               <Text style={{color: 'grey', fontSize: 12}}>View All</Text>
-            </TouchableOpacity> */}
+            </Pressable> */}
           </View>
           {/* <ScrollView style={{height:'100%',marginBottom:-650}}> */}
           <View style={{flexDirection: 'row', marginBottom: 20, marginTop: 12}}>
             <View style={{flex: 1, marginLeft: 73}}>
-              <TouchableOpacity
+              <Pressable
                 style={{
                   backgroundColor: '#c0e4c9',
 
@@ -261,10 +227,10 @@ color:'black',
                   }}
                 />
                <Text style={{color:'grey',fontSize:18,marginTop:27, marginLeft:-12}}>FIR</Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
             <View style={{flex: 2, marginLeft:62}}>
-              <TouchableOpacity
+              <Pressable
                 style={{
                   backgroundColor: '#f9d7ab',
 
@@ -288,12 +254,12 @@ color:'black',
                   }}
                 />
                 <Text style={{color:'grey',fontSize:18,marginTop:27}}>COMPLAINTS</Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
           <View style={{flexDirection: 'row', marginBottom: 20, marginTop: -5}}>
             <View style={{flex: 1, marginLeft: 30}}>
-              <TouchableOpacity
+              <Pressable
                 style={{
                   backgroundColor: '#f9d0d0',
 
@@ -315,10 +281,10 @@ color:'black',
                   }}
                 />
                 <Text style={{color:'grey',fontSize:18,marginTop:27}}> MISSING PERSON</Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
             <View style={{flex: 2, marginLeft: 124}}>
-              <TouchableOpacity
+              <Pressable
                 style={{
                   backgroundColor: '#d9ebec',
 
@@ -340,14 +306,14 @@ color:'black',
                   }}
                 />
                 <Text style={{color:'grey',fontSize:18,marginTop:12}}>MISSING VEHICLE</Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
           
           {/* <View style={{backgroundColor: '#b8b8b8',marginLeft:0, width:370,height:50, borderRadius:14,marginTop:8 }}>
-            <TouchableOpacity>
+            <Pressable>
               <Text style={{fontSize:20, marginLeft:10, fontWeight:'bold', color:'#494848', marginTop:9}}>Most  Wanted  Criminals</Text>
-            </TouchableOpacity>
+            </Pressable>
           </View> */}
          
           {/* </ScrollView> */}
@@ -355,7 +321,7 @@ color:'black',
           <View style={{width:430,height:60, marginTop:40, marginLeft:-8, borderRadius:17, backgroundColor:'#007711'}}>
          
           <View>
-            <TouchableOpacity>
+            <Pressable  disabled={true}>
                 <Image
                   source={require('../images/home.png')}
                   style={{
@@ -363,14 +329,14 @@ color:'black',
                     borderRadius: 0,
                     height: 70,
                     marginLeft: 50,
-                    paddingTop: 12,
+                    paddingTop: 12,  
                     marginTop: -9,
                   }}
                 />
-                </TouchableOpacity>
+                </Pressable>
               </View>
               <View>
-                <TouchableOpacity>
+                <Pressable  disabled={true}>
                 <Image
                   source={require('../images/sea.png')}
                   style={{
@@ -382,10 +348,10 @@ color:'black',
                     marginTop: -67,
                   }}
                 />
-                </TouchableOpacity>
+                </Pressable>
               </View>
               <View>
-                <TouchableOpacity>
+                <Pressable  disabled={true} >
                 <Image
                   source={require('../images/settin.png')}
                   style={{
@@ -397,10 +363,10 @@ color:'black',
                     marginTop: -87,
                   }}
                 />
-                </TouchableOpacity>
+                </Pressable>
               </View>
               {/* <View>
-                <TouchableOpacity>
+                <Pressable>
                 <Image
                   source={require('../images/pro.png')}
                   style={{
@@ -412,7 +378,7 @@ color:'black',
                     marginTop: -77,
                   }}
                 />
-                </TouchableOpacity>
+                </Pressable>
               </View> */}
             
           </View>
@@ -424,7 +390,7 @@ color:'black',
       <View style={{width:430,height:20,  backgroundColor: '#f1f8f6', marginTop:310, marginLeft:-8, borderRadius:17}}>
             </View>
             <View style={{backgroundColor:'#007711', width:56, height:55, borderRadius:40, marginLeft:170, marginTop:-30}}> 
-            <TouchableOpacity style={{marginLeft:80}}><Image
+            <Pressable style={{marginLeft:80}}    onPress={() => navigation.navigate('UserAnalytics')}><Image
                   source={require('../images/view.png')}
                   style={{
                     width:35,
@@ -434,10 +400,10 @@ color:'black',
                     paddingTop: 12,
                     marginTop: 10,
                   }}
-                /></TouchableOpacity>
+                /></Pressable>
             </View>
             <View style={{backgroundColor:'white', width:35, height:35, borderRadius:40, marginLeft:332, marginTop:-20}}> 
-            <TouchableOpacity style={{marginLeft:80}} 
+            <Pressable style={{marginLeft:80}} 
          onPress={() => navigation.navigate("PMA")}  ><Image
                   source={require('../images/pro.png')}
                   style={{
@@ -448,7 +414,7 @@ color:'black',
                     paddingTop: 12,
                     marginTop: 0,
                   }}
-                /></TouchableOpacity>
+                /></Pressable>
             </View>
     </Back3>
   );

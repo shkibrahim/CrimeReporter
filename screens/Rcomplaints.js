@@ -1,13 +1,13 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
-
+import storage from '@react-native-firebase/storage';
 
 import firestore from '@react-native-firebase/firestore';
 import {
-  View,
+  View,Keyboard,
   Text,
-  Touchable,
-  TouchableOpacity,
+  Touchable,  ActivityIndicator,
+  Pressable,
   ScrollView,
   TextInput,
 } from 'react-native';
@@ -21,7 +21,22 @@ import {Image} from 'react-native';
 
 const Rcomplaints = ({navigation,route}) => {
 
+  const [isKeyboardActive, setIsKeyboardActive] = useState(false);
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => setIsKeyboardActive(true),
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => setIsKeyboardActive(false),
+    );
 
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
  
   const [SuspectName, setSuspectName] = useState();
   const [SuspectContact, setSuspectContact] = useState();
@@ -33,8 +48,12 @@ const Rcomplaints = ({navigation,route}) => {
   const { selectedDate} = route.params;
   const { longitude} = route.params;
   const { latitude} = route.params;
+  const {Evidence} = route.params;
   const { cnic} = route.params;
   const { description} = route.params;
+  const {Simage} = route.params;
+  // const [Data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
     // const {trackValue} = route.params;
     const[trackValue, settrackValue] = useState();
   const { contact } = route.params;
@@ -46,15 +65,25 @@ const Rcomplaints = ({navigation,route}) => {
   const ID = {
     id:Math.random().toString(),
   }
-  var Complaint = () => {
-    if(name== null || cnic== null || contact==  null || crimeValue== null || districtValue== null || cityValue== null || policeValue== null || description == null || selectedDate == null || longitude == null || latitude == null ||
+  var Complaint = async() => {
+    if(name== null || cnic== null || contact==  null || 
+      Evidence == null ||crimeValue== null || districtValue== null || cityValue== null || policeValue== null || description == null || selectedDate == null || longitude == null || latitude == null ||
        SuspectName == null || SuspectContact == null || Reason == null || relation == null || SuspectDescription == null || victimValue == null )
     {
 alert ('Fill the form')
     }
     // console.log(cityValue)
     else{
-
+      setIsLoading(true);
+      const reference = storage().ref(selectedImage1.assets[0].fileName);
+      const pathToFile = selectedImage;
+  
+      await reference.putFile(pathToFile);
+  
+      const url = await storage()
+        .ref(selectedImage1.assets[0].fileName)
+        .getDownloadURL();
+      setSelectedImageUrl(url);
     firestore()
       .collection('Complaint')
       .add({
@@ -90,6 +119,27 @@ alert ('Fill the form')
     
   }
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage1, setSelectedImage1] = useState(null);
+
+  const [selectedImageUrl, setSelectedImageUrl] = useState('');
+
+  const FIR2= async () => {
+    console.log('111111: ',selectedImage1.assets[0].fileName)
+    console.log('111111: ',selectedImage)
+    const reference = storage().ref(selectedImage1.assets[0].fileName);
+    const pathToFile = selectedImage;
+
+    await reference.putFile(pathToFile);
+
+    const url = await storage()
+      .ref(selectedImage1.assets[0].fileName)
+      .getDownloadURL();
+    setSelectedImageUrl(url);
+
+    console.log('111111: ',selectedImage1.assets[0].fileName)
+    console.log('111111: ',selectedImage)
+    console.log('111111: ',url)
+  };
 
   const launchCam=()=>{
     const options = {
@@ -123,9 +173,10 @@ alert ('Fill the form')
     launchImageLibrary(options, response => {
       if (response.assets) {
         setSelectedImage(response.assets[0].uri);
+        setSelectedImage1(response);
       }
     });
-  }
+  };
  
   return (
     <Back3>
@@ -134,14 +185,14 @@ alert ('Fill the form')
   
       <View
         style={{
-          height: 400,
+         
           width: 460,
           borderTopLeftRadius: 130,
           paddingTop: 0,
           alignItems: 'center',
         }}>
        <View>
-        <TouchableOpacity onPress={() =>navigation.navigate('Rcomplaint')}>
+        <Pressable onPress={() =>navigation.navigate('Rcomplaint')}>
        <Image
         source={require('../images/arrow.png')}
         style={{
@@ -153,7 +204,7 @@ marginLeft:-175,
 
         }}
       />
-      </TouchableOpacity>
+      </Pressable>
       </View>
         <View style={{marginBottom: 19, marginTop:-35}}>
           <Text style={{color: 'white', fontSize: 29, fontWeight:'bold'}}>
@@ -175,7 +226,7 @@ marginLeft:-175,
           {/* <ScrollView style={{backgroundColor:'white',borderRadius:37, width:390, marginLeft:-18}}> */}
           <View style={{flexDirection: 'row', marginBottom: 20}}>
           <View style={{flex: 1, marginLeft: 80}}>
-            <TouchableOpacity
+            <Pressable
               style={{
                
 marginTop:22,
@@ -192,11 +243,11 @@ marginTop:22,
               CASE INFORMATION
               </Text>
            
-            </TouchableOpacity>
+            </Pressable>
          
           </View>
           <View style={{flex: 2, marginLeft: 60, }}>
-            <TouchableOpacity
+            <Pressable
               style={{
                 //  backgroundColor:'black',
 
@@ -211,7 +262,7 @@ marginTop:22,
               }}
              >
               <Text style={{color: '#10942e', fontSize: 10, fontWeight:'bold'}}>SUSPECT INFORMATION</Text>
-            </TouchableOpacity>
+            </Pressable>
             <View style={{width:400, marginLeft:-29,marginTop:-7}}>
               
             <Text style={{color:'#10942e'}}>---------------------------------------------------------------</Text>
@@ -306,7 +357,7 @@ marginTop:22,
           resizeMode: 'contain',
           marginBottom: 20,marginLeft:-300, marginTop:10}} source={{uri: selectedImage}} />
       )}</View>
-            <TouchableOpacity onPress={handleGalleryPress}>
+            <Pressable onPress={handleGalleryPress}>
               <View style={{
                 borderRadius: 10,
                 color: darkGreen,
@@ -334,7 +385,7 @@ marginLeft:295,
       />
 
               </View>
-            </TouchableOpacity>
+            </Pressable>
             <Text
               style={{
                 color: '#10942e',
@@ -436,25 +487,42 @@ marginLeft:295,
             />
            
         </ScrollView>
+        {isKeyboardActive ? (
+              <Text style={{height:180}}></Text>
+            ) : (
+              null
+            )}
         </View>
   
         <View style={{marginLeft: 280, }}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#10942e',
-              borderRadius: 10,
-              width: 200,
-              height: 50,
-              alignItems: 'center',
-              marginLeft:-245,
-              marginTop:-22
-            }}
-            // onPress={() => navigation.navigate('UserPanel')}
-           onPress={Complaint}>
-            <Text style={{color: 'white', fontSize: 17, marginTop: 14, fontWeight:'bold'}}>
-         REGISTER COMPLAINT
-            </Text>
-          </TouchableOpacity>
+          <Pressable
+              style={{
+                backgroundColor: '#10942e',
+                borderRadius: 10,
+                width: 200,
+                height: 50,
+                alignItems: 'center',
+                marginLeft: -245,
+                marginTop: -22,
+              }}
+              // onPress={() => navigation.navigate('UserPanel')}
+              onPress={Complaint}>
+                {isLoading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text
+                style={{
+                  color: 'white',
+                  fontSize: 19,
+                  marginTop: 12,
+                  fontWeight: 'bold',
+                }}>
+                REGISTER COMPLAINT
+              </Text>
+              )}
+
+              
+            </Pressable>
         </View>
       </View>
 

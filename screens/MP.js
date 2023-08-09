@@ -4,8 +4,8 @@ import {
   View,
   Text,
   Touchable,
-  TouchableOpacity,
-  ScrollView,
+  Pressable,
+  ScrollView,Image,
   TextInput,
 } from 'react-native';
 import Back3 from './Back3';
@@ -25,7 +25,7 @@ const MP = ({navigation}) => {
             alignItems: 'center',
           }}>
           <View>
-            <TouchableOpacity
+            <Pressable
                  onPress={() => navigation.goBack()}>
               <Image
                 source={require('../images/arrow.png')}
@@ -37,7 +37,7 @@ const MP = ({navigation}) => {
                   marginTop: 12,
                 }}
               />
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <View style={{marginBottom: 19, marginTop: -35}}>
             <Text style={{color: 'white', fontSize: 19, fontWeight: 'bold'}}>
@@ -45,7 +45,7 @@ const MP = ({navigation}) => {
             </Text>
           </View>
           <View>
-            {/* <TouchableOpacity>
+            {/* <Pressable>
               <Image
                 source={require('../images/loout.png')}
                 style={{
@@ -56,7 +56,7 @@ const MP = ({navigation}) => {
                   marginTop:-44,
                 }}
               />
-            </TouchableOpacity> */}
+            </Pressable> */}
           </View>
           <View
             style={{
@@ -111,15 +111,20 @@ const MP = ({navigation}) => {
           
           </View>
           <View style={{backgroundColor: '#10942e',marginLeft:0, width:370,height:50, borderRadius:8,marginTop:8 }}>
-            <TouchableOpacity
+            <Pressable
               onPress={() => navigation.navigate('RMP')}>
               <Text style={{fontSize:20, marginLeft:80, fontWeight:'bold', color:'white', marginTop:9, alignContent:'center'}}>REGISTER NEW REPORT</Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <View style={{backgroundColor: '#b8b8b8',marginLeft:0, width:370,height:50, borderRadius:8,marginTop:8 }}>
-            <TouchableOpacity  onPress={() => navigation.navigate('VRMP')}>
+            <Pressable  onPress={() => navigation.navigate('VRMP')}>
               <Text style={{fontSize:20, marginLeft:65, fontWeight:'bold', color:'#10942e', marginTop:9}}>VIEW REGISTERED REPORT</Text>
-            </TouchableOpacity>
+            </Pressable>
+          </View>
+          <View style={{backgroundColor: 'red',marginLeft:0, width:370,height:50, borderRadius:8,marginTop:8 }}>
+            <Pressable  onPress={() => navigation.navigate('FMP')}>
+              <Text style={{fontSize:20, marginLeft:65, fontWeight:'bold', color:'white', marginTop:9}}>FOUND A MISSING PERSON</Text>
+            </Pressable>
           </View>
    
         </View>

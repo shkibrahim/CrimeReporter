@@ -1,16 +1,16 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
-
+import {Linking} from 'react-native';
 import {useForm, Controller} from 'react-hook-form'
-
+import Geolocation from '@react-native-community/geolocation';
 import {
   View,
   FlatList,
   Button, StyleSheet,
   Text,
   Touchable,
-  TouchableOpacity,
+ Pressable,
   Image,
   ScrollView,
   TextInput,
@@ -21,19 +21,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 
-const VRF = ({routes, navigation}) => {
-  const [name, setname] = useState();
-  const [cnic, setcnic] = useState();
-  const [description, setdescription] = useState();
-  const [contact, setcontact] = useState();
-  const [crimeValue, setcrimeValue] = useState();
-  const [districtValue, setdistrictValue] = useState();
-  const [cityValue, setcityValue] = useState();
-  const [policeValue, setpoliceValue] = useState();
+const AdminVF = ({routes, navigation}) => {
+  
   const [Data, setData] = useState([]);
-  const [SuspectName, setSuspectName] = useState();
-  const [SuspectContact, setSuspectContact] = useState();
-  const [Reason, setReason] = useState();
+
   const [trackOpen, settrackOpen] = useState();
   const [trackValue, settrackValue] = useState();
   const [track, settrack] = useState([
@@ -58,45 +49,104 @@ const VRF = ({routes, navigation}) => {
     };
     Dataa();
   });
-  const deny=async (item)=>{
-    await firestore()
-    .collection('FIR')
-    .doc(item.id)
-    .update({
-      Status: "Declined",
+//   const deny=async (item)=>{
+//     await firestore()
+//     .collection('FIR')
+//     .doc(item.id)
+//     .update({
+//       Status: "Declined",
       
-    });
-    alert("Report Declined")
+//     });
+//     alert("Report Declined")
+// }
+
+const [date, setDate] = useState();
+const currentDate = new Date(); // create a new Date object with current date and time
+const year = currentDate.getFullYear(); // get the current year (YYYY)
+const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // get the current month (MM) and add leading zero if necessary
+const day = currentDate.getDate().toString().padStart(2, '0'); // get the current day (DD) and add leading zero if necessary
+const formattedDate = `${year}-${month}-${day}`; // combine the year, month, and day in the desired format
+
+const [selectedDate1, setSelectedDate1] = useState(formattedDate);
+
+const [dateModalVisible, setDateModalVisible] = useState(false);
+
+const datemodvisible = () => {
+  setDateModalVisible(true);
+};
+const currentTime = new Date();
+const formattedTime =  currentTime.getHours() + ":" 
++ currentTime.getMinutes()
+const [selectedTime1, setSelectedTime1] = useState(formattedTime);
+const datemodvisiblefalse = () => {
+  setDateModalVisible(false);
+};
+
+
+const [Longitude, setLongitude] = useState();
+const [Latitude, setLatitude] = useState();
+useEffect((item) => {
+
+  Geolocation.getCurrentPosition(
+    position => { 
+  //  item.Longitude(position.coords.longitude);
+    //  item.Latitude(position.coords.latitude);
+    },
+    error => console.log(error),
+    { enableHighAccuracy: true,  timeout: 30000, maximumAge: 1000 }
+  );
+}, []);
+
+
+
+
+
+function MAP() {
+  Geolocation.requestAuthorization();
+  Geolocation.getCurrentPosition(
+    position => {
+      // console.log(position.coords.latitude, position.coords.longitude);
+      const label = ' LOCATION on MAPS'; // Replace with your label
+      const url = `https://www.google.com/maps/search/?api=1&query=${position.coords.latitude},${position.coords.longitude}&query_place_id=${label}`;
+      // alert('LOCATION HAS BEEN SET');
+      Linking.openURL(url);
+      //   Latitude = `${position.coords.latitude}`
+      //   Longitude = `${position.coords.longitude}`
+    },
+    error => {
+      console.error(error);
+    },
+    {enableHighAccuracy: true, timeout: 40900, maximumAge: 15},
+  );
 }
 
 const Accept = async (item) => { 
-    const Go= {
-      ID :item.ID,
-      name: item.name,
-      cnic:item.cnic,
-      contact: item.contact,
-      crimeValue:item.crimeValue,
-      districtValue:item.districtValue,
-      cityValue:item.cityValue,
-      policeValue:item.policeValue,
-      description:item.description,
-      SuspectName: item.suspectname,
-      Suspectcontact:item.suspectcontact,
-      reason: item.reason,
-      Relation: item.relation,
-      SuspectDescription: item.SuspectDescription,
-     latitude: item.latitude,
-longitude:item.longitude,
-// trackValue : item.trackValue,
-selectedDate: item.selectedDate
-
-    }
-    
-
    await firestore()
       .collection('AcceptedFIR')
       .add({       
-   Go
+        ID :item.ID,
+        name: item.name,
+        cnic:item.cnic,
+        contact: item.contact,
+        crimeValue:item.crimeValue,
+        districtValue:item.districtValue,
+        cityValue:item.cityValue,
+        policeValue:item.policeValue,
+        description:item.description,
+        suspectname: item.suspectname,
+        suspectcontact:item.suspectcontact,
+        reason: item.reason,
+        Evidence: item.Evidence,
+        EvidenceImage: item.EvidenceImage,
+        suspectcnic:item.suspectcnic,
+        SuspectImage:item.SuspectImage,
+        relation: item.relation,
+        SuspectDescription: item.SuspectDescription,
+       latitude: item.latitude,
+  longitude:item.longitude,
+  // trackValue : item.trackValue,
+  selectedDate: item.selectedDate
+  
       })
       .then(() => {
         alert('Report Accepted!');
@@ -108,12 +158,16 @@ selectedDate: item.selectedDate
     .collection('FIR')
     .doc(item.id)
     .update({
-      Status: "Accepted",
+      Status: "Seen",
       trackValue:trackValue,
+      selectedDate1:selectedDate1,
+      selectedTime1:selectedTime1,
       // trackValue:trackValue,
     });
     navigation.navigate('AdminTC',{  
       trackValue: trackValue,
+      selectedTime1:selectedTime1,
+      selectedDate1:selectedDate1,
      })
     // navigation.navigate('AdminTC')
   }
@@ -130,7 +184,7 @@ selectedDate: item.selectedDate
             alignItems: 'center',
           }}>
           <View>
-            <TouchableOpacity onPress={() => navigation.navigate('UserPanel')}>
+            <Pressable onPress={() => navigation.goBack()}>
               <Image
                 source={require('../../images/arrow.png')}
                 style={{
@@ -141,7 +195,7 @@ selectedDate: item.selectedDate
                   marginTop: 12,
                 }}
               />
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <View style={{marginBottom: 19, marginTop: -35}}>
             <Text style={{color: 'white', fontSize: 19, fontWeight: 'bold'}}>
@@ -149,7 +203,7 @@ selectedDate: item.selectedDate
             </Text>
           </View>
           {/* <View>
-            <TouchableOpacity>
+            <Pressable>
               <Image
                 source={require('../images/loout.png')}
                 style={{
@@ -160,7 +214,7 @@ selectedDate: item.selectedDate
                   marginTop: -44,
                 }}
               />
-            </TouchableOpacity>
+            </Pressable>
           </View> */}
           <View
             style={{
@@ -435,7 +489,15 @@ selectedDate: item.selectedDate
                           }}>
                           {item.longitude} +  {item.latitude}
                         </Text>
+                        <Pressable style={{marginLeft:122}}
+                        onPress={MAP}>
+                          <Text style={{color:'green'}}>
+View Location on Map
+                          </Text>
+                        </Pressable>
                         </View>
+
+                     
                         <Text
                           style={{
                             color: '#10942e',
@@ -461,6 +523,67 @@ selectedDate: item.selectedDate
                            
                           }}>
                           {item.policeValue}
+                        </Text>
+                        </View>
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            marginBottom:-5,
+                          }}>
+                          EVIDENCES IMAGES
+                        </Text>
+                        <View
+                style={{
+                  alignItems: 'center',
+                  marginLeft: 140,
+                  width: 90,
+                  height: 87,
+                  backgroundColor: 'black',
+                  borderRadius: 55,
+                  marginTop: 12,
+                }}>
+                <Image
+                  style={{
+                    width: 90,
+                    borderRadius: 5,
+                    height: 87,
+                    resizeMode:'cover',
+                    // marginBottom: 20,
+                    marginLeft: 0,
+                    marginTop: 0,
+                  }}
+                  source={{uri: item.EvidenceImage}}
+                />
+              
+              </View>
+              <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            marginBottom:-5,
+                          }}>
+                          EVIDENCES
+                        </Text>
+
+                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                           
+                          }}>
+                          {item.Evidence}
                         </Text>
                         </View>
                         <Text
@@ -518,6 +641,70 @@ selectedDate: item.selectedDate
                           {item.suspectname}
                         </Text>
                         </View>
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            name: 'cnic',
+                            
+                            marginBottom:-5,
+                          }}>
+                          SUSPECT Cnic: 
+                        </Text>
+                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                            name: 'cnic',
+                          }}>
+                          {item.suspectcnic}
+                        </Text>
+                        </View>
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            name: 'cnic',
+                            
+                            marginBottom:-5,
+                          }}>
+                          SUSPECT IMAGE:
+                        </Text>
+                        <View
+                style={{
+                  alignItems: 'center',
+                  marginLeft: 140,
+                  width: 90,
+                  height: 87,
+                  backgroundColor: 'black',
+                  borderRadius: 55,
+                  marginTop: 12,
+                }}>
+                <Image
+                  style={{
+                    width: 90,
+                    borderRadius: 5,
+                    height: 87,
+                    resizeMode:'cover',
+                    // marginBottom: 20,
+                    marginLeft: 0,
+                    marginTop: 0,
+                  }}
+                  source={{uri: item.SuspectImage}}
+                />
+              
+              </View>
                         <Text
                           style={{
                             color: '#10942e',
@@ -659,7 +846,7 @@ selectedDate: item.selectedDate
               zIndex={30}
               zIndexInverse={40}
             />
-             {/* <TouchableOpacity
+             {/* <Pressable
             style={{
               backgroundColor: '#10942e',
               borderRadius: 10,
@@ -679,7 +866,7 @@ selectedDate: item.selectedDate
             <Text style={{color: 'white', fontSize:17, marginTop: 4, fontWeight:'bold'}}>
              Update
             </Text>
-          </TouchableOpacity> */}
+          </Pressable> */}
           </View>
           
         )}
@@ -719,12 +906,12 @@ selectedDate: item.selectedDate
                        
                       </View >
                       {/* <View style={{ flexDirection:'row'}} > */}
-                      <TouchableOpacity
+                      <Pressable
             style={{
               backgroundColor: '#10942e',
               borderRadius: 10,
               width: 150,
-              marginLeft: 22,
+              marginLeft: 112,
              marginTop:30,
               height: 50,
               alignItems: 'center',
@@ -736,10 +923,10 @@ selectedDate: item.selectedDate
            
            >
             <Text style={{color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
-             ACCEPT 
+            SEEN 
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </Pressable>
+          {/* <Pressable
             style={{
               backgroundColor: '#10942e',
               borderRadius: 10,
@@ -756,7 +943,7 @@ selectedDate: item.selectedDate
             <Text style={{color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
              DECLINE
             </Text>
-          </TouchableOpacity>
+          </Pressable> */}
          
                       </View>
                     );
@@ -818,4 +1005,4 @@ const styles = StyleSheet.create({
 
  
 });
-export default VRF;
+export default AdminVF;

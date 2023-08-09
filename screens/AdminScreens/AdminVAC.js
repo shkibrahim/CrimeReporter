@@ -21,7 +21,7 @@ const AdminVAC = ({routes, navigation}) => {
 
   const [Data, setData] = useState([]);
 
-  var Complaint = firestore().collection('AcceptedComplaints');
+  var Complaint = firestore().collection('AcceptedFIR');
 
   useEffect(() => {
     var Dataa = async () => {
@@ -33,26 +33,11 @@ const AdminVAC = ({routes, navigation}) => {
     Dataa();
   });
   const Accept = async (item) => { 
-    // const Go= {
-    //   name: item.name,
-    //   cnic:item.cnic,
-    //   Contact: item.Contact,
-    //   crimeValue:item.crimeValue,
-    //   districtValue:item.districtValue,
-    //   cityValue:item.cityValue,
-    //   policeValue:item.policeValue,
-    //   description:item.description,
-    //   SuspectName: item.suspectname,
-    //   Suspectcontact:item.suspectcontact,
-    //   reason: item.reason,
-    //   Relation: item.relation,
-    //   SuspectDescription: item.SuspectDescription
-    // }
-    
-//    console.log (AData);
+
     firestore()
       .collection('ViewAss')
       .add({       
+        // ID :item.ID,
         name: item.name,
         cnic:item.cnic,
         contact: item.contact,
@@ -61,18 +46,24 @@ const AdminVAC = ({routes, navigation}) => {
         cityValue:item.cityValue,
         policeValue:item.policeValue,
         description:item.description,
-        victimValue:item.victimValue,
-    
         suspectname: item.suspectname,
+        suspectcnic:item.suspectcnic,
         suspectcontact:item.suspectcontact,
         reason: item.reason,
+        Evidence: item.Evidence,
+        EvidenceImage: item.EvidenceImage,
+        SuspectImage:item.SuspectImage,
         relation: item.relation,
-        SuspectDescription: item.SuspectDescription
+        SuspectDescription: item.SuspectDescription,
+       latitude: item.latitude,
+  longitude:item.longitude,
+  
+  selectedDate: item.selectedDate
       })
       .then(() => {
         alert('Case Assigned');
       }).catch(()=>{
-        alert('error')
+        alert(error)
       });
 
    
@@ -82,14 +73,14 @@ const AdminVAC = ({routes, navigation}) => {
       <View style={{alignItems: 'center', width: 400}}>
         <View
           style={{
-            height: 400,
+            height: 600,
             width: 460,
             borderTopLeftRadius: 130,
             paddingTop: 0,
             alignItems: 'center',
           }}>
           <View>
-            <TouchableOpacity onPress={() => navigation.navigate('UserPanel')}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image
                 source={require('../../images/arrow.png')}
                 style={{
@@ -129,7 +120,7 @@ const AdminVAC = ({routes, navigation}) => {
               width: 390,
 
               marginBottom: 30,
-              height: 650,
+              height: 750,
             }}>
             <View
               style={{
@@ -143,7 +134,7 @@ const AdminVAC = ({routes, navigation}) => {
               </Text>
             </View>
             <View style={{}}>
-              <FlatList
+            <FlatList
                 style={{width: '100%'}}
                 data={Data}
                 horizontal={true}
@@ -155,19 +146,19 @@ const AdminVAC = ({routes, navigation}) => {
                     //  <FlatList 
                     <View style={{ width: 370,
                         marginRight:19,
-                        height: 680,}}>
+                        height: 640,}}>
                       <View
                         style={{
                         //   backgroundColor: 'white',
-                          borderColor: 'red',
+                          // borderColor: 'red',
                           marginBottom: 10,
                         //   borderRadius: 19,
                           margin: 10,
                          
                           width: 370,
-                          height: 450,
+                          // height: 530,
                         }}>
-                          <ScrollView>
+                          <ScrollView style={{height:500}}>
                         <Text
                           style={{
                             color: '#10942e',
@@ -179,7 +170,7 @@ const AdminVAC = ({routes, navigation}) => {
                           }}>
                           {index + 1}
                         </Text>
-                        
+                       
                         
                         <Text
                           style={{
@@ -241,6 +232,7 @@ const AdminVAC = ({routes, navigation}) => {
                             fontWeight: 'bold',
                             marginLeft: 10,
                             fontSize: 14,
+                           
                             marginBottom:-5,
                           }}>
                           CONTACT NO:
@@ -265,12 +257,12 @@ const AdminVAC = ({routes, navigation}) => {
                           style={{
                             color: '#10942e',
                             fontWeight: 'bold',
-                            marginBottom: 15,
                             marginLeft: 10,
                             fontSize: 14,
+                           
                             marginBottom:-5,
                           }}>
-                          VICTIM: 
+                          DATE
                         </Text>
                         <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
                 marginBottom:30,
@@ -283,11 +275,12 @@ const AdminVAC = ({routes, navigation}) => {
                             marginTop:10,
                             marginBottom: 10,
                             fontSize: 14,
-                            name: 'cnic',
+                          
                           }}>
-                          {item.victimValue}
+                          {item.selectedDate}
                         </Text>
                         </View>
+                        
                         <Text
                           style={{
                             color: '#10942e',
@@ -373,6 +366,32 @@ const AdminVAC = ({routes, navigation}) => {
                             fontWeight: 'bold',
                             marginLeft: 10,
                             fontSize: 14,
+                            marginBottom:-5,
+                          }}>
+                         LOCATION:
+                        </Text>
+                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                           
+                          }}>
+                          {item.longitude} +  {item.latitude}
+                        </Text>
+                        </View>
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
                            
                             marginBottom:-5,
                           }}>
@@ -392,6 +411,67 @@ const AdminVAC = ({routes, navigation}) => {
                            
                           }}>
                           {item.policeValue}
+                        </Text>
+                        </View>
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            marginBottom:-5,
+                          }}>
+                          EVIDENCES IMAGES
+                        </Text>
+                        <View
+                style={{
+                  alignItems: 'center',
+                  marginLeft: 140,
+                  width: 90,
+                  height: 87,
+                  backgroundColor: 'black',
+                  borderRadius: 55,
+                  marginTop: 12,
+                }}>
+                <Image
+                  style={{
+                    width: 90,
+                    borderRadius: 5,
+                    height: 87,
+                    resizeMode:'cover',
+                    // marginBottom: 20,
+                    marginLeft: 0,
+                    marginTop: 0,
+                  }}
+                  source={{uri: item.EvidenceImage}}
+                />
+              
+              </View>
+              <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            marginBottom:-5,
+                          }}>
+                          EVIDENCES
+                        </Text>
+
+                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                           
+                          }}>
+                          {item.Evidence}
                         </Text>
                         </View>
                         <Text
@@ -455,6 +535,70 @@ const AdminVAC = ({routes, navigation}) => {
                             fontWeight: 'bold',
                             marginLeft: 10,
                             fontSize: 14,
+                            name: 'cnic',
+                            
+                            marginBottom:-5,
+                          }}>
+                          SUSPECT cnic: 
+                        </Text>
+                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                            name: 'cnic',
+                          }}>
+                          {item.suspectcnic}
+                        </Text>
+                        </View>
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            name: 'cnic',
+                            
+                            marginBottom:-5,
+                          }}>
+                          SUSPECT IMAGE:
+                        </Text>
+                        <View
+                style={{
+                  alignItems: 'center',
+                  marginLeft: 140,
+                  width: 90,
+                  height: 87,
+                  backgroundColor: 'black',
+                  borderRadius: 55,
+                  marginTop: 12,
+                }}>
+                <Image
+                  style={{
+                    width: 90,
+                    borderRadius: 5,
+                    height: 87,
+                    resizeMode:'cover',
+                    // marginBottom: 20,
+                    marginLeft: 0,
+                    marginTop: 0,
+                  }}
+                  source={{uri: item.SuspectImage}}
+                />
+              
+              </View>
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
                             
                             marginBottom:-5,
                           }}>
@@ -485,7 +629,7 @@ const AdminVAC = ({routes, navigation}) => {
                            
                             marginBottom:-5,
                           }}>
-                          SUSPECT REASON: {item.reason}
+                          SUSPECT REASON: 
                         </Text>
                         <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
                 marginBottom:30,
@@ -545,7 +689,7 @@ const AdminVAC = ({routes, navigation}) => {
                 marginBottom:30,
                 marginVertical: 10,}}>
                         <Text
-                          style={{  
+                          style={{
                             color: 'grey',
                             // fontWeight: 'bold',
                             // marginLeft: 10,
@@ -556,23 +700,19 @@ const AdminVAC = ({routes, navigation}) => {
                           }}>
                           {item.SuspectDescription}
                         </Text>
-                        {/* <TouchableOpacity style={{width:45, height:45}}  onPress={() => Accept(item.cnic)}><Text style= {{color:'black'}}  >X</Text></TouchableOpacity> */}
                         </View>
+                      
+                      
                         </ScrollView>
 
-                      
-                        <View style={{ marginBottom: -5}}>
-         
-        </View>
-                       
-                      </View>
                         <TouchableOpacity
             style={{
               backgroundColor: '#10942e',
               borderRadius: 10,
               width: 250,
-              marginLeft: 72,
+              marginLeft: 62,
              marginTop:40,
+             marginBottom:-33,
               height: 50,
               alignItems: 'center',
               alignContent: 'center'    
@@ -582,17 +722,17 @@ const AdminVAC = ({routes, navigation}) => {
            onPress={()=>Accept(item)}
            
            >
-
             <Text style={{color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
-             ASSIGN THIS CASE
+             ASSIGN CASES
             </Text>
           </TouchableOpacity>
-        
-
-
+             
+                       
+                      </View >
+                      {/* <View style={{ flexDirection:'row'}} > */}
+              
          
-          
-        
+         
                       </View>
                     );
                   }

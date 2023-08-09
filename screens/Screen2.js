@@ -8,7 +8,7 @@ import {
   Touchable,
   TouchableOpacity,
   ScrollView,
-  TextInput,
+  TextInput,Image,
   StyleSheet
 } from 'react-native';
 
@@ -29,13 +29,18 @@ const [districtOpen, setdistrictOpen] = useState(false);
   const [district, setdistrict] = useState([
     { label: "Rwp", value: "Rwp" },
     { label: "Murree", value: "Murree" },
+    { label: "Rawat", value: "Rawat" },
+    { label: "Barakoh", value: "Barakoh" },
+    { label: "Multan", value: "Multan" },
    
   ]);
   const [cityOpen, setcityOpen] = useState(false);
   const [cityValue, setcityValue] = useState(null);
   const [city, setcity] = useState([
     { label: "Rwp", value: "Rawalpindi" },
-    { label: "Isb", value: "Isb" },
+    { label: "Isb", value: "Islamabad" },
+    { label: "Lahore", value: "Lahore" },
+    { label: "Peshawar", value: "Peshawar" },
 
   ]);
   const {  control } = useForm();
@@ -197,7 +202,7 @@ const [districtOpen, setdistrictOpen] = useState(false);
                 marginLeft: 10,
                 fontSize: 14,
                 name: 'cnic',
-                marginTop:60,
+                marginTop:160,
               }}>
                 
              CITY

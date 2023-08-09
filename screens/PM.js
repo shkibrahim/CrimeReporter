@@ -51,7 +51,7 @@ marginLeft:-175,
       </View>
         <View style={{marginBottom: 19, marginTop:-35}}>
           <Text style={{color: 'white', fontSize: 19, fontWeight:'bold'}}>
-        Profile Management
+        Profile Managem
           </Text>
         </View>
       

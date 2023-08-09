@@ -82,7 +82,7 @@ const ITPI = ({navigation}) => {
     {label: 'Stage:1 "30 Percent Completion"', value: 'Stage:1 "30 Percent Completion"'},
     {label: 'Stage:2 "60 Percent Completion"', value: 'Stage:2 "60 Percent Completion"'},
     {label: 'Stage:3 "90 Percent Completion"', value: 'Stage:3 "90 Percent Completion"'},
-    {label: 'Stage:4 "Case Completed"', value: 'Stage:4 "Case Completed"'},
+    {label: 'Stage:4 Case Completed', value: 'Stage:4 Case Completed'},
   ]);
   let randomNumber = Math.floor(Math.random() * 10000000);
 while(randomNumber < 1000000) {
@@ -161,7 +161,7 @@ else{
       })
       .then(() => {
         alert('Submitted Successfully');
-        navigation.navigate('ITSW')
+        navigation.navigate('ITPVAC')
       }).catch(()=>{
         alert('error')
       });
@@ -466,7 +466,7 @@ else{
          
            >
             <Text style={{color: 'green', fontSize:14, marginTop: 11, fontWeight:'bold'}}>
-            >> Preview
+         Preview
             </Text>
           </TouchableOpacity>
 

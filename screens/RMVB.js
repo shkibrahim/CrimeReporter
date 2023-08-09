@@ -1,15 +1,15 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form'
-
+import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import {
   View,
   Text,
   Touchable,
-  StyleSheet,
+  StyleSheet,Keyboard,
   TouchableOpacity,
-  ScrollView,
+  ScrollView, ActivityIndicator,
   TextInput,
 } from 'react-native';
 import Back3 from './Back3';
@@ -70,6 +70,7 @@ const RMVB = ({navigation,route}) => {
   const [Color, setColor] = useState();
   const [VehicleDescription, setVehicleDescription] = useState();
   const { name } = route.params;
+  const [isLoading, setIsLoading] = useState(false);
   const { cnic} = route.params;
   const { description} = route.params;
   const { contact } = route.params;
@@ -80,13 +81,23 @@ const RMVB = ({navigation,route}) => {
     id:Math.random().toString(),
   }
   const [Data,setData] = useState([]);
-  var RMV = () => {
+  var RMV = async() => {
     if(name== null || cnic== null || contact==  null  || districtValue== null || cityValue== null || policeValue== null || description == null || VehicleName == null || VehicleNumber == null || VehicleTypeValue == null || Model == null || Color == null || VehicleDescription == null  )
     {
 alert ('Fill the form')
     }
   
     else{
+      setIsLoading(true);
+      const reference = storage().ref(selectedImage1.assets[0].fileName);
+    const pathToFile = selectedImage;
+
+    await reference.putFile(pathToFile);
+
+    const url = await storage()
+      .ref(selectedImage1.assets[0].fileName)
+      .getDownloadURL();
+    setSelectedImageUrl(url);
     firestore()
       .collection('RMV')
       .add({
@@ -102,6 +113,7 @@ alert ('Fill the form')
         VehicleNumber: VehicleNumber,
         VehicleTypeValue: VehicleTypeValue,
         Model: Model,
+       MissingVehicle:url,
         trackValue: trackValue,
         Color:Color,
         VehicleDescription: VehicleDescription,
@@ -118,7 +130,27 @@ alert ('Fill the form')
     
   }
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage1, setSelectedImage1] = useState(null);
 
+  const [selectedImageUrl, setSelectedImageUrl] = useState('');
+
+  const FIR2= async () => {
+    console.log('111111: ',selectedImage1.assets[0].fileName)
+    console.log('111111: ',selectedImage)
+    const reference = storage().ref(selectedImage1.assets[0].fileName);
+    const pathToFile = selectedImage;
+
+    await reference.putFile(pathToFile);
+
+    const url = await storage()
+      .ref(selectedImage1.assets[0].fileName)
+      .getDownloadURL();
+    setSelectedImageUrl(url);
+
+    console.log('111111: ',selectedImage1.assets[0].fileName)
+    console.log('111111: ',selectedImage)
+    console.log('111111: ',url)
+  };
   const launchCam=()=>{
     const options = {
       mediaType: 'photo',
@@ -147,13 +179,30 @@ alert ('Fill the form')
       mediaType: 'photo',
       includeBase64: false,
     };
-  
+
     launchImageLibrary(options, response => {
       if (response.assets) {
         setSelectedImage(response.assets[0].uri);
+        setSelectedImage1(response);
       }
     });
-  }
+  };
+  const [isKeyboardActive, setIsKeyboardActive] = useState(false);
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => setIsKeyboardActive(true),
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => setIsKeyboardActive(false),
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
   return (
     <Back3>
     <View style={{alignItems: 'center', width: 400}}>
@@ -161,7 +210,7 @@ alert ('Fill the form')
   
       <View
         style={{
-          height: 400,
+          // height: 400,
           width: 460,
           borderTopLeftRadius: 130,
           paddingTop: 0,
@@ -497,25 +546,42 @@ marginLeft:295,
             />
            
         </ScrollView>
+        {isKeyboardActive ? (
+              <Text style={{height:180}}></Text>
+            ) : (
+              null
+            )}
         </View>
   
         <View style={{marginLeft: 280, }}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#10942e',
-              borderRadius: 10,
-              width: 200,
-              height: 50,
-              alignItems: 'center',
-              marginLeft:-245,
-              marginTop:-22
-            }}
-            // onPress={() => navigation.navigate('UserPanel')}
-           onPress={RMV}>
-            <Text style={{color: 'white', fontSize: 19, marginTop: 12, fontWeight:'bold'}}>
-         REGISTER REPORT
-            </Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+              style={{
+                backgroundColor: '#10942e',
+                borderRadius: 10,
+                width: 200,
+                height: 50,
+                alignItems: 'center',
+                marginLeft: -245,
+                marginTop: -22,
+              }}
+              // onPress={() => navigation.navigate('UserPanel')}
+              onPress={RMV}>
+                {isLoading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text
+                style={{
+                  color: 'white',
+                  fontSize: 19,
+                  marginTop: 12,
+                  fontWeight: 'bold',
+                }}>
+                REGISTER REPORT
+              </Text>
+              )}
+
+              
+            </TouchableOpacity>
         </View>
       </View>
 

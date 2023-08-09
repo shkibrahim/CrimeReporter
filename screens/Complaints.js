@@ -52,9 +52,9 @@ const Complaints = ({navigation}) => {
           }}>
           <View>
             <TouchableOpacity
-                 onPress={() => navigation.navigate('FIR')}>
+                 onPress={() => navigation.goBack()}>
               <Image
-                source={require('../images/menu.png')}
+                source={require('../images/arrow.png')}
                 style={{
                   width: 28,
                   height: 38,

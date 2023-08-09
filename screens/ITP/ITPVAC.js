@@ -123,7 +123,7 @@ const ITPVAC = ({routes, navigation}) => {
                           width: 370,
                           height: 530,
                         }}>
-                          <ScrollView>
+                      <ScrollView style={{height:500}}>
                         <Text
                           style={{
                             color: '#10942e',
@@ -218,7 +218,33 @@ const ITPVAC = ({routes, navigation}) => {
                           {item.contact}
                         </Text>
                         </View>
-                        
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                           
+                            marginBottom:-5,
+                          }}>
+                          DATE
+                        </Text>
+                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                          
+                          }}>
+                          {item.selectedDate}
+                        </Text>
+                        </View>
                         
                         <Text
                           style={{
@@ -305,6 +331,32 @@ const ITPVAC = ({routes, navigation}) => {
                             fontWeight: 'bold',
                             marginLeft: 10,
                             fontSize: 14,
+                            marginBottom:-5,
+                          }}>
+                         LOCATION:
+                        </Text>
+                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                           
+                          }}>
+                          {item.longitude} +  {item.latitude}
+                        </Text>
+                        </View>
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
                            
                             marginBottom:-5,
                           }}>
@@ -324,6 +376,67 @@ const ITPVAC = ({routes, navigation}) => {
                            
                           }}>
                           {item.policeValue}
+                        </Text>
+                        </View>
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            marginBottom:-5,
+                          }}>
+                          EVIDENCES IMAGES
+                        </Text>
+                        <View
+                style={{
+                  alignItems: 'center',
+                  marginLeft: 140,
+                  width: 90,
+                  height: 87,
+                  backgroundColor: 'black',
+                  borderRadius: 55,
+                  marginTop: 12,
+                }}>
+                <Image
+                  style={{
+                    width: 90,
+                    borderRadius: 5,
+                    height: 87,
+                    resizeMode:'cover',
+                    // marginBottom: 20,
+                    marginLeft: 0,
+                    marginTop: 0,
+                  }}
+                  source={{uri: item.EvidenceImage}}
+                />
+              
+              </View>
+              <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            marginBottom:-5,
+                          }}>
+                          EVIDENCES
+                        </Text>
+
+                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                           
+                          }}>
+                          {item.Evidence}
                         </Text>
                         </View>
                         <Text
@@ -387,6 +500,70 @@ const ITPVAC = ({routes, navigation}) => {
                             fontWeight: 'bold',
                             marginLeft: 10,
                             fontSize: 14,
+                            name: 'cnic',
+                            
+                            marginBottom:-5,
+                          }}>
+                          SUSPECT Cnic: 
+                        </Text>
+                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                            name: 'cnic',
+                          }}>
+                          {item.suspectcnic}
+                        </Text>
+                        </View>
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            name: 'cnic',
+                            
+                            marginBottom:-5,
+                          }}>
+                          SUSPECT IMAGE:
+                        </Text>
+                        <View
+                style={{
+                  alignItems: 'center',
+                  marginLeft: 140,
+                  width: 90,
+                  height: 87,
+                  backgroundColor: 'black',
+                  borderRadius: 55,
+                  marginTop: 12,
+                }}>
+                <Image
+                  style={{
+                    width: 90,
+                    borderRadius: 5,
+                    height: 87,
+                    resizeMode:'cover',
+                    // marginBottom: 20,
+                    marginLeft: 0,
+                    marginTop: 0,
+                  }}
+                  source={{uri: item.SuspectImage}}
+                />
+              
+              </View>
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
                             
                             marginBottom:-5,
                           }}>
@@ -417,7 +594,7 @@ const ITPVAC = ({routes, navigation}) => {
                            
                             marginBottom:-5,
                           }}>
-                          SUSPECT REASON: {item.reason}
+                          SUSPECT REASON: 
                         </Text>
                         <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
                 marginBottom:30,
@@ -489,6 +666,8 @@ const ITPVAC = ({routes, navigation}) => {
                           {item.SuspectDescription}
                         </Text>
                         </View>
+                      
+                      
                         </ScrollView>
 
                       
@@ -521,7 +700,12 @@ const ITPVAC = ({routes, navigation}) => {
               alignContent: 'center'
 
             }}
-            onPress={() => navigation.navigate('ITSW')}>
+            onPress={() => navigation.navigate('ITSW',{  
+              Evidence:item.Evidence,
+              suspectcnic: item.suspectcnic,
+              contact: item.contact
+             
+             })}>
             <Text style={{ color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
              START WORKING
             </Text>

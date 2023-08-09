@@ -37,8 +37,8 @@ const AdminCIT = ({navigation,route}) => {
     const [Experties, setExperties] = useState([
       { label: "Murder", value: "Murder" },
       { label: "Kidnapping", value: "Kidnapping" },
-      { label: "Theft", value: "Theft" },
-      { label: "Serial Crimes", value: "Serial Crimes" },
+      { label: "Robbery", value: "Robbery" },
+      { label: "Rape", value: "Rape" },
   
     ]);
   const [TeamName, setTeamName] = useState();

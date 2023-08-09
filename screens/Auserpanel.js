@@ -7,7 +7,7 @@ import {
   View,
   Text,
   Touchable,
-  TouchableOpacity,
+  Pressable,
   ScrollView,
   TextInput,
 } from 'react-native';
@@ -31,20 +31,9 @@ const Auserpanel = ({navigation}) => {
             alignItems: 'center',
           }}>
           <View>
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
-              <Image
-                source={require('../images/menu.png')}
-                style={{
-                  width: 28,
-                  height: 38,
-                  marginLeft: -175,
-                  paddingTop: 12,
-                  marginTop: 12,
-                }}
-              />
-            </TouchableOpacity>
+           
           </View>
-          <View style={{marginBottom: 19, marginTop: -35}}>
+          <View style={{marginBottom: 19, marginTop: 15}}>
             <Text style={{color: 'white', fontSize: 19, fontWeight: 'bold'}}>
               ADMIN PANEL
             </Text>
@@ -109,7 +98,7 @@ const Auserpanel = ({navigation}) => {
 
           <View style={{flexDirection: 'row', marginBottom: 20, marginTop: 12}}>
             <View style={{flex: 1, marginLeft: 73}}>
-              <TouchableOpacity
+              <Pressable
                 style={{
                   backgroundColor: '#e8bd0f',
 
@@ -142,10 +131,10 @@ const Auserpanel = ({navigation}) => {
                   {' '}
                   TOTAL CASES
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
             <View style={{flex: 2, marginLeft: 62}}>
-              <TouchableOpacity
+              <Pressable
                 style={{
                   backgroundColor: '#7ba946',
 
@@ -177,12 +166,12 @@ const Auserpanel = ({navigation}) => {
                   {' '}
                   TEAMS
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
           <View style={{flexDirection: 'row', marginBottom: 20, marginTop: -5}}>
             <View style={{flex: 1, marginLeft: 30}}>
-              <TouchableOpacity
+              <Pressable
                 style={{
                   backgroundColor: '#f37924',
 
@@ -192,7 +181,8 @@ const Auserpanel = ({navigation}) => {
                   width: 175,
                   height: 150,
                 }}
-                onPress={() => navigation.navigate('Signup')}>
+                onPress={() => navigation.navigate('ACD')}
+                >
                 <Text
                   style={{
                     color: 'white',
@@ -214,10 +204,10 @@ const Auserpanel = ({navigation}) => {
                   {' '}
                   DATA
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
             <View style={{flex: 2, marginLeft: 124}}>
-              <TouchableOpacity
+              <Pressable
                 style={{
                   backgroundColor: '#dd2b27',
 
@@ -247,32 +237,67 @@ const Auserpanel = ({navigation}) => {
                   }}>
                   NOTIFICATIONS
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
           <View style={{flexDirection: 'row', marginBottom: 20, marginTop: -5}}>
             <View style={{flex: 1, marginLeft: 30}}>
-              <TouchableOpacity
+              <Pressable
                 style={{
                   backgroundColor: '#4aa8c2',
 
                   alignItems: 'center',
                   borderRadius: 17,
                   marginLeft: 15,
-                  width: 364,
+                  width: 175,
                   height: 150,
                 }}
-                onPress={() => navigation.navigate('Analytics')}>
+                onPress={() => navigation.navigate('Analytics')}
+                >
                 <Text
                   style={{
                     color: 'white',
-                    fontSize: 52,
-                    marginTop: 40,
+                    fontSize: 26,
+                    marginTop: 60,
                     fontWeight: 'bold',
                   }}>
                   ANALYTICS
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
+            </View>
+            <View style={{flex: 2, marginLeft: 68}}>
+              <Pressable
+                style={{
+                  backgroundColor: 'purple',
+
+                  alignItems: 'center',
+                  borderRadius: 17,
+                  marginLeft: 15,
+                  width: 175,
+                  height: 150,
+                }}
+                onPress={() => navigation.navigate('AcceptedCases')}
+                >
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 26,
+                    marginTop: 40,
+                    fontWeight: 'bold',
+                  }}>
+                 ACCEPTED {' '}
+                </Text>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 26,
+                      // marginLeft:70, marginTop: 40,
+                      marginLeft:-15,
+                    fontWeight: 'bold',
+                  }}>
+               CASES
+                </Text>
+              </Pressable>
             </View>
           </View>
         </View>

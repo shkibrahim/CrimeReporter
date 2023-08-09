@@ -4,9 +4,11 @@ import {useForm, Controller} from 'react-hook-form';
 import DatePicker from 'react-native-modern-datepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Modal} from 'react-native-paper';
-import { Linking } from 'react-native';
+import 'firebase/storage';
+import {Linking} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import storage from '@react-native-firebase/storage';
 import {
   View,
   StyleSheet,
@@ -16,94 +18,45 @@ import {
   ScrollView,
   FlatList,
   TextInput,
+  ActivityIndicator,
+  Keyboard,
 } from 'react-native';
 import Back3 from './Back3';
 import {darkGreen} from './constants';
 import {Image} from 'react-native';
+import {StorageKeys} from '../Data/StorageKeys';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Rcrime = ({navigation}) => {
-  const [name, setname] = useState();
-  const [cnic, setcnic] = useState();
-  const [longitude, setLongitude] = useState(null);
-  const [latitude, setLatitude] = useState(null);
+  const [isKeyboardActive, setIsKeyboardActive] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => setIsKeyboardActive(true),
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => setIsKeyboardActive(false),
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+  // useStates
+
+  const [name, setname] = useState('');
+  const [Evidence, setEvidence] = useState('');
+  const [cnic, setcnic] = useState('');
+  const [longitude, setLongitude] = useState('Default');
+  const [latitude, setLatitude] = useState('Default');
   const [description, setdescription] = useState();
   const [contact, setcontact] = useState();
-  const [date, setDate] = useState();
-
-  const currentDate = new Date(); // create a new Date object with current date and time
-  const year = currentDate.getFullYear(); // get the current year (YYYY)
-  const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // get the current month (MM) and add leading zero if necessary
-  const day = currentDate.getDate().toString().padStart(2, '0'); // get the current day (DD) and add leading zero if necessary
-  const formattedDate = `${year}-${month}-${day}`; // combine the year, month, and day in the desired format
-
-  const [selectedDate, setSelectedDate] = useState(formattedDate);
 
   const [dateModalVisible, setDateModalVisible] = useState(false);
-
-  const datemodvisible = () => {
-    setDateModalVisible(true);
-  };
-  const datemodvisiblefalse = () => {
-    setDateModalVisible(false);
-  };
-
-  let FIRDATA = {
-    name: name,
-    cnic: cnic,
-    contact: contact,
-    crime: crimeValue,
-    dis: districtValue,
-    city: cityValue,
-    police: policeValue,
-    des: description,
-  };
-  function Location() {
-    Geolocation.requestAuthorization();
-  Geolocation.getCurrentPosition(
-    position => {
-      // console.log(position.coords.latitude, position.coords.longitude);
-      const label = 'CURRENT LOCATION'; // Replace with your label
-      const url = `https://www.google.com/maps/search/?api=1&query=${position.coords.latitude},${position.coords.longitude}&query_place_id=${label}`;
-      alert('LOCATION HAS BEEN SET')
-      Linking.openURL(url);
-    //   Latitude = `${position.coords.latitude}`
-    //   Longitude = `${position.coords.longitude}`
-    },
-    error => {
-      console.error(error);
-    },
-    { enableHighAccuracy: true, timeout: 3900, maximumAge: 1 }
-  );
-  }
-useEffect(() => {
-    Geolocation.getCurrentPosition(
-      position => {
-        setLongitude(position.coords.longitude);
-        setLatitude(position.coords.latitude);
-      },
-      error => console.log(error),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-  }, []);
-  
-  var FIR = () => {
-    {
-      navigation.navigate('FIRS', {
-        name: name,
-        cnic: cnic,
-        contact: contact,
-        crimeValue: crimeValue,
-        districtValue: districtValue,
-        cityValue: cityValue,
-        policeValue: policeValue,
-        description: description,
-        selectedDate: selectedDate,
-        longitude: longitude,
-        latitude: latitude,
-        
-      });
-    }
-  };
 
   const [crimeOpen, setcrimeOpen] = useState();
   const [crimeValue, setcrimeValue] = useState();
@@ -133,42 +86,123 @@ useEffect(() => {
     {label: 'Bani Police Station', value: 'Bani Police Station'},
   ]);
   const [addBtnState, setAddBtnState] = useState(true);
-  const [userList, setuserList] = useState([]);
   const {control} = useForm();
-  //   const Save = () => {
-  //     // alert('click')
-  //     if ( name === '' && cnic === '' && crime === '' && district === '' && police === '' ) {
-  //       alert('click');
-  //     } else {
-  //         const userList = {
-  //             Sname: name,
-  //             Scnic: cnic,
-  //             Scontact: contact,
-  //             Sdescription: description,
-  //             Scrime: crime,
-  //             Scity: city,
-  //             Sdistrict: district,
-  //             Spolice: police
-
-  //         };
-
-  //         setuserList((oldList) => [...oldList, userList]);
-  //         setAddBtnState(true);
-  //         setname('');
-  //         setcnic('');
-  //         setcontact('');
-  //         setdescription('');
-  //         alert('Added not Successfully');
-  //         // setgender('');
-  //         console.log("---.",userList)
-  //      navigation.navigate('FIRS',{
-  //       userList,
-  //      })
-  //     }
-
-  // };
 
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage1, setSelectedImage1] = useState(null);
+
+  const [selectedImageUrl, setSelectedImageUrl] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [btnStat, seBtnStat] = React.useState(true);
+
+  useEffect(() => {
+    if (selectedImage == null) {
+      seBtnStat(true);
+    } else {
+      seBtnStat(false);
+    }
+  }, [selectedImage]);
+
+  //useEffect
+  useEffect(() => {
+    AsyncStorage.getItem(StorageKeys.CurrentUser)
+      .then(data => {
+        if (data != null) {
+          const us = JSON.parse(data);
+          console.log('user is : ', us);
+          setcnic(us.cnic);
+        }
+      })
+      .catch(error => console.log(error));
+
+    Geolocation.getCurrentPosition(
+      position => {
+        setLongitude(position.coords.longitude);
+        setLatitude(position.coords.latitude);
+      },
+      error => console.log(error),
+      {enableHighAccuracy: true, timeout: 30000, maximumAge: 1000},
+    );
+  }, []);
+
+  const currentDate = new Date(); // create a new Date object with current date and time
+  const year = currentDate.getFullYear(); // get the current year (YYYY)
+  const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // get the current month (MM) and add leading zero if necessary
+  const day = currentDate.getDate().toString().padStart(2, '0'); // get the current day (DD) and add leading zero if necessary
+  const formattedDate = `${year}-${month}-${day}`; // combine the year, month, and day in the desired format
+  const [selectedDate, setSelectedDate] = useState(formattedDate);
+
+  // functions
+
+  const datemodvisible = () => {
+    setDateModalVisible(true);
+  };
+  const datemodvisiblefalse = () => {
+    setDateModalVisible(false);
+  };
+
+  function Location() {
+    Geolocation.requestAuthorization();
+    Geolocation.getCurrentPosition(
+      position => {
+        // console.log(position.coords.latitude, position.coords.longitude);
+        const label = 'CURRENT LOCATION'; // Replace with your label
+        const url = `https://www.google.com/maps/search/?api=1&query=${position.coords.latitude},${position.coords.longitude}&query_place_id=${label}`;
+        alert('LOCATION HAS BEEN SET');
+        Linking.openURL(url);
+        //   Latitude = `${position.coords.latitude}`
+        //   Longitude = `${position.coords.longitude}`
+      },
+      error => {
+        console.error(error);
+      },
+      {enableHighAccuracy: true, timeout: 3900, maximumAge: 1},
+    );
+  }
+
+  var FIR = async () => {
+    setIsLoading(true);
+
+    const reference = storage().ref(selectedImage1.assets[0].fileName);
+    const pathToFile = selectedImage;
+
+    await reference.putFile(pathToFile);
+
+    const url = await storage()
+      .ref(selectedImage1.assets[0].fileName)
+      .getDownloadURL();
+    setSelectedImageUrl(url);
+
+    setIsLoading(false);
+    navigation.navigate('FIRS', {
+      name: name,
+      cnic: cnic,
+      contact: contact,
+      crimeValue: crimeValue,
+      districtValue: districtValue,
+      cityValue: cityValue,
+      policeValue: policeValue,
+      description: description,
+      selectedDate: selectedDate,
+      longitude: longitude,
+      latitude: latitude,
+      Evidence: Evidence,
+      Simage: url,
+    });
+  };
+
+  const uploadtofbStorage = async () => {
+    const reference = storage().ref(selectedImage1.assets[0].fileName);
+    const pathToFile = selectedImage;
+
+    await reference.putFile(pathToFile);
+
+    const url = await storage()
+      .ref(selectedImage1.assets[0].fileName)
+      .getDownloadURL();
+    setSelectedImageUrl(url);
+  };
 
   const launchCam = () => {
     const options = {
@@ -189,6 +223,7 @@ useEffect(() => {
       } else {
         console.log('launch success');
         setSelectedImage(response.assets[0].uri);
+        setSelectedImage1(response);
       }
     });
   };
@@ -202,6 +237,7 @@ useEffect(() => {
     launchImageLibrary(options, response => {
       if (response.assets) {
         setSelectedImage(response.assets[0].uri);
+        setSelectedImage1(response);
       }
     });
   };
@@ -211,7 +247,6 @@ useEffect(() => {
       <View style={{alignItems: 'center', width: 400}}>
         <View
           style={{
-            height: 400,
             width: 460,
             borderTopLeftRadius: 130,
             paddingTop: 0,
@@ -307,6 +342,7 @@ useEffect(() => {
                 </TouchableOpacity>
               </View>
             </View>
+
             <ScrollView style={{}}>
               <Text
                 style={{
@@ -360,9 +396,10 @@ useEffect(() => {
               </Text>
 
               <TextInput
+                editable={false}
                 style={{
                   borderRadius: 10,
-                  color: darkGreen,
+                  color: 'grey',
                   marginLeft: 12,
                   paddingHorizontal: 10,
                   width: 350,
@@ -374,7 +411,7 @@ useEffect(() => {
                 }}
                 placeholderTextColor="grey"
                 value={cnic}
-                keyboardType='Numeric'
+                keyboardType="Numeric"
                 onChangeText={cnic => {
                   name === '' ||
                   cnic === '' ||
@@ -413,7 +450,7 @@ useEffect(() => {
                 }}
                 placeholderTextColor="grey"
                 value={contact}
-                keyboardType='Numeric'
+                keyboardType="Numeric"
                 onChangeText={contact => {
                   name === '' ||
                   cnic === '' ||
@@ -460,7 +497,7 @@ useEffect(() => {
                   {selectedDate}
                 </Text>
 
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   onPress={datemodvisible}
                   style={{marginLeft: 200, width: 50}}>
                   <Text
@@ -471,7 +508,7 @@ useEffect(() => {
                     }}>
                     [:::]
                   </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
 
               <Text
@@ -576,36 +613,35 @@ useEffect(() => {
                   </View>
                 )}
               />
-         <Text
-              style={{
-                color: '#10942e',
-                // marginTop:15,
-                fontWeight: 'bold',
-                marginLeft: 15,
-                fontSize: 14,
-              }}>
-             LOCATION
-            </Text>
-            <TouchableOpacity    onPress={Location} >           
-              <View style={{
-                borderRadius: 10,
-                color: darkGreen,
-                marginLeft: 12,
-                paddingHorizontal: 10,
-                width: 350,
-                height:50,
-                borderColor: "#B7B7B7",
-                marginBottom:30,
-                backgroundColor: '#eceded',
-                marginVertical: 10,
-              }}
-            >  
-                <Text style={{color:'grey', marginTop:12,}}>
-               ' {longitude}' + '{latitude}'
-                </Text>
-              
-              </View>
-            </TouchableOpacity>
+              <Text
+                style={{
+                  color: '#10942e',
+                  // marginTop:15,
+                  fontWeight: 'bold',
+                  marginLeft: 15,
+                  fontSize: 14,
+                }}>
+                LOCATION
+              </Text>
+              <TouchableOpacity onPress={Location}>
+                <View
+                  style={{
+                    borderRadius: 10,
+                    color: darkGreen,
+                    marginLeft: 12,
+                    paddingHorizontal: 10,
+                    width: 350,
+                    height: 50,
+                    borderColor: '#B7B7B7',
+                    marginBottom: 30,
+                    backgroundColor: '#eceded',
+                    marginVertical: 10,
+                  }}>
+                  <Text style={{color: 'grey', marginTop: 12}}>
+                    '{longitude}' + '{latitude}'
+                  </Text>
+                </View>
+              </TouchableOpacity>
               <Text
                 style={{
                   color: '#10942e',
@@ -646,7 +682,6 @@ useEffect(() => {
                   fontWeight: 'bold',
                   marginLeft: 10,
                   fontSize: 14,
-                  name: 'cnic',
                 }}>
                 EVIDENCES
               </Text>
@@ -716,6 +751,45 @@ useEffect(() => {
               <Text
                 style={{
                   color: '#10942e',
+                  marginTop: 0,
+                  fontWeight: 'bold',
+                  marginLeft: 15,
+                  fontSize: 14,
+                }}>
+                EVIDENCE INCLUDE
+              </Text>
+
+              <TextInput
+                style={{
+                  borderRadius: 10,
+                  color: darkGreen,
+                  marginLeft: 12,
+                  paddingHorizontal: 10,
+                  width: 350,
+                  height: 50,
+                  borderColor: '#B7B7B7',
+                  marginBottom: 30,
+                  backgroundColor: '#eceded',
+                  marginVertical: 10,
+                }}
+                placeholderTextColor="grey"
+                value={Evidence}
+                // keyboardType="Numeric"
+                onChangeText={Evidence => {
+                  name === '' ||
+                  cnic === '' ||
+                  contact === '' ||
+                  description === ''
+                    ? setAddBtnState(true)
+                    : setAddBtnState(false);
+                  setEvidence(Evidence);
+                }}
+                placeholder="Enter Evidences"
+              />
+
+              <Text
+                style={{
+                  color: '#10942e',
 
                   fontWeight: 'bold',
                   marginLeft: 15,
@@ -723,7 +797,6 @@ useEffect(() => {
                 }}>
                 DESCRIPTION
               </Text>
-
               <TextInput
                 style={{
                   textAlign: 'left',
@@ -753,22 +826,41 @@ useEffect(() => {
                 // secureTextEntry={true}
               />
             </ScrollView>
+            
+            {/* { condition   ?       render on True        :  render on false       } */}
+
+            {isKeyboardActive ? (
+              <Text style={{height:180}}></Text>
+            ) : (
+              null
+            )}
+
           </View>
 
           <View style={{marginLeft: 280, marginTop: -20}}>
             <TouchableOpacity
+              disabled={btnStat}
               style={{
-                backgroundColor: '#10942e',
+                backgroundColor: !btnStat ? '#10942e' : 'grey',
                 borderRadius: 10,
                 width: 80,
                 height: 35,
                 alignItems: 'center',
               }}
-              onPress={FIR}
-            >
+              onPress={() => {
+                FIR();
+              }}>
+              {isLoading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text style={{color: 'white', fontSize: 15, marginTop: 6}}>
+                  NEXT
+                </Text>
+              )}
+              {/* 
               <Text style={{color: 'white', fontSize: 15, marginTop: 6}}>
                 NEXT
-              </Text>
+              </Text> */}
             </TouchableOpacity>
           </View>
         </View>

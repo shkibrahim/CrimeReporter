@@ -28,9 +28,9 @@ const ITPPanel = ({navigation}) => {
             alignItems: 'center',
           }}>
           <View>
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image
-                source={require('../../images/menu.png')}
+                source={require('../../images/arrow.png')}
                 style={{
                   width: 28,
                   height: 38,
@@ -47,7 +47,7 @@ const ITPPanel = ({navigation}) => {
             </Text>
           </View>
           <View>
-            <TouchableOpacity onPress={() => navigation.navigate('VRF')}>
+            {/* <TouchableOpacity onPress={() => navigation.navigate('VRF')}>
               <Image
                 source={require('../../images/icon.png')}
                 style={{
@@ -58,7 +58,7 @@ const ITPPanel = ({navigation}) => {
                   marginTop: -54,
                 }}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <View
             style={{
@@ -122,8 +122,9 @@ const ITPPanel = ({navigation}) => {
             <View style={{flex: 1, marginLeft: 73}}>
               <TouchableOpacity
                 style={{
-                  backgroundColor: '#c0e4c9',
-
+                  // backgroundColor: 'red',
+// awzaaaaaaaaaaaaaaaaaaaaaaaawawwwwzaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+// borderColor:'red',
                   alignItems: 'center',
                   borderRadius: 17,
                   marginLeft: -31,
@@ -132,11 +133,16 @@ const ITPPanel = ({navigation}) => {
 
                   // paddingVertical: 5,
                 }}
-                onPress={() => navigation.navigate('VCS')}>
-                <Image
-                  source={require('../../images/vc.jpg')}
+                onPress={() => navigation.navigate('Analytics')}
+               >
+
+                  {/* <Text style={{fontSize:40,marginTop:70, color:'white',fontWeight:'bold'}}>
+                    VIEW ANALYTICS
+                  </Text> */}
+                  <Image
+                  source={require('../../images/van.png')}
                   style={{
-                    borderRadius: 17,
+                    borderRadius: 20,
                     width: 370,
                     height: 200,
 
@@ -189,7 +195,8 @@ const ITPPanel = ({navigation}) => {
               backgroundColor: '#007711',
             }}>
             <View>
-              <TouchableOpacity>
+              <TouchableOpacity
+              disabled={true}>
                 <Image
                   source={require('../../images/home.png')}
                   style={{
@@ -204,7 +211,7 @@ const ITPPanel = ({navigation}) => {
               </TouchableOpacity>
             </View>
             <View>
-              <TouchableOpacity>
+              <TouchableOpacity  disabled={true}> 
                 <Image
                   source={require('../../images/sea.png')}
                   style={{
@@ -219,7 +226,7 @@ const ITPPanel = ({navigation}) => {
               </TouchableOpacity>
             </View>
             <View>
-              <TouchableOpacity>
+              <TouchableOpacity  disabled={true}>
                 <Image
                   source={require('../../images/settin.png')}
                   style={{
@@ -254,7 +261,7 @@ const ITPPanel = ({navigation}) => {
           marginLeft: 170,
           marginTop: -20,
         }}></View>
-      <TouchableOpacity style={{marginLeft: 250, marginTop: -50}}>
+      <TouchableOpacity style={{marginLeft: 250, marginTop: -50}}  disabled={true}>
         <Image
           source={require('../../images/view.png')}
           style={{
@@ -277,7 +284,7 @@ const ITPPanel = ({navigation}) => {
           marginLeft: 332,
           marginTop: -14,
         }}>
-        <TouchableOpacity style={{marginLeft: 80}}>
+        <TouchableOpacity style={{marginLeft: 80}}  disabled={true}>
           <Image
             source={require('../../images/pro.png')}
             style={{

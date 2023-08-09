@@ -8,7 +8,7 @@ import {
   Touchable,
   TouchableOpacity,
   ScrollView,
-  TextInput,
+  TextInput,  ActivityIndicator,
 } from 'react-native';
 
 import {darkGreen} from './constants';
@@ -18,6 +18,7 @@ import {Image} from 'react-native';
 
 const Screen3 = ({route,navigation}) => {
   const {name} = route.params;
+  const [isLoading, setIsLoading] = useState(false);
   const {email} = route.params;
   const { cnic} = route.params;
   const { genderValue } = route.params;
@@ -36,6 +37,7 @@ alert ('Fill the form')
       alert("password and confirm password doesnot match")
     }
     else{
+      setIsLoading(true);
     firestore()
       .collection('Users')
       .add({
@@ -50,9 +52,11 @@ alert ('Fill the form')
      
       })
       .then(() => {
-        alert('User added!');
+       
+        alert('Your account has made successfully');
+        navigation.navigate('Home')
       }).catch(()=>{
-        alert('error')
+        alert( error)
       });
 
     }
@@ -245,9 +249,13 @@ alert ('Fill the form')
             }}
            onPress={Users}
            >
+    {isLoading ? (
+                <ActivityIndicator color="white" />
+              ) : (
             <Text style={{color: 'white', fontSize:22, marginTop: 11, fontWeight:'bold'}}>
               SUBMIT
             </Text>
+               )}
           </TouchableOpacity>
         </View>
       </View>

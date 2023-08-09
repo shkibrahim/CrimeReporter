@@ -25,6 +25,9 @@ import DropDownPicker from 'react-native-dropdown-picker';
 const AdminRMC = ({navigation}) => {
   const [AdminRemarks, setAdminRemarks] = useState("No Remarks Yet");
   const [cnic, setcnic] = useState();
+  const [username, setusername] = useState();
+  const [usercnic, setusercnic] = useState();
+  const [usercontact, setcontact] = useState();
   const [name, setname] = useState();
   const [Location, setLocation] = useState();
   const [Bounty, setBounty] = useState();
@@ -132,7 +135,9 @@ else{
       .collection('MISSINGCRIMINALNOTIFICATION')
       .add({
         name: name,
-        UserInformation: UserInformation,
+        usercnic:'...',
+       
+        UserInformation: '...',
         cnic:cnic,
         selectedDate:selectedDate,
         selectedTime:selectedTime,
@@ -140,6 +145,9 @@ else{
         Appearance:Appearance,
         Crimes:Crimes,
         Bounty:Bounty,
+        username:'...',
+        usercontact:'...',
+       
         Location:Location
       
       })
@@ -191,7 +199,7 @@ else{
       <View style={{alignItems: 'center', width: 400}}>
         <View
           style={{
-            height: 400,
+            // height: 400,
             width: 460,
             borderTopLeftRadius: 130,
             paddingTop: 0,

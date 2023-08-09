@@ -17,38 +17,46 @@ import Back3 from '../Back3';
 import {Image} from 'react-native';
 
 
-const AdminUpdate = ({routes, navigation}) => {
+const AdminUpdate = ({route, navigation}) => {
 
-  const [AdminRemarksa, setAdminRemarksa] = useState();
-  const [Data, setData] = useState([]);
-
-  var ITPI = firestore().collection('ITPI');
-
-  useEffect(() => {
-    var Dataa = async () => {
-      await ITPI.get().then(data => {
-        setData(data.docs.map(doc => ({...doc.data(), id: doc.id})));
-      
-      });
-    };
-    Dataa();
-  });
-
-
-  const Update = async (item) => { 
-
-    await firestore()
+  const [AdminRemarks, setAdminRemarks] = useState();
+  const {trackValue} = route.params;
+  const {selectedDate} = route.params;
+  const {ID} = route.params;
+  const {selectedTime} = route.params;
+  const {InvestigationRemarks} = route.params;
+  const Update = async(item)=>{
+console.log(trackValue)
+    // console.log(item)
+    // console.log(UserInformation)
+    // console.log(username)
+    // console.log(usercnic)
+  
+    try {
+      await firestore()
     .collection('ITPI')
-    .doc(item.id)
-    .update({
-    AdminRemarks: AdminRemarksa,
-      // trackValue:trackValue,
+    .where('ID', '==', ID)
+    .get()
+    .then(querySnapshot => {
+        querySnapshot.forEach(documentSnapshot => {
+            documentSnapshot.ref.update({
+              AdminRemarks: AdminRemarks,
+              
+            });
+        });
     });
-    
-    navigation.navigate("ITPreview")
-    // navigation.navigate('AdminTC')
+    alert('Update successful')
+      console.log('Update successful');
+      // setShowSavebtn(false)
+      // setInputEditable(false)
+      // setUpdateCancelbtn('Update')
+      // setCancelColour('#10942e')
+  } catch (error) {
+      console.error('Error updating document:', error);
   }
-//   const deny=async (item)=>{
+
+  }
+
 //     await firestore()
 //     .collection('FIR')
 //     .doc(item.id)
@@ -125,7 +133,7 @@ const AdminUpdate = ({routes, navigation}) => {
               </Text>
             </View>
             <View style={{}}>
-              <FlatList
+              {/* <FlatList
                 style={{width: '100%'}}
                 data={Data}
                 // horizontal={true}
@@ -133,8 +141,8 @@ const AdminUpdate = ({routes, navigation}) => {
                 showsHorizontalScrollIndicator={false}
                 renderItem={({item, index}) => {
                   if (item != undefined) {
-                    return (
-                    //  <FlatList 
+                    return ( */}
+                    {/* //  <FlatList  */}
                     <View style={{ width: 370,
                         marginRight:19,
                         height: 640,}}>
@@ -187,7 +195,7 @@ const AdminUpdate = ({routes, navigation}) => {
                             fontSize: 14,
                             
                           }}>
-                        {item.selectedTime}
+                        {selectedTime}
                         </Text>
                         </View>
                         <Text
@@ -214,7 +222,7 @@ const AdminUpdate = ({routes, navigation}) => {
                             fontSize: 14,
                             name: 'cnic',
                           }}>
-                          {item.selectedDate}
+                          {selectedDate}
                         </Text>
                         </View>
                         <Text
@@ -241,7 +249,7 @@ const AdminUpdate = ({routes, navigation}) => {
                             fontSize: 14,
                           
                           }}>
-                          {item.trackValue}
+                          {trackValue}
                         </Text>
                         </View>
                         
@@ -269,7 +277,7 @@ const AdminUpdate = ({routes, navigation}) => {
                             fontSize: 14,
                          
                           }}>
-                          {item.CaseInformation}
+                          {InvestigationRemarks}
                         </Text>
                         </View>
 
@@ -315,10 +323,10 @@ const AdminUpdate = ({routes, navigation}) => {
                 //   contact === '' ||
                 //   description === ''
                 //     ? setAddBtnState(true)
-                value={AdminRemarksa}
+                value={AdminRemarks}
                 onChangeText={
                
-                  setAdminRemarksa
+                  setAdminRemarks
                 }
                 //     : setAddBtnState(false);
                 //   setcnic(cnic);
@@ -380,10 +388,10 @@ const AdminUpdate = ({routes, navigation}) => {
           </TouchableOpacity>
          
                       </View>
-                    );
+                    {/* );
                   }
-                }}
-              />
+                }} */}
+              {/* /> */}
             </View>
           </View>
         </View>

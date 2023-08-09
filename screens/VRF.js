@@ -15,6 +15,10 @@ import {
 import Back3 from './Back3';
 
 import {Image} from 'react-native';
+import { StorageKeys } from '../Data/StorageKeys';
+
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 
 const VRF = ({ navigation}) => {
@@ -27,19 +31,47 @@ const VRF = ({ navigation}) => {
   const [cityValue, setcityValue] = useState();
   const [policeValue, setpoliceValue] = useState();
   const [Data, setData] = useState([]);
+  const [Data1, setData1] = useState([]);
+
+  const [Cuse, setCuser] = useState('no User');
   
 
   var FIR = firestore().collection('FIR');
 
   useEffect(() => {
+    if (Data1.length > 0) {
+      const FilteredList = Data1.filter(item => {
+        return item.cnic === Cuse;
+      });
+
+      setData(FilteredList)
+    }
+      
+  
+  }, [Data1]);
+
+
+  useEffect(() => {
+
+     AsyncStorage.getItem(StorageKeys.CurrentUser)
+      .then((data) => {
+        if (data != null) {
+          const us=JSON.parse(data)
+          console.log('user is now: ',us)
+          setCuser(us.cnic)
+        }
+      })
+      .catch((error) => console.log(error));  
+
+
     var Dataa = async () => {
       await FIR.get().then(data => {
-        setData(data.docs.map(doc => ({...doc.data(), id: doc.id})));
-    
+        setData1(data.docs.map(doc => ({...doc.data(), id: doc.id})));
       });
     };
     Dataa();
-  });
+
+  },[]);
 
   return (
     <Back3>
@@ -53,7 +85,7 @@ const VRF = ({ navigation}) => {
             alignItems: 'center',
           }}>
           <View>
-            <TouchableOpacity onPress={() => navigation.navigate('UserPanel')}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image
                 source={require('../images/arrow.png')}
                 style={{
@@ -386,6 +418,70 @@ const VRF = ({ navigation}) => {
                           {item.policeValue}
                         </Text>
                         </View>
+
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            marginBottom:-5,
+                          }}>
+                          EVIDENCES
+                        </Text>
+
+                        <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
+                marginBottom:30,
+                marginVertical: 10,}}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            // fontWeight: 'bold',
+                            // marginLeft: 10,
+                            marginTop:10,
+                            marginBottom: 10,
+                            fontSize: 14,
+                           
+                          }}>
+                          {item.Evidence}
+                        </Text>
+                        </View>
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
+                            marginBottom:-5,
+                          }}>
+                          EVIDENCES IMAGES
+                        </Text>
+                        <View
+                style={{
+                  alignItems: 'center',
+                  marginLeft: 140,
+                  width: 90,
+                  height: 87,
+                  backgroundColor: 'black',
+                  borderRadius: 55,
+                  marginTop: 12,
+                }}>
+                <Image
+                  style={{
+                    width: 90,
+                    borderRadius: 5,
+                    height: 87,
+                    resizeMode:'cover',
+                    // marginBottom: 20,
+                    marginLeft: 0,
+                    marginTop: 0,
+                  }}
+                  source={{uri: item.EvidenceImage}}
+                />
+              
+              </View>
+
+
                         <Text
                           style={{
                             color: '#10942e',
@@ -447,6 +543,45 @@ const VRF = ({ navigation}) => {
                             fontWeight: 'bold',
                             marginLeft: 10,
                             fontSize: 14,
+                            name: 'cnic',
+                            
+                            marginBottom:-5,
+                          }}>
+                          SUSPECT IMAGE:
+                        </Text>
+                        <View
+                style={{
+                  alignItems: 'center',
+                  marginLeft: 140,
+                  width: 90,
+                  height: 87,
+                  backgroundColor: 'black',
+                  borderRadius: 55,
+                  marginTop: 12,
+                }}>
+                <Image
+                  style={{
+                    width: 90,
+                    borderRadius: 5,
+                    height: 87,
+                    resizeMode:'cover',
+                    // marginBottom: 20,
+                    marginLeft: 0,
+                    marginTop: 0,
+                  }}
+                  source={{uri: item.SuspectImage}}
+                />
+              
+              </View>
+
+
+
+                        <Text
+                          style={{
+                            color: '#10942e',
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                            fontSize: 14,
                             
                             marginBottom:-5,
                           }}>
@@ -477,7 +612,7 @@ const VRF = ({ navigation}) => {
                            
                             marginBottom:-5,
                           }}>
-                          SUSPECT REASON: {item.reason}
+                          SUSPECT REASON: 
                         </Text>
                         <View style ={{backgroundColor:  '#eceded',  borderRadius: 10,  paddingHorizontal: 10,
                 marginBottom:30,

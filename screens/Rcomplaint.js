@@ -10,8 +10,9 @@ import {
   View,
   StyleSheet,
   Text,
+  ActivityIndicator,
   Touchable,
-  TouchableOpacity,
+  TouchableOpacity,Keyboard,
   ScrollView,
   FlatList,
   TextInput,
@@ -24,16 +25,35 @@ import {darkGreen} from './constants';
 import {Image} from 'react-native';
 
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { StorageKeys } from '../Data/StorageKeys';
 
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import storage from '@react-native-firebase/storage';
 const Rcomplaint = ({navigation}) => {
   const [name, setname] = useState();
   const [longitude, setLongitude] = useState(null);
+  const [Evidence, setEvidence] = useState('');
   const [latitude, setLatitude] = useState(null);
   const [cnic, setcnic] = useState();
   const [imageUri, setImageUri] = useState(null);
   const [description, setdescription] = useState();
   const [contact, setcontact] = useState();
+  const [isKeyboardActive, setIsKeyboardActive] = useState(false);
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => setIsKeyboardActive(true),
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => setIsKeyboardActive(false),
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 let COMPLAINTDATA={
   name:name,
   cnic:cnic,
@@ -56,6 +76,24 @@ const formattedDate = `${year}-${month}-${day}`; // combine the year, month, and
 const [selectedDate, setSelectedDate] = useState(formattedDate);
 
 const [dateModalVisible, setDateModalVisible] = useState(false);
+const [selectedImage, setSelectedImage] = useState(null);
+const [selectedImage1, setSelectedImage1] = useState(null);
+
+const [selectedImageUrl, setSelectedImageUrl] = useState('');
+const [isLoading, setIsLoading] = useState(false);
+
+const [btnStat, seBtnStat] = React.useState(true); 
+
+
+useEffect(()=>{
+  if(selectedImage==null){
+  seBtnStat(true)
+}
+else{
+  seBtnStat(false)
+}
+},[selectedImage])
+
 
 const datemodvisible = () => {
   setDateModalVisible(true);
@@ -88,6 +126,17 @@ Geolocation.getCurrentPosition(
 );
 }
 useEffect(() => {
+  AsyncStorage.getItem(StorageKeys.CurrentUser)
+  .then((data) => {
+    if (data != null) {
+      const us=JSON.parse(data)
+      console.log('user is : ',us)
+      setcnic(us.cnic)
+    }
+  })
+  .catch((error) => console.log(error));  
+
+
   Geolocation.getCurrentPosition(
     position => {
       setLongitude(position.coords.longitude);
@@ -98,12 +147,21 @@ useEffect(() => {
   );
 }, []);
 // };
-  var Complaint = () => {
-//     if(name== null || cnic== null || contact==  null || crimeValue== null || districtValue== null || cityValue== null || policeValue== null || description == null )
-//     {
-// alert ('Fill the form')
-//     }
-    {
+  var Complaint =async () => {
+    setIsLoading(true);
+
+    const reference = storage().ref(selectedImage1.assets[0].fileName);
+    const pathToFile = selectedImage;
+
+    await reference.putFile(pathToFile);
+
+    const url = await storage()
+      .ref(selectedImage1.assets[0].fileName)
+      .getDownloadURL();
+    setSelectedImageUrl(url);
+
+    setIsLoading(false);
+    
      
       navigation.navigate('Rcomplaints',{  name: name,
         cnic:cnic,
@@ -113,11 +171,12 @@ useEffect(() => {
         selectedDate: selectedDate,
         longitude: longitude,
         latitude: latitude,
+        Evidence:Evidence,
         cityValue:cityValue,
         victimValue: victimValue,
         policeValue:policeValue,
         description:description,})
-    }
+    
     // console.log(crimeValue)
     // firestore()
     //   .collection('FIR')
@@ -134,8 +193,18 @@ useEffect(() => {
       
   }
 
-  const [selectedImage, setSelectedImage] = useState(null);
 
+  const uploadtofbStorage = async () => {
+    const reference = storage().ref(selectedImage1.assets[0].fileName);
+    const pathToFile = selectedImage;
+
+    await reference.putFile(pathToFile);
+
+    const url = await storage()
+      .ref(selectedImage1.assets[0].fileName)
+      .getDownloadURL();
+    setSelectedImageUrl(url);
+  };
   const launchCam=()=>{
     const options = {
       mediaType: 'photo',
@@ -168,9 +237,10 @@ useEffect(() => {
     launchImageLibrary(options, response => {
       if (response.assets) {
         setSelectedImage(response.assets[0].uri);
+        setSelectedImage1(response);
       }
     });
-  }
+  };
  
  
 
@@ -184,10 +254,10 @@ useEffect(() => {
   const [crimeOpen, setcrimeOpen] = useState();
   const [crimeValue, setcrimeValue] = useState();
   const [crime, setcrime] = useState([
-    { label: "Murder", value: "Murder" },
-    { label: "Robbery", value: "Robbery" },
-    { label: "Rape", value: "Rape" },
-    { label: "Kidnapping", value: "Kidnapping" },
+    { label: "Woman Harrasement", value: "Woman Harrasement" },
+    { label: "Document Lost", value: "Document Lost" },
+    { label: "Street Fight", value: "Street Fight" },
+    { label: "Land Accusation", value: "Land Accusation" },
   ]);
   const [districtOpen, setdistrictOpen] = useState();
   const [districtValue, setdistrictValue] = useState();
@@ -260,7 +330,7 @@ useEffect(() => {
   
       <View
         style={{
-          height: 400,
+       
           width: 460,
           borderTopLeftRadius: 130,
           paddingTop: 0,
@@ -400,10 +470,10 @@ marginTop:22,
             </Text>
 
             <TextInput
-           
+             editable={false}
               style={{
                 borderRadius: 10,
-                color: darkGreen,
+                color: 'grey',
                 marginLeft: 12,
                 paddingHorizontal: 10,
                 width: 350,
@@ -712,7 +782,7 @@ marginTop:22,
               }}
             >  
                 <Text style={{color:'grey', marginTop:12,}}>
-               ' {longitude}' + '{latitude}'
+               '{longitude}' + '{latitude}'
                 </Text>
               
               </View>
@@ -769,6 +839,43 @@ marginLeft:295,
               </View>
             </TouchableOpacity>
             <Text
+                style={{
+                  color: '#10942e',
+                  marginTop: 0,
+                  fontWeight: 'bold',
+                  marginLeft: 15,
+                  fontSize: 14,
+                }}>EVIDENCE INCLUDE
+              </Text>
+
+              <TextInput
+                style={{
+                  borderRadius: 10,
+                  color: darkGreen,
+                  marginLeft: 12,
+                  paddingHorizontal: 10,
+                  width: 350,
+                  height: 50,
+                  borderColor: '#B7B7B7',
+                  marginBottom: 30,
+                  backgroundColor: '#eceded',
+                  marginVertical: 10,
+                }}
+                placeholderTextColor="grey"
+                value={Evidence}
+                keyboardType="Numeric"
+                onChangeText={Evidence => {
+                  name === '' ||
+                  cnic === '' ||
+                  contact === '' ||
+                  description === ''
+                    ? setAddBtnState(true)
+                    : setAddBtnState(false);
+                  setEvidence(Evidence);
+                }}
+                placeholder="Enter Evidences"
+              />
+            <Text
               style={{
                 color: '#10942e',
                
@@ -806,32 +913,39 @@ marginLeft:295,
               // secureTextEntry={true}
             />
         </ScrollView>
+        {isKeyboardActive ? (
+              <Text style={{height:180}}></Text>
+            ) : (
+              null
+            )}
         </View>
        
   
         <View style={{marginLeft: 280,marginTop:-20 }}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#10942e',
-              borderRadius:10,
-              width: 80,
-              height: 35,
-              alignItems: 'center',
-            }}
-            onPress={Complaint}
-            // onPress={() =>{navigation.navigate('FIRS',{  name: name,
-            //   cnic:cnic,
-            //   contact: contact,
-            //   crimeValue:crimeValue,
-            //   districtValue:districtValue,
-            //   cityValue:cityValue,
-            //   policeValue:policeValue,
-            //   description:description,})}}
-            >
-            <Text style={{color: 'white', fontSize: 15, marginTop: 6}}>
-            NEXT
-            </Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+            disabled={btnStat}
+              style={{
+                backgroundColor: !btnStat?'#10942e' : 'grey',
+                borderRadius: 10,
+                width: 80,
+                height: 35,
+                alignItems: 'center',
+              }}
+              onPress={() => {
+                Complaint();
+              }}>
+              {isLoading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text style={{color: 'white', fontSize: 15, marginTop: 6}}>
+                NEXT
+              </Text>
+              )}
+{/* 
+              <Text style={{color: 'white', fontSize: 15, marginTop: 6}}>
+                NEXT
+              </Text> */}
+            </TouchableOpacity>
         </View>
       </View>
 

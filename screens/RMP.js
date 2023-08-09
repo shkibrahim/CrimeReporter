@@ -11,24 +11,48 @@ import {
   StyleSheet,
   Text,
   Touchable,
-  TouchableOpacity,
-  ScrollView,
+  Pressable,
+  ScrollView,  Keyboard,
   FlatList,
+  ActivityIndicator,
   TextInput,
 } from 'react-native';
 import Back3 from './Back3';
-
+import storage from '@react-native-firebase/storage'
 import {darkGreen} from './constants';
+import { StorageKeys } from '../Data/StorageKeys';
+
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 import {Image} from 'react-native';
 
 const RMP = ({navigation}) => {
+  const [isKeyboardActive, setIsKeyboardActive] = useState(false);
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => setIsKeyboardActive(true),
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => setIsKeyboardActive(false),
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
   const [name, setname] = useState();
+  const [Evidence, setEvidence] = useState('');
   const [date, setDate] = useState();
   const [longitude, setLongitude] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [cnic, setcnic] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
+  const [btnStat, seBtnStat] = React.useState(true);
   const [description, setdescription] = useState();
   const [contact, setcontact] = useState();
   const [Relation, setRelation] = useState();
@@ -62,14 +86,33 @@ function Location() {
     { enableHighAccuracy: true, timeout: 3900, maximumAge: 1 }
   );
   }
-useEffect(() => {
+  useEffect(() => {
+    if (name == null) {
+      seBtnStat(true);
+    } else {
+      seBtnStat(false);
+    }
+  }, [name]);
+
+  //useEffect
+  useEffect(() => {
+    AsyncStorage.getItem(StorageKeys.CurrentUser)
+      .then(data => {
+        if (data != null) {
+          const us = JSON.parse(data);
+          console.log('user is : ', us);
+          setcnic(us.cnic);
+        }
+      })
+      .catch(error => console.log(error));
+
     Geolocation.getCurrentPosition(
       position => {
         setLongitude(position.coords.longitude);
         setLatitude(position.coords.latitude);
       },
       error => console.log(error),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+      {enableHighAccuracy: true, timeout: 30000, maximumAge: 1000},
     );
   }, []);
 
@@ -96,6 +139,8 @@ const datemodvisiblefalse = () => {
 };
   
   var RMV= () => {
+    setIsLoading(true);
+
     {
      
       navigation.navigate('RMPB',{  
@@ -111,6 +156,8 @@ const datemodvisiblefalse = () => {
        longitude: longitude
        })
     }
+    setIsLoading(false);
+
     // alert(latitude)
   }
 
@@ -140,40 +187,7 @@ const datemodvisiblefalse = () => {
   const [addBtnState, setAddBtnState] = useState(true);
     const [userList, setuserList] = useState([]);
   const {  control } = useForm();
-//   const Save = () => {
-//     // alert('click')
-//     if ( name === '' && cnic === '' && crime === '' && district === '' && police === '' ) {
-//       alert('click');
-//     } else {
-//         const userList = {
-//             Sname: name,
-//             Scnic: cnic,
-//             Scontact: contact,
-//             Sdescription: description,
-//             Scrime: crime,
-//             Scity: city,
-//             Sdistrict: district,
-//             Spolice: police
-            
-//         };
 
-     
-
-//         setuserList((oldList) => [...oldList, userList]);
-//         setAddBtnState(true);
-//         setname('');
-//         setcnic('');
-//         setcontact('');
-//         setdescription('');
-//         alert('Added not Successfully');
-//         // setgender('');
-//         console.log("---.",userList)
-//      navigation.navigate('FIRS',{
-//       userList,
-//      })
-//     }
-
-// };
 var GoBack = () => { 
     navigation.goBack();
   }
@@ -187,14 +201,14 @@ var GoBack = () => {
   
       <View
         style={{
-          height: 400,
+        
           width: 460,
           borderTopLeftRadius: 130,
           paddingTop: 0,
           alignItems: 'center',
         }}>
         <View>
-        <TouchableOpacity
+        <Pressable
          onPress={GoBack}>
        <Image
         source={require('../images/arrow.png')}
@@ -207,7 +221,7 @@ marginLeft:-175,
 
         }}
       />
-      </TouchableOpacity>
+      </Pressable>
       </View>
         <View style={{marginBottom: 19, marginTop:-35}}>
           <Text style={{color: 'white', fontSize: 20, fontWeight:'bold'}}>
@@ -229,7 +243,7 @@ marginLeft:-175,
           {/* <ScrollView style={{backgroundColor:'white',borderRadius:37, width:390, marginLeft:-18}}> */}
           <View style={{flexDirection: 'row', marginBottom: 20}}>
           <View style={{flex: 1, marginLeft: 80}}>
-            <TouchableOpacity
+            <Pressable
               style={{
                
 marginTop:22,
@@ -246,16 +260,16 @@ marginTop:22,
              CASE REGISTERER
               </Text>
            
-            </TouchableOpacity>
+            </Pressable>
             <View style={{width:400, marginLeft:-79}}>
-                <TouchableOpacity   onPress={() =>navigation.navigate('RMP')}>
+                <Pressable   onPress={() =>navigation.navigate('RMP')}>
             <Text style={{color:'#10942e'}}>-----------------------------------------------</Text>
-            </TouchableOpacity>
+            </Pressable>
           
             </View>
           </View>
           <View style={{flex: 2, marginLeft: 60, }}>
-            <TouchableOpacity
+            <Pressable
               style={{
                 //  backgroundColor:'black',
 
@@ -271,7 +285,7 @@ marginTop:22,
               onPress={RMV}
               >
               <Text style={{color: 'grey', marginTop: 0, fontSize: 10, fontWeight:'bold'}}>M.PERSON INFORMATION</Text>
-            </TouchableOpacity>
+            </Pressable>
             
           </View>
              
@@ -329,10 +343,10 @@ marginTop:22,
             </Text>
 
             <TextInput
-           
+             editable={false}
               style={{
                 borderRadius: 10,
-                color: darkGreen,
+                color: 'grey',
                 marginLeft: 12,
                 paddingHorizontal: 10,
                 width: 350,
@@ -425,7 +439,7 @@ marginTop:22,
                   {selectedDate}
                 </Text>
 
-                <TouchableOpacity
+                <Pressable
                   onPress={datemodvisible}
                   style={{marginLeft: 200, width: 50}}>
                   <Text
@@ -436,7 +450,7 @@ marginTop:22,
                     }}>
                     [:::]
                   </Text>
-                </TouchableOpacity>
+                </Pressable>
               </View>
         
          <Text
@@ -519,7 +533,7 @@ marginTop:22,
               }}>
              LOCATION
             </Text>
-            <TouchableOpacity    onPress={Location} >           
+            <Pressable    onPress={Location} >           
               <View style={{
                 borderRadius: 10,
                 color: darkGreen,
@@ -538,7 +552,7 @@ marginTop:22,
                 </Text>
               
               </View>
-            </TouchableOpacity>
+            </Pressable>
        <Text
               style={{
                 color: '#10942e',
@@ -617,32 +631,38 @@ marginTop:22,
             />
            
         </ScrollView>
+        {isKeyboardActive ? (
+              <Text style={{height:180}}></Text>
+            ) : (
+              null
+            )}
         </View>
        
   
         <View style={{marginLeft: 280,marginTop:-20 }}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#10942e',
-              borderRadius:10,
-              width: 80,
-              height: 35,
-              alignItems: 'center',
-            }}
-            onPress={RMV}
-            // onPress={() =>{navigation.navigate('FIRS',{  name: name,
-            //   cnic:cnic,
-            //   contact: contact,
-            //   crimeValue:crimeValue,
-            //   districtValue:districtValue,
-            //   cityValue:cityValue,
-            //   policeValue:policeValue,
-            //   description:description,})}}
-            >
-            <Text style={{color: 'white', fontSize: 15, marginTop: 6}}>
-            NEXT
-            </Text>
-          </TouchableOpacity>
+          <Pressable
+           disabled={btnStat}
+           style={{
+            backgroundColor: !btnStat ? '#10942e' : 'grey',
+            borderRadius: 10,
+            width: 80,
+            height: 35,
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            RMV();
+          }}>
+            {isLoading ? (
+              <ActivityIndicator color="white" />
+            ) : (
+              <Text style={{color: 'white', fontSize: 15, marginTop: 6}}>
+                NEXT
+              </Text>
+            )}
+        
+         
+         
+          </Pressable>
         </View>
       </View>
 
